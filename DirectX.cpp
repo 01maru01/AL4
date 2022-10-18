@@ -261,8 +261,8 @@ MyDirectX::MyDirectX(HWND hwnd)
 #pragma region 深度バッファ
 	D3D12_RESOURCE_DESC depthResourceDesc{};
 	depthResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
-	depthResourceDesc.Width = window_width;
-	depthResourceDesc.Height = window_height;
+	depthResourceDesc.Width = Window::window_width;
+	depthResourceDesc.Height = Window::window_height;
 	depthResourceDesc.DepthOrArraySize = 1;
 	depthResourceDesc.Format = DXGI_FORMAT_D32_FLOAT;
 	depthResourceDesc.SampleDesc.Count = 1;
@@ -307,9 +307,9 @@ MyDirectX::MyDirectX(HWND hwnd)
 #pragma endregion
 
 	//	ビューポート
-	viewPort.Init(window_width, window_height, 0, 0);
+	viewPort.Init(Window::window_width, Window::window_height, 0, 0);
 	// シザー矩形
-	scissorRect.Init(0, window_width, 0, window_height);
+	scissorRect.Init(0, Window::window_width, 0, Window::window_height);
 }
 
 void MyDirectX::TimeUpdate()

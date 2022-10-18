@@ -1,12 +1,13 @@
 #pragma once
 #include <Windows.h>
 
-// ウィンドウサイズ
-const int window_width = 1280; // 横幅
-const int window_height = 720; // 縦幅
 class Window
 {
 public:
+	// ウィンドウサイズ
+	static const int window_width = 1280; // 横幅
+	static const int window_height = 720; // 縦幅
+private:
 	// ウィンドウクラスの設定
 	WNDCLASSEX w{};
 	// ウィンドウオブジェクトの生成
@@ -19,7 +20,12 @@ public:
 
 	Window();
 	~Window();
+	void Initialize();
 	void MsgUpdate();
 	bool EndLoop();
+
+	//	getter
+	HWND GetHwnd() const { return hwnd; }
+	WNDCLASSEX GetWND() const { return w;}
 };
 

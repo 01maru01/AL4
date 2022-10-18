@@ -1,9 +1,9 @@
 #pragma once
-#pragma once
 #define DIRECTINPUT_VERSION 0x0800
 #include <dinput.h>
 #include <cassert>
 #include "Vector2D.h"
+#include "Window.h"
 
 #pragma comment(lib,"dinput8.lib")
 #pragma comment(lib,"dxguid.lib")
@@ -17,6 +17,7 @@ public:
 		WheelClick,
 	};
 private:
+	Window* win = nullptr;
 	HWND inputHwnd;
 
 	BYTE key[256] = {};
@@ -29,9 +30,9 @@ private:
 	IDirectInputDevice8* mouse = nullptr;
 	POINT cursor;
 public:
-	Input(const HWND& hwnd, const WNDCLASSEX& w);
 	~Input();
-	void Update(HWND hwnd);
+	void Initialize(Window* _win);
+	void Update();
 
 	bool GetKey(int _key);
 	bool GetTrigger(int _key);

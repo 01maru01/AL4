@@ -16,6 +16,17 @@ LRESULT Window::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 
 Window::Window()
 {
+	Initialize();
+}
+
+Window::~Window()
+{
+	// ウィンドウクラスを登録解除
+	UnregisterClass(w.lpszClassName, w.hInstance);
+}
+
+void Window::Initialize()
+{
 	w.cbSize = sizeof(WNDCLASSEX);
 	w.lpfnWndProc = (WNDPROC)WindowProc;		// ウィンドウプロシージャを設定
 	w.lpszClassName = L"DirectXGame";			// ウィンドウクラス名
@@ -43,12 +54,6 @@ Window::Window()
 		nullptr);							// オプション
 	// ウィンドウを表示状態にする
 	ShowWindow(hwnd, SW_SHOW);
-}
-
-Window::~Window()
-{
-	// ウィンドウクラスを登録解除
-	UnregisterClass(w.lpszClassName, w.hInstance);
 }
 
 void Window::MsgUpdate()
