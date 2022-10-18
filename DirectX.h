@@ -1,4 +1,5 @@
 #pragma once
+#include "Window.h"
 #include "ViewPort.h"
 #include "ScissorRect.h"
 #include <d3d12.h>
@@ -14,6 +15,8 @@
 class MyDirectX
 {
 private:
+	Window* win = nullptr;
+
 	HRESULT result;
 
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
@@ -51,7 +54,6 @@ private:
 	D3D12_RESOURCE_BARRIER screenBarrierDesc;
 	ComPtr<ID3D12DescriptorHeap> screenRTVHeap;
 	std::vector<ComPtr<ID3D12DescriptorHeap>> screenSRVHeap;
-	//ComPtr<ID3D12DescriptorHeap> screenSRVHeap;
 	
 	//	ビューポート
 	ViewPort viewPort;
@@ -61,9 +63,6 @@ private:
 	int textureNum;
 	std::vector<ComPtr<ID3D12Resource>> texBuff;
 	UINT incrementSize;
-
-	DWORD current = 0;	// 現在時間保存用
-	DWORD prev = 0;		// 過去時間保存用
 private:
 	void DebugLayer();
 
@@ -74,23 +73,20 @@ private:
 	void CmdListDrawAble(D3D12_RESOURCE_BARRIER& barrierDesc, ID3D12Resource* pResource, D3D12_RESOURCE_STATES StateBefore, D3D12_RESOURCE_STATES StateAfter,
 		D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle, D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle, FLOAT* clearColor = nullptr);
 public:
-	MyDirectX(HWND hwnd);
-	void TimeUpdate();
-	void DrawAbleScreenTexture(FLOAT* clearColor = nullptr);
-	void DrawEndScreenTexture();
-	void DrawAble(FLOAT* clearColor = nullptr);
-	void DrawEnd();
-	void Setting();
-	void SetDescriptorHeap();
-	void SetTextureData(int textureHandle);
+	MyDirectX(Window* win_);
+	void Initialize(Window* win_);
+	void PrevDrawScreen(FLOAT* clearColor = nullptr);
+	void PostDrawScreen();
+	void PrevDraw(FLOAT* clearColor = nullptr);
+	void PostDraw();
 
 	int LoadTextureGraph(const wchar_t* textureName);
 
 	//	Getter
-	D3D12_GPU_DESCRIPTOR_HANDLE TextureHandle(int handle);
-	ID3D12Device* Dev() { return device.Get(); }
-	ID3D12GraphicsCommandList* CmdList() { return cmdList.Get(); }
-	Matrix ViewportMat() { return viewPort.Mat(); }
-	UINT IncrementSize() { return incrementSize; }
+	D3D12_GPU_DESCRIPTOR_HANDLE GetTextureHandle(int handle);
+	ID3D12Device* GetDev() { return device.Get(); }
+	ID3D12GraphicsCommandList* GetCmdList() { return cmdList.Get(); }
+	Matrix GetViewportMat() { return viewPort.Mat(); }
+	UINT GetIncrementSize() { return incrementSize; }
 };
 

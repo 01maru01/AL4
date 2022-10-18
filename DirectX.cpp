@@ -22,8 +22,15 @@ void MyDirectX::DebugLayer()
 	}
 }
 
-MyDirectX::MyDirectX(HWND hwnd)
+MyDirectX::MyDirectX(Window* win_)
 {
+	Initialize(win_);
+}
+
+void MyDirectX::Initialize(Window* win_)
+{
+	win = win_;
+
 #ifdef _DEBUG
 	DebugLayer();
 #endif
@@ -141,7 +148,7 @@ MyDirectX::MyDirectX(HWND hwnd)
 	swapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 	// スワップチェーンの生成
 	result = dxgiFactory->CreateSwapChainForHwnd(
-		cmdQueue.Get(), hwnd, &swapChainDesc, nullptr, nullptr,
+		cmdQueue.Get(), win->GetHwnd(), &swapChainDesc, nullptr, nullptr,
 		&swapChain1);
 
 	swapChain1.As(&swapChain);		//	1→4に変換
@@ -302,19 +309,10 @@ MyDirectX::MyDirectX(HWND hwnd)
 	result = device->CreateFence(fenceVal, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence));
 #pragma endregion fence
 
-#pragma region timer
-	prev = timeGetTime();
-#pragma endregion
-
 	//	ビューポート
 	viewPort.Init(Window::window_width, Window::window_height, 0, 0);
 	// シザー矩形
 	scissorRect.Init(0, Window::window_width, 0, Window::window_height);
-}
-
-void MyDirectX::TimeUpdate()
-{
-	current = timeGetTime();
 }
 
 void MyDirectX::SetResourceBarrier(D3D12_RESOURCE_BARRIER& desc, D3D12_RESOURCE_STATES StateBefore, D3D12_RESOURCE_STATES StateAfter, ID3D12Resource* pResource)
@@ -327,7 +325,7 @@ void MyDirectX::SetResourceBarrier(D3D12_RESOURCE_BARRIER& desc, D3D12_RESOURCE_
 	cmdList->ResourceBarrier(1, &desc);
 }
 
-void MyDirectX::DrawAble(FLOAT* clearColor)
+void MyDirectX::PrevDraw(FLOAT* clearColor)
 {
 	// 1.リソースバリアで書き込み可能に変更
 #pragma region ReleaseBarrier
@@ -369,7 +367,7 @@ void MyDirectX::CmdListDrawAble(D3D12_RESOURCE_BARRIER& desc, ID3D12Resource* pR
 #pragma endregion
 }
 
-void MyDirectX::DrawEnd()
+void MyDirectX::PostDraw()
 {
 	// 5.リソースバリアを戻す
 #pragma region ReleaseBarrier
@@ -409,7 +407,7 @@ void MyDirectX::DrawEnd()
 #pragma endregion ChangeScreen
 }
 
-void MyDirectX::DrawAbleScreenTexture(FLOAT* clearColor)
+void MyDirectX::PrevDrawScreen(FLOAT* clearColor)
 {
 	rtvHandle = screenRTVHeap->GetCPUDescriptorHandleForHeapStart();
 	dsvHandle = dsvHeap->GetCPUDescriptorHandleForHeapStart();
@@ -424,28 +422,9 @@ void MyDirectX::DrawAbleScreenTexture(FLOAT* clearColor)
 	cmdList->SetDescriptorHeaps(1, screenSRVHeap[0].GetAddressOf());
 }
 
-void MyDirectX::DrawEndScreenTexture()
+void MyDirectX::PostDrawScreen()
 {
 	SetResourceBarrier(screenBarrierDesc, D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
-}
-
-void MyDirectX::Setting()
-{
-	auto handle = screenSRVHeap[0]->GetGPUDescriptorHandleForHeapStart();
-	cmdList->SetGraphicsRootDescriptorTable(0, handle);
-}
-
-void MyDirectX::SetDescriptorHeap()
-{
-}
-
-void MyDirectX::SetTextureData(int textureHandle)
-{
-	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = screenSRVHeap[0]->GetGPUDescriptorHandleForHeapStart();
-	
-	srvGpuHandle.ptr += incrementSize * textureHandle;
-
-	cmdList->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
 }
 
 int MyDirectX::LoadTextureGraph(const wchar_t* textureName)
@@ -472,8 +451,6 @@ int MyDirectX::LoadTextureGraph(const wchar_t* textureName)
 	}
 
 	metadata.format = MakeSRGB(metadata.format);
-
-
 
 	D3D12_RESOURCE_DESC tectureResourceDesc{};
 	tectureResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
@@ -531,7 +508,7 @@ int MyDirectX::LoadTextureGraph(const wchar_t* textureName)
 	return textureNum;
 }
 
-D3D12_GPU_DESCRIPTOR_HANDLE MyDirectX::TextureHandle(int handle)
+D3D12_GPU_DESCRIPTOR_HANDLE MyDirectX::GetTextureHandle(int handle)
 {
 	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = screenSRVHeap[0]->GetGPUDescriptorHandleForHeapStart();
 	srvGpuHandle.ptr += incrementSize * handle;

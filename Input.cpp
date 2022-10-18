@@ -1,5 +1,10 @@
 #include "Input.h"
 
+Input::Input(Window* win_)
+{
+	Initialize(win_);
+}
+
 Input::~Input()
 {
 	keyboard->Unacquire();
@@ -9,9 +14,9 @@ Input::~Input()
 	directInput->Release();
 }
 
-void Input::Initialize(Window* _win)
+void Input::Initialize(Window* win_)
 {
-	win = _win;
+	win = win_;
 	inputHwnd = win->GetHwnd();
 	//	DirectInput‰Šú‰»
 	HRESULT result = DirectInput8Create(

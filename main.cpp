@@ -20,25 +20,24 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 #pragma region Initialize
 	std::unique_ptr<Window> win(new Window());
 
-	MyDirectX dx(win->GetHwnd());
-	int reimu = dx.LoadTextureGraph(L"Resource/reimu.png");
+	std::unique_ptr<MyDirectX> dx(new MyDirectX(win.get()));
+	int reimu = dx->LoadTextureGraph(L"Resource/reimu.png");
 
 	MyDebugCamera debugcamera(Vector3D(0.0f, 300.0f, 0.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
 
 	MyXAudio xAudio;
 	
-	std::unique_ptr<Input> input(new Input());
-	input->Initialize(win.get());
+	std::unique_ptr<Input> input(new Input(win.get()));
 
 	Shader shader(L"BasicVS.hlsl", L"BasicPS.hlsl");
 	Shader bilShader(L"VShader.hlsl", L"PShader.hlsl");
 	//	描画初期化
 
 	//	定数バッファ
-	ConstBuff cBuff(dx.Dev(), Window::window_width, Window::window_height);
+	ConstBuff cBuff(dx->GetDev(), Window::window_width, Window::window_height);
 
 #pragma region OrthoProjection
-	Square screen(dx.Dev(), bilShader);
+	Square screen(dx->GetDev(), bilShader);
 	screen.trans.z = 0.1f;
 	screen.scale = { Window::window_width / 2,Window::window_height / 2,0.2f };
 #pragma endregion
@@ -48,7 +47,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	Matrix orthoProjection = MyMath::OrthoLH(Window::window_width, Window::window_height, 0.1f, 1000.0f);
 #pragma endregion Initialize
 
-	Object3D obj(dx.Dev(), shader);
+	Object3D obj(dx->GetDev(), shader);
 	//	ゲームループ
 	while (true)
 	{
@@ -69,21 +68,21 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 #pragma region Draw
 #pragma region ScreenDraw
-		dx.DrawAbleScreenTexture();
+		dx->PrevDrawScreen();
 
 		// 描画コマンド
-		obj.Draw(dx.CmdList(), dx.TextureHandle(reimu));
+		obj.Draw(dx->GetCmdList(), dx->GetTextureHandle(reimu));
 		// 描画コマンド
 
-		dx.DrawEndScreenTexture();
+		dx->PostDrawScreen();
 #pragma endregion
 
 #pragma region UIDraw
-		dx.DrawAble();
+		dx->PrevDraw();
 
-		screen.Draw(dx.CmdList(), dx.TextureHandle(0));
+		screen.Draw(dx->GetCmdList(), dx->GetTextureHandle(0));
 
-		dx.DrawEnd();
+		dx->PostDraw();
 #pragma endregion
 #pragma endregion Draw
 	}
