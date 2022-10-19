@@ -8,6 +8,8 @@
 #include <vector>
 #include <string>
 #include <wrl.h>
+#include <chrono>
+#include <thread>
 
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxgi.lib")
@@ -63,8 +65,13 @@ private:
 	int textureNum;
 	std::vector<ComPtr<ID3D12Resource>> texBuff;
 	UINT incrementSize;
+
+	std::chrono::steady_clock::time_point reference_;
 private:
 	void DebugLayer();
+
+	void InitializeFPS();
+	void UpdateFPS();
 
 	void ScreenClear(FLOAT* clearColor, D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle);
 	void ScreenClear(D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle);

@@ -1,4 +1,5 @@
 #include "Window.h"
+#pragma comment(lib,"winmm.lib")
 
 LRESULT Window::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
@@ -54,6 +55,8 @@ void Window::Initialize()
 		nullptr);							// オプション
 	// ウィンドウを表示状態にする
 	ShowWindow(hwnd, SW_SHOW);
+
+	timeBeginPeriod(1);
 }
 
 void Window::MsgUpdate()
