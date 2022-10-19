@@ -93,7 +93,7 @@ void Object3D::Initialize(ID3D12Device* dev, Shader shader)
 	};
 	//	全体のサイズ
 	UINT sizeIB = static_cast<UINT>(sizeof(uint16_t) * indexSize);
-	Init(dev, sizeVB, vertexSize, sizeIB, &indices.front(), indexSize);
+	VBInitialize(dev, sizeVB, vertexSize, sizeIB, &indices.front(), indexSize);
 
 	D3D12_INPUT_ELEMENT_DESC inputLayout[] = {
 		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,	D3D12_APPEND_ALIGNED_ELEMENT,	D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},		//	xyz座標
@@ -203,7 +203,7 @@ void Object3D::Draw(ID3D12GraphicsCommandList* cmdList, D3D12_GPU_DESCRIPTOR_HAN
 {
 	pipeline.Setting(cmdList);
 	pipeline.Update(cmdList, D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	Update(cmdList);
+	VertBuffUpdate(cmdList);
 	//	テクスチャ
 	cmdList->SetGraphicsRootDescriptorTable(1, handle);
 	cmdList->SetGraphicsRootConstantBufferView(2, transform->GetGPUVirtualAddress());

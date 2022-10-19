@@ -59,7 +59,7 @@ DrawGrid::DrawGrid(ID3D12Device* dev, Shader shader, UINT g_size, UINT gridX, UI
 
 	// 頂点データ全体のサイズ = 頂点データ一つ分のサイズ * 頂点データの要素数
 	UINT sizeVB = static_cast<UINT>(sizeof(vertices[0]) * vertexSize);
-	Init(dev, sizeVB, vertexSize);
+	VBInitialize(dev, sizeVB, vertexSize);
 	//SetVertices();
 
 	D3D12_INPUT_ELEMENT_DESC inputLayout[] = {
@@ -104,7 +104,7 @@ void DrawGrid::Draw(ID3D12GraphicsCommandList* cmdList)
 {
 	pipeline.Setting(cmdList);
 	pipeline.Update(cmdList, D3D_PRIMITIVE_TOPOLOGY_LINELIST);
-	Update(cmdList);
+	VertBuffUpdate(cmdList);
 	cmdList->SetGraphicsRootConstantBufferView(2, transform->GetGPUVirtualAddress());
 	cmdList->DrawInstanced(vertexSize, 1, 0, 0);
 }

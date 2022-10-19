@@ -41,7 +41,7 @@ void Model::Initialize(ID3D12Device* dev, Shader shader, const char* filename)
 	UINT sizeVB = static_cast<UINT>(sizeof(vertices[0]) * vertexSize);
 	//	全体のサイズ
 	//UINT sizeIB = static_cast<UINT>(sizeof(uint16_t) * indexSize);
-	Init(dev, sizeVB, vertexSize);
+	VBInitialize(dev, sizeVB, vertexSize);
 
 	D3D12_INPUT_ELEMENT_DESC inputLayout[] = {
 		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,	D3D12_APPEND_ALIGNED_ELEMENT,	D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},		//	xyz座標
@@ -55,10 +55,6 @@ void Model::Initialize(ID3D12Device* dev, Shader shader, const char* filename)
 	rotAngle = Vector3D(0.0f, 0.0f, 0.0f);
 	trans = Vector3D(0.0f, 0.0f, 0.0f);
 #pragma endregion
-}
-
-Model::Model()
-{
 }
 
 Model::Model(ID3D12Device* dev, Shader shader, const char* filename)
@@ -93,7 +89,7 @@ void Model::Draw(ID3D12GraphicsCommandList* cmdList, D3D12_GPU_DESCRIPTOR_HANDLE
 {
 	pipeline.Setting(cmdList);
 	pipeline.Update(cmdList, D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	Update(cmdList);
+	VertBuffUpdate(cmdList);
 	//	テクスチャ
 	cmdList->SetGraphicsRootDescriptorTable(1, handle);
 	cmdList->SetGraphicsRootConstantBufferView(2, transform->GetGPUVirtualAddress());

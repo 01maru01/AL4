@@ -37,25 +37,30 @@ private:
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 	HRESULT result;
-public:
-	bool ibExist = false;
+protected:
+	//	vertex
 	D3D12_VERTEX_BUFFER_VIEW vbView{};
+	ComPtr<ID3D12Resource> vertBuff;
+
+	//	index
+	bool ibExist = false;
 	D3D12_INDEX_BUFFER_VIEW ibView{};
+	ComPtr<ID3D12Resource> indexBuff;
+
 	D3D12_RESOURCE_DESC resDesc{};
 	D3D12_HEAP_PROPERTIES heapProp{}; // ヒープ設定
 
-	// 頂点バッファの生成
-	ComPtr<ID3D12Resource> vertBuff;
-	ComPtr<ID3D12Resource> indexBuff;
 private:
 	void SetResDesc(UINT size);
 	void BuffTransferGPU(ID3D12Resource* buff, ID3D12Device* dev);
+
+protected:
+	void VBInitialize(ID3D12Device* dev, UINT sizeVB, UINT vertSize, UINT sizeIB = NULL, uint16_t* indices = nullptr, UINT indicesSize = NULL);
+	void VertBuffUpdate(ID3D12GraphicsCommandList* cmdList);
 public:
 	VertBuff();
-	VertBuff(ID3D12Device* dev, UINT sizeVB, Vertex* vertices, UINT vertSize, UINT sizeIB = NULL, uint16_t* indices = nullptr, UINT indicesSize = NULL);
-	VertBuff(ID3D12Device* dev, UINT sizeVB, ScreenVertex* vertices, UINT vertSize);
-	void Init(ID3D12Device* dev, UINT sizeVB, UINT vertSize, UINT sizeIB = NULL, uint16_t* indices = nullptr, UINT indicesSize = NULL);
-	void Update(ID3D12GraphicsCommandList* cmdList);
+	
+	virtual void SetLighting();
 
 	virtual void SetVertices();
 

@@ -6,47 +6,31 @@ VertBuff::VertBuff()
 {
 }
 
-VertBuff::VertBuff(ID3D12Device* dev, UINT sizeVB, Vertex* vertices, UINT vertSize, UINT sizeIB, uint16_t* indices, UINT indicesSize)
+void VertBuff::SetLighting()
 {
-#pragma region  lighting
-	for (int i = 0; i < indicesSize / 3; i++)
-	{
-		unsigned short index0 = indices[i * 3];
-		unsigned short index1 = indices[i * 3 + 1];
-		unsigned short index2 = indices[i * 3 + 2];
+	//for (int i = 0; i < indicesSize / 3; i++)
+	//{
+	//	unsigned short index0 = indices[i * 3];
+	//	unsigned short index1 = indices[i * 3 + 1];
+	//	unsigned short index2 = indices[i * 3 + 2];
 
-		Vector4D p0(vertices[index0].pos, 0.0f);
-		Vector4D p1(vertices[index1].pos, 0.0f);
-		Vector4D p2(vertices[index2].pos, 0.0f);
+	//	Vector4D p0(vertices[index0].pos, 0.0f);
+	//	Vector4D p1(vertices[index1].pos, 0.0f);
+	//	Vector4D p2(vertices[index2].pos, 0.0f);
 
-		Vector4D v1 = p1 - p0;
-		Vector4D v2 = p2 - p0;
-		Vector4D normal = v1 - v2;
+	//	Vector4D v1 = p1 - p0;
+	//	Vector4D v2 = p2 - p0;
+	//	Vector4D normal = v1 - v2;
 
-		normal.normalize();
-		Vector3D normal3D(normal.x, normal.y, normal.z);
-		vertices[index0].normal = normal3D;
-		vertices[index1].normal = normal3D;
-		vertices[index2].normal = normal3D;
-	}
-#pragma endregion
-	Init(dev, sizeVB, vertSize, sizeIB, indices, indicesSize);
-	//	GPUメモリの値書き換えよう
-	// GPU上のバッファに対応した仮想メモリ(メインメモリ上)を取得
-	Vertex* vertMap = nullptr;
-	result = vertBuff->Map(0, nullptr, (void**)&vertMap);
-	assert(SUCCEEDED(result));
-	// 全頂点に対して
-	for (int i = 0; i < vertSize; i++) {
-		vertMap[i] = vertices[i]; // 座標をコピー
-	}
-	// 繋がりを解除
-	vertBuff->Unmap(0, nullptr);
-	// 頂点1つ分のデータサイズ
-	vbView.StrideInBytes = sizeof(vertices[0]);
+	//	normal.normalize();
+	//	Vector3D normal3D(normal.x, normal.y, normal.z);
+	//	vertices[index0].normal = normal3D;
+	//	vertices[index1].normal = normal3D;
+	//	vertices[index2].normal = normal3D;
+	//}
 }
 
-void VertBuff::Update(ID3D12GraphicsCommandList* cmdList)
+void VertBuff::VertBuffUpdate(ID3D12GraphicsCommandList* cmdList)
 {
 	// 頂点バッファビューの設定コマンド
 	cmdList->IASetVertexBuffers(0, 1, &vbView);
@@ -60,27 +44,10 @@ void VertBuff::SetVertices()
 {
 }
 
-VertBuff::VertBuff(ID3D12Device* dev, UINT sizeVB, ScreenVertex* vertices, UINT vertSize)
+void VertBuff::VBInitialize(ID3D12Device* dev, UINT sizeVB, UINT vertSize, UINT sizeIB, uint16_t* indices, UINT indicesSize)
 {
-	Init(dev, sizeVB, vertSize);
-	// 頂点1つ分のデータサイズ
-	vbView.StrideInBytes = sizeof(vertices[0]);
+	SetLighting();
 
-	//	GPUメモリの値書き換えよう
-	// GPU上のバッファに対応した仮想メモリ(メインメモリ上)を取得
-	ScreenVertex* vertMap = nullptr;
-	result = vertBuff->Map(0, nullptr, (void**)&vertMap);
-	assert(SUCCEEDED(result));
-	// 全頂点に対して
-	for (int i = 0; i < vertSize; i++) {
-		vertMap[i] = vertices[i]; // 座標をコピー
-	}
-	// 繋がりを解除
-	vertBuff->Unmap(0, nullptr);
-}
-
-void VertBuff::Init(ID3D12Device* dev, UINT sizeVB, UINT vertSize, UINT sizeIB, uint16_t* indices, UINT indicesSize)
-{
 	//	ヒープの設定
 	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD; // GPUへの転送用(CPUからアクセスできる)
 

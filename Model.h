@@ -35,7 +35,6 @@ public:
 
 	void Initialize(ID3D12Device* dev, Shader shader, const char* filename);
 public:
-	Model();
 	Model(ID3D12Device* dev, Shader shader, const char* filename);
 	void MatUpdate(Matrix matView, Matrix matProjection);
 	void Draw(ID3D12GraphicsCommandList* cmdList, D3D12_GPU_DESCRIPTOR_HANDLE handle);
