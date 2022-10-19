@@ -3,7 +3,7 @@
 #include <cassert>
 
 ConstBuff::ConstBuff(ID3D12Device* dev, const int winwidth, const int winheight)
-{	
+{
 	//	ƒq[ƒvİ’è
 	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD;	//	GPU“]‘——p
 

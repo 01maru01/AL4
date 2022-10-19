@@ -1,7 +1,7 @@
 #include "Model.h"
 #include "ObjFile.h"
 
-void Model::Initialize(ID3D12Device* dev, Shader shader, const char* filename)
+void Model::Initialize(Shader shader, const char* filename)
 {
 	HRESULT result;
 
@@ -21,7 +21,7 @@ void Model::Initialize(ID3D12Device* dev, Shader shader, const char* filename)
 	cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
 	//	生成
-	result = dev->CreateCommittedResource(
+	result = dx->GetDev()->CreateCommittedResource(
 		&cbHeapProp,	//	ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
 		&cbResourceDesc,	//	リソース設定
@@ -41,60 +41,41 @@ void Model::Initialize(ID3D12Device* dev, Shader shader, const char* filename)
 	UINT sizeVB = static_cast<UINT>(sizeof(vertices[0]) * vertexSize);
 	//	全体のサイズ
 	//UINT sizeIB = static_cast<UINT>(sizeof(uint16_t) * indexSize);
-	VBInitialize(dev, sizeVB, vertexSize);
 
-	D3D12_INPUT_ELEMENT_DESC inputLayout[] = {
-		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,	D3D12_APPEND_ALIGNED_ELEMENT,	D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},		//	xyz座標
-		{"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,	D3D12_APPEND_ALIGNED_ELEMENT,	D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},		//	法線ベクトル
-		{"TEXCOORD",0,DXGI_FORMAT_R32G32_FLOAT,0,D3D12_APPEND_ALIGNED_ELEMENT,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0},				//	uv座標
-	};
-
-	pipeline.Init(dev, shader, inputLayout, _countof(inputLayout));
+	VBInitialize(dx->GetDev(), sizeVB, vertexSize);
 #pragma region  WorldMatrix初期値
-	scale = Vector3D(1.0f, 1.0f, 1.0f);
-	rotAngle = Vector3D(0.0f, 0.0f, 0.0f);
-	trans = Vector3D(0.0f, 0.0f, 0.0f);
+	mat.Initialize();
 #pragma endregion
 }
 
-Model::Model(ID3D12Device* dev, Shader shader, const char* filename)
+Model::Model(MyDirectX* dx_, Shader shader, const char* filename, GPipeline* pipeline_)
 {
-	Initialize(dev, shader,filename);
+	dx = dx_;
+	pipeline = pipeline_;
+	Initialize(shader,filename);
 }
 
 void Model::MatUpdate(Matrix matView, Matrix matProjection)
 {
 #pragma region WorldMatrix
-	matWorld.Identity();
-
-	//	スケーリング
-	SetMatScaling();
-	matWorld *= matScale;
-
-	//	回転
-	SetMatRotation();
-	matWorld *= matRot;
-
-	//	平行移動
-	SetMatTransform();
-	matWorld *= matTrans;
+	mat.Update(matView, matProjection);
 #pragma endregion
 
-	constMapTransform->mat = matWorld;
+	constMapTransform->mat = mat.matWorld;
 	constMapTransform->mat *= matView;
 	constMapTransform->mat *= matProjection;
 }
 
-void Model::Draw(ID3D12GraphicsCommandList* cmdList, D3D12_GPU_DESCRIPTOR_HANDLE handle)
+void Model::Draw(int handle)
 {
-	pipeline.Setting(cmdList);
-	pipeline.Update(cmdList, D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	VertBuffUpdate(cmdList);
+	pipeline->Setting(dx->GetCmdList());
+	pipeline->Update(dx->GetCmdList(), D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	VertBuffUpdate(dx->GetCmdList());
 	//	テクスチャ
-	cmdList->SetGraphicsRootDescriptorTable(1, handle);
-	cmdList->SetGraphicsRootConstantBufferView(2, transform->GetGPUVirtualAddress());
+	dx->GetCmdList()->SetGraphicsRootDescriptorTable(1, dx->GetTextureHandle(handle));
+	dx->GetCmdList()->SetGraphicsRootConstantBufferView(2, transform->GetGPUVirtualAddress());
 
-	cmdList->DrawInstanced(vertexSize, 1, 0, 0);
+	dx->GetCmdList()->DrawInstanced(vertexSize, 1, 0, 0);
 	//cmdList->DrawIndexedInstanced(indexSize, 1, 0, 0, 0);
 }
 
@@ -113,44 +94,4 @@ void Model::SetVertices()
 	vertBuff->Unmap(0, nullptr);
 	// 頂点1つ分のデータサイズ
 	vbView.StrideInBytes = sizeof(vertices[0]);
-}
-
-void Model::SetMatScaling()
-{
-	matScale.Identity();
-	matScale.m[0][0] = scale.x;
-	matScale.m[1][1] = scale.y;
-	matScale.m[2][2] = scale.z;
-}
-
-void Model::SetMatRotation()
-{
-	matRot.Identity();
-	Matrix matRotX;
-	matRotX.m[1][1] = cos(rotAngle.x);
-	matRotX.m[1][2] = sin(rotAngle.x);
-	matRotX.m[2][1] = -sin(rotAngle.x);
-	matRotX.m[2][2] = cos(rotAngle.x);
-	Matrix matRotY;
-	matRotY.m[0][0] = cos(rotAngle.y);
-	matRotY.m[2][0] = sin(rotAngle.y);
-	matRotY.m[0][2] = -sin(rotAngle.y);
-	matRotY.m[2][2] = cos(rotAngle.y);
-	Matrix matRotZ;
-	matRotZ.m[0][0] = cos(rotAngle.z);
-	matRotZ.m[0][1] = sin(rotAngle.z);
-	matRotZ.m[1][0] = -sin(rotAngle.z);
-	matRotZ.m[1][1] = cos(rotAngle.z);
-
-	matRot = matRotZ;
-	matRot *= matRotX;
-	matRot *= matRotY;
-}
-
-void Model::SetMatTransform()
-{
-	matTrans.Identity();
-	matTrans.m[3][0] = trans.x;
-	matTrans.m[3][1] = trans.y;
-	matTrans.m[3][2] = trans.z;
 }

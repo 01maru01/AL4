@@ -10,6 +10,7 @@
 #include "Square.h"
 #include "MyXAudio.h"
 #include <memory>
+#include "Model.h"
 
 int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 {
@@ -44,6 +45,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 #pragma endregion Initialize
 
 	Object3D obj(dx->GetDev(), shader);
+	std::unique_ptr<GPipeline> pipeline(new GPipeline(dx->GetDev(), shader));
+	Model box(dx.get() , shader, "Resource\\Model\\box.obj", pipeline.get());
 	//	ゲームループ
 	while (true)
 	{
@@ -58,8 +61,9 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		debugcamera.Update(*input);
 		screen.MatUpdate(matView.mat, orthoProjection);
 		
-		obj.trans = debugcamera.target;
+		box.mat.trans = debugcamera.target;
 		obj.MatUpdate(matView.mat, matProjection);
+		box.MatUpdate(matView.mat, matProjection);
 #pragma endregion
 
 #pragma region Draw
@@ -67,7 +71,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		dx->PrevDrawScreen();
 
 		// 描画コマンド
-		obj.Draw(dx->GetCmdList(), dx->GetTextureHandle(reimu));
+		//obj.Draw(dx->GetCmdList(), dx->GetTextureHandle(reimu));
+		box.Draw(reimu);
 		// 描画コマンド
 
 		dx->PostDrawScreen();

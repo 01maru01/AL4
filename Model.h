@@ -1,5 +1,6 @@
 #pragma once
 #include "MyMath.h"
+#include "DirectX.h"
 #include "GPipeline.h"
 #include "VertBuff.h"
 
@@ -7,17 +8,10 @@ class Model :public VertBuff
 {
 private:
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+	
+	MyDirectX* dx = nullptr;
 public:
-	Matrix matWorld;
-
-	Matrix matScale;
-	Vector3D scale;
-
-	Matrix matRot;
-	Vector3D rotAngle;
-
-	Matrix matTrans;
-	Vector3D trans;
+	MyMath::ObjMatrix mat;
 
 	struct ConstBufferDataTransform {
 		Matrix mat;
@@ -27,21 +21,18 @@ public:
 	D3D12_HEAP_PROPERTIES cbHeapProp{};
 	D3D12_RESOURCE_DESC cbResourceDesc{};
 
-	GPipeline pipeline;
+	GPipeline* pipeline = nullptr;
 	UINT vertexSize;
 	std::vector<Vertex> vertices;
 	//UINT indexSize;
 	//std::vector<unsigned short> indices;
 
-	void Initialize(ID3D12Device* dev, Shader shader, const char* filename);
+	void Initialize(Shader shader, const char* filename);
 public:
-	Model(ID3D12Device* dev, Shader shader, const char* filename);
+	Model(MyDirectX* dx_, Shader shader, const char* filename, GPipeline* pipeline_);
 	void MatUpdate(Matrix matView, Matrix matProjection);
-	void Draw(ID3D12GraphicsCommandList* cmdList, D3D12_GPU_DESCRIPTOR_HANDLE handle);
+	void Draw(int handle);
 private:
 	void SetVertices() override;
-	void SetMatScaling();
-	void SetMatRotation();
-	void SetMatTransform();
 };
 

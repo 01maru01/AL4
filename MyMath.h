@@ -41,5 +41,27 @@ public:
 	void Init(Vector3D _eye, Vector3D _target, Vector3D _up);
 	void MatUpdate();
 };
+
+class ObjMatrix {
+public:
+	Matrix matWorld;
+
+	Matrix matScale;
+	Vector3D scale;
+
+	Matrix matRot;
+	Vector3D rotAngle;
+
+	Matrix matTrans;
+	Vector3D trans;
+
+private:
+	void SetMatScaling();
+	void SetMatRotation();
+	void SetMatTransform();
+public:
+	void Initialize();
+	void Update(Matrix matView, Matrix matProjection);
+};
 }
 

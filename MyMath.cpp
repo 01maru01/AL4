@@ -143,3 +143,67 @@ MyMath::float4::float4(float x, float y, float z, float w) :
 	x(x), y(y), z(z), w(w)
 {
 }
+
+void MyMath::ObjMatrix::SetMatScaling()
+{
+	matScale.Identity();
+	matScale.m[0][0] = scale.x;
+	matScale.m[1][1] = scale.y;
+	matScale.m[2][2] = scale.z;
+}
+
+void MyMath::ObjMatrix::SetMatRotation()
+{
+	matRot.Identity();
+	Matrix matRotX;
+	matRotX.m[1][1] = cos(rotAngle.x);
+	matRotX.m[1][2] = sin(rotAngle.x);
+	matRotX.m[2][1] = -sin(rotAngle.x);
+	matRotX.m[2][2] = cos(rotAngle.x);
+	Matrix matRotY;
+	matRotY.m[0][0] = cos(rotAngle.y);
+	matRotY.m[2][0] = sin(rotAngle.y);
+	matRotY.m[0][2] = -sin(rotAngle.y);
+	matRotY.m[2][2] = cos(rotAngle.y);
+	Matrix matRotZ;
+	matRotZ.m[0][0] = cos(rotAngle.z);
+	matRotZ.m[0][1] = sin(rotAngle.z);
+	matRotZ.m[1][0] = -sin(rotAngle.z);
+	matRotZ.m[1][1] = cos(rotAngle.z);
+
+	matRot = matRotZ;
+	matRot *= matRotX;
+	matRot *= matRotY;
+}
+
+void MyMath::ObjMatrix::SetMatTransform()
+{
+	matTrans.Identity();
+	matTrans.m[3][0] = trans.x;
+	matTrans.m[3][1] = trans.y;
+	matTrans.m[3][2] = trans.z;
+}
+
+void MyMath::ObjMatrix::Initialize()
+{
+	scale = Vector3D(1.0f, 1.0f, 1.0f);
+	rotAngle = Vector3D(0.0f, 0.0f, 0.0f);
+	trans = Vector3D(0.0f, 0.0f, 0.0f);
+}
+
+void MyMath::ObjMatrix::Update(Matrix matView, Matrix matProjection)
+{
+	matWorld.Identity();
+
+	//	スケーリング
+	SetMatScaling();
+	matWorld *= matScale;
+
+	//	回転
+	SetMatRotation();
+	matWorld *= matRot;
+
+	//	平行移動
+	SetMatTransform();
+	matWorld *= matTrans;
+}
