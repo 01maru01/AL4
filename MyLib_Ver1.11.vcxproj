@@ -24,6 +24,7 @@
     <ClCompile Include="DrawGrid.cpp" />
     <ClCompile Include="DrawSphere.cpp" />
     <ClCompile Include="Easing.cpp" />
+    <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="MyDebugCamera.cpp" />
     <ClCompile Include="GPipeline.cpp" />
@@ -79,6 +80,7 @@
     <ClInclude Include="DrawGrid.h" />
     <ClInclude Include="DrawSphere.h" />
     <ClInclude Include="Easing.h" />
+    <ClInclude Include="GameScene.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="MyDebugCamera.h" />
     <ClInclude Include="GPipeline.h" />

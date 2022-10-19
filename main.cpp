@@ -11,6 +11,7 @@
 #include "MyXAudio.h"
 #include <memory>
 #include "Model.h"
+#include "GameScene.h"
 
 int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 {
@@ -20,7 +21,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	std::unique_ptr<MyDirectX> dx(new MyDirectX(win.get()));
 	int reimu = dx->LoadTextureGraph(L"Resource/reimu.png");
 
-	MyDebugCamera debugcamera(Vector3D(0.0f, 300.0f, 0.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
+	MyDebugCamera debugcamera(Vector3D(0.0f, 0.0f, -100.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
 
 	MyXAudio xAudio;
 	
@@ -44,6 +45,9 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	Matrix orthoProjection = MyMath::OrthoLH(Window::window_width, Window::window_height, 0.1f, 1000.0f);
 #pragma endregion Initialize
 
+	std::unique_ptr<GameScene> gamescene(new GameScene());
+	gamescene->Initialize(dx.get(), input.get());
+
 	Object3D obj(dx->GetDev(), shader);
 	std::unique_ptr<GPipeline> pipeline(new GPipeline(dx->GetDev(), shader));
 	Model box(dx.get() , shader, "Resource\\Model\\box.obj", pipeline.get());
@@ -55,6 +59,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		if (win->EndLoop()) { break; }
 #pragma endregion
 
+		gamescene->Update();
 		input->Update();
 
 #pragma region Update
@@ -62,14 +67,15 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		screen.MatUpdate(matView.mat, orthoProjection);
 		
 		box.mat.trans = debugcamera.target;
-		obj.MatUpdate(matView.mat, matProjection);
-		box.MatUpdate(matView.mat, matProjection);
+		obj.MatUpdate(debugcamera.mat, matProjection);
+		box.MatUpdate(debugcamera.mat, matProjection);
 #pragma endregion
 
 #pragma region Draw
 #pragma region ScreenDraw
 		dx->PrevDrawScreen();
 
+		gamescene->Draw();
 		// •`‰æƒRƒ}ƒ“ƒh
 		//obj.Draw(dx->GetCmdList(), dx->GetTextureHandle(reimu));
 		box.Draw(reimu);
@@ -81,6 +87,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 #pragma region UIDraw
 		dx->PrevDraw();
 
+		gamescene->DrawMultiPath();
 		screen.Draw(dx->GetCmdList(), dx->GetTextureHandle(0));
 
 		dx->PostDraw();
