@@ -67,6 +67,7 @@ private:
 	UINT incrementSize;
 
 	std::chrono::steady_clock::time_point reference_;
+
 private:
 	void DebugLayer();
 
@@ -80,8 +81,10 @@ private:
 	void CmdListDrawAble(D3D12_RESOURCE_BARRIER& barrierDesc, ID3D12Resource* pResource, D3D12_RESOURCE_STATES StateBefore, D3D12_RESOURCE_STATES StateAfter,
 		D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle, D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle, FLOAT* clearColor = nullptr);
 public:
-	MyDirectX(Window* win_);
-	void Initialize(Window* win_);
+	MyDirectX();
+	static MyDirectX* GetInstance();
+	void Initialize();
+	static void Destroy();
 	void PrevDrawScreen(FLOAT* clearColor = nullptr);
 	void PostDrawScreen();
 	void PrevDraw(FLOAT* clearColor = nullptr);

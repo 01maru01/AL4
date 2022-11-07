@@ -30,9 +30,10 @@ private:
 	IDirectInputDevice8* mouse = nullptr;
 	POINT cursor;
 public:
-	Input(Window* win_);
-	~Input();
-	void Initialize(Window* win_);
+	static Input* GetInstance();
+	static void Destroy();
+	Input() {};
+	void Initialize();
 	void Update();
 
 	bool GetKey(int _key);

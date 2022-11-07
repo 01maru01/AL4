@@ -5,7 +5,7 @@ class GameScene
 {
 private:
 	MyDirectX* dx = nullptr;
-	Input* input = nullptr;
+	Input* input = Input::GetInstance();
 public:
 	GameScene();
 	void Initialize(MyDirectX* dx_, Input* input_);

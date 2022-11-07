@@ -10,6 +10,7 @@ private:
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	
 	MyDirectX* dx = nullptr;
+	GPipeline* pipeline = nullptr;
 public:
 	MyMath::ObjMatrix mat;
 
@@ -21,7 +22,6 @@ public:
 	D3D12_HEAP_PROPERTIES cbHeapProp{};
 	D3D12_RESOURCE_DESC cbResourceDesc{};
 
-	GPipeline* pipeline = nullptr;
 	UINT vertexSize;
 	std::vector<Vertex> vertices;
 	//UINT indexSize;

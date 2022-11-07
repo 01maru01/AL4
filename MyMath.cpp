@@ -191,7 +191,7 @@ void MyMath::ObjMatrix::Initialize()
 	trans = Vector3D(0.0f, 0.0f, 0.0f);
 }
 
-void MyMath::ObjMatrix::Update(Matrix matView, Matrix matProjection)
+void MyMath::ObjMatrix::Update()
 {
 	matWorld.Identity();
 

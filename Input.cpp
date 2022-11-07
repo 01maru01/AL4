@@ -1,22 +1,20 @@
 #include "Input.h"
 
-Input::Input(Window* win_)
+Input* Input::GetInstance()
 {
-	Initialize(win_);
+	static Input* instance = new Input;
+	return instance;
 }
 
-Input::~Input()
+void Input::Destroy()
 {
-	keyboard->Unacquire();
-	keyboard->Release();
-	mouse->Unacquire();
-	mouse->Release();
-	directInput->Release();
+	delete Input::GetInstance();
 }
 
-void Input::Initialize(Window* win_)
+void Input::Initialize()
 {
-	win = win_;
+	win = Window::GetInstance();
+
 	inputHwnd = win->GetHwnd();
 	//	DirectInput‰Šú‰»
 	HRESULT result = DirectInput8Create(

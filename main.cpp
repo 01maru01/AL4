@@ -16,16 +16,22 @@
 int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 {
 #pragma region Initialize
-	std::unique_ptr<Window> win(new Window());
+	//std::unique_ptr<Window> win(new Window());
+	Window* win = Window::GetInstance();
+	win->Initialize();
 
-	std::unique_ptr<MyDirectX> dx(new MyDirectX(win.get()));
+	//std::unique_ptr<MyDirectX> dx(new MyDirectX(win));
+	MyDirectX* dx = MyDirectX::GetInstance();
+	dx->Initialize();
 	int reimu = dx->LoadTextureGraph(L"Resource/reimu.png");
 
 	MyDebugCamera debugcamera(Vector3D(0.0f, 0.0f, -100.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
 
 	MyXAudio xAudio;
 	
-	std::unique_ptr<Input> input(new Input(win.get()));
+	//std::unique_ptr<Input> input(new Input(win.get()));
+	Input* input = Input::GetInstance();
+	input->Initialize();
 
 	Shader shader(L"BasicVS.hlsl", L"BasicPS.hlsl");
 	Shader bilShader(L"VShader.hlsl", L"PShader.hlsl");
@@ -45,12 +51,12 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	Matrix orthoProjection = MyMath::OrthoLH(Window::window_width, Window::window_height, 0.1f, 1000.0f);
 #pragma endregion Initialize
 
-	std::unique_ptr<GameScene> gamescene(new GameScene());
-	gamescene->Initialize(dx.get(), input.get());
+	//std::unique_ptr<GameScene> gamescene(new GameScene());
+	//gamescene->Initialize(dx.get(), input.get());
 
-	Object3D obj(dx->GetDev(), shader);
 	std::unique_ptr<GPipeline> pipeline(new GPipeline(dx->GetDev(), shader));
-	Model box(dx.get() , shader, "Resource\\Model\\box.obj", pipeline.get());
+	Object3D obj(dx, pipeline.get(), shader);
+	Model box(dx , shader, "Resource\\Model\\box.obj", pipeline.get());
 	//	ゲームループ
 	while (true)
 	{
@@ -59,7 +65,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		if (win->EndLoop()) { break; }
 #pragma endregion
 
-		gamescene->Update();
+		//gamescene->Update();
 		input->Update();
 
 #pragma region Update
@@ -75,9 +81,9 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 #pragma region ScreenDraw
 		dx->PrevDrawScreen();
 
-		gamescene->Draw();
+		//gamescene->Draw();
 		// 描画コマンド
-		//obj.Draw(dx->GetCmdList(), dx->GetTextureHandle(reimu));
+		obj.Draw(dx->GetCmdList(), dx->GetTextureHandle(reimu));
 		box.Draw(reimu);
 		// 描画コマンド
 
@@ -87,12 +93,16 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 #pragma region UIDraw
 		dx->PrevDraw();
 
-		gamescene->DrawMultiPath();
+		//gamescene->DrawMultiPath();
 		screen.Draw(dx->GetCmdList(), dx->GetTextureHandle(0));
 
 		dx->PostDraw();
 #pragma endregion
 #pragma endregion Draw
 	}
+	Window::Destroy();
+	MyDirectX::Destroy();
+	Input::Destroy();
+
 	return 0;
 }

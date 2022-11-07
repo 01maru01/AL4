@@ -58,7 +58,7 @@ Model::Model(MyDirectX* dx_, Shader shader, const char* filename, GPipeline* pip
 void Model::MatUpdate(Matrix matView, Matrix matProjection)
 {
 #pragma region WorldMatrix
-	mat.Update(matView, matProjection);
+	mat.Update();
 #pragma endregion
 
 	constMapTransform->mat = mat.matWorld;

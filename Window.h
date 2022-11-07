@@ -18,6 +18,8 @@ public:
 	// ウィンドウプロシージャ
 	static LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
+	static Window* GetInstance();
+	static void Destroy();
 	Window();
 	~Window();
 	void Initialize();

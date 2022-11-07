@@ -12,6 +12,12 @@ D3D_FEATURE_LEVEL levels[] = {
 	D3D_FEATURE_LEVEL_11_0,
 };
 
+MyDirectX* MyDirectX::GetInstance()
+{
+	static MyDirectX* instance = new MyDirectX;
+	return instance;
+}
+
 void MyDirectX::DebugLayer()
 {
 	//	ƒIƒ“
@@ -46,14 +52,13 @@ void MyDirectX::UpdateFPS()
 	reference_ = std::chrono::steady_clock::now();
 }
 
-MyDirectX::MyDirectX(Window* win_)
+MyDirectX::MyDirectX()
 {
-	Initialize(win_);
 }
 
-void MyDirectX::Initialize(Window* win_)
+void MyDirectX::Initialize()
 {
-	win = win_;
+	win = Window::GetInstance();
 
 #ifdef _DEBUG
 	DebugLayer();
@@ -429,6 +434,10 @@ void MyDirectX::PostDraw()
 	result = cmdList->Reset(cmdAllocator.Get(), nullptr);
 	assert(SUCCEEDED(result));
 #pragma endregion ChangeScreen
+}
+
+void MyDirectX::Destroy()
+{
 }
 
 void MyDirectX::PrevDrawScreen(FLOAT* clearColor)

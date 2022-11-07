@@ -16,17 +16,11 @@
     <Filter Include="ソース ファイル\Math">
       <UniqueIdentifier>{ddc85c55-7dd0-44fc-ba60-2a9679582e05}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Input">
-      <UniqueIdentifier>{93f600e8-e369-4098-844a-04d4d5693156}</UniqueIdentifier>
-    </Filter>
     <Filter Include="リソース ファイル\MultiPath">
       <UniqueIdentifier>{2c4236db-4a3d-4c0c-a410-784a5a810070}</UniqueIdentifier>
     </Filter>
     <Filter Include="ソース ファイル\Obj">
       <UniqueIdentifier>{f538b9ee-37be-482b-b8e5-7f7c3ce1d851}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Camera">
-      <UniqueIdentifier>{188ae459-f43d-4c22-9439-90a18e6fad50}</UniqueIdentifier>
     </Filter>
     <Filter Include="ヘッダー ファイル\Input">
       <UniqueIdentifier>{6d61ee45-941e-4fce-a5e3-811e68e5ce13}</UniqueIdentifier>
@@ -52,6 +46,12 @@
     <Filter Include="ヘッダー ファイル\GameObj">
       <UniqueIdentifier>{eef9b721-1021-4b16-a246-3dfc00872fd8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\lib\Input">
+      <UniqueIdentifier>{93f600e8-e369-4098-844a-04d4d5693156}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\lib\Camera">
+      <UniqueIdentifier>{188ae459-f43d-4c22-9439-90a18e6fad50}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Matrix.cpp">
@@ -70,10 +70,10 @@
       <Filter>ソース ファイル\Math</Filter>
     </ClCompile>
     <ClCompile Include="InputJoypad.cpp">
-      <Filter>ソース ファイル\Input</Filter>
+      <Filter>ソース ファイル\lib\Input</Filter>
     </ClCompile>
     <ClCompile Include="Input.cpp">
-      <Filter>ソース ファイル\Input</Filter>
+      <Filter>ソース ファイル\lib\Input</Filter>
     </ClCompile>
     <ClCompile Include="Object2D.cpp">
       <Filter>ソース ファイル\Obj</Filter>
@@ -88,7 +88,7 @@
       <Filter>ソース ファイル\Obj</Filter>
     </ClCompile>
     <ClCompile Include="MyDebugCamera.cpp">
-      <Filter>ソース ファイル\Camera</Filter>
+      <Filter>ソース ファイル\lib\Camera</Filter>
     </ClCompile>
     <ClCompile Include="ConstBuff.cpp">
       <Filter>ソース ファイル\lib</Filter>

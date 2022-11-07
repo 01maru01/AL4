@@ -15,9 +15,19 @@ LRESULT Window::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 	return DefWindowProc(hwnd, msg, wparam, lparam);
 }
 
+Window* Window::GetInstance()
+{
+	static Window* instance = new Window;
+	return instance;
+}
+
+void Window::Destroy()
+{
+	delete Window::GetInstance();
+}
+
 Window::Window()
 {
-	Initialize();
 }
 
 Window::~Window()

@@ -61,7 +61,7 @@ private:
 	void SetMatTransform();
 public:
 	void Initialize();
-	void Update(Matrix matView, Matrix matProjection);
+	void Update();
 };
 }
 
