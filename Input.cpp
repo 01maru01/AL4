@@ -15,7 +15,7 @@ void Input::Initialize()
 {
 	win = Window::GetInstance();
 
-	inputHwnd = win->GetHwnd();
+	//inputHwnd = win->GetHwnd();
 	//	DirectInput‰Šú‰»
 	HRESULT result = DirectInput8Create(
 		win->GetWND().hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&directInput, nullptr);
@@ -95,10 +95,10 @@ bool Input::ClickTrriger(int type)
 	return (click.rgbButtons[type] & (0x80)) && !(prevclick.rgbButtons[type] & (0x80));
 }
 
-POINT Input::CursorPos()
+Vector2D Input::CursorPos()
 {
-	ScreenToClient(inputHwnd, &cursor);
-	return cursor;
+	Vector2D ans(cursor.x, cursor.y);
+	return ans;
 }
 
 void Input::CursorPos(Vector2D& pos)

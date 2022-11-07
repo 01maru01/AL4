@@ -2,6 +2,7 @@
 #define DIRECTINPUT_VERSION 0x0800
 #include <dinput.h>
 #include <cassert>
+#include <wrl.h>
 #include "Vector2D.h"
 #include "Window.h"
 
@@ -17,17 +18,18 @@ public:
 		WheelClick,
 	};
 private:
+	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+
 	Window* win = nullptr;
-	HWND inputHwnd;
 
 	BYTE key[256] = {};
 	BYTE prev[256] = {};
-	IDirectInputDevice8* keyboard = nullptr;
-	IDirectInput8* directInput = nullptr;
+	ComPtr<IDirectInputDevice8> keyboard = nullptr;
+	ComPtr<IDirectInput8> directInput = nullptr;
 
 	DIMOUSESTATE click = {};
 	DIMOUSESTATE prevclick = {};
-	IDirectInputDevice8* mouse = nullptr;
+	ComPtr<IDirectInputDevice8> mouse = nullptr;
 	POINT cursor;
 public:
 	static Input* GetInstance();
@@ -43,7 +45,7 @@ public:
 	bool Click(int type);
 	bool ClickTrriger(int type);
 
-	POINT CursorPos();
+	Vector2D CursorPos();
 	void CursorPos(Vector2D& pos);
 	LONG Wheel();
 };
