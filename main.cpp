@@ -59,8 +59,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	while (true)
 	{
 #pragma region  WinMsg
-		win->MsgUpdate();
-		if (win->EndLoop() || input->GetTrigger(DIK_ESCAPE)) { break; }
+		if (win->MsgUpdate() || input->GetTrigger(DIK_ESCAPE)) { break; }
 #pragma endregion
 
 		//gamescene->Update();

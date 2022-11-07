@@ -69,13 +69,15 @@ void Window::Initialize()
 	timeBeginPeriod(1);
 }
 
-void Window::MsgUpdate()
+bool Window::MsgUpdate()
 {
 	if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
 	{
 		TranslateMessage(&msg);			// キー入力メッセージの処理
 		DispatchMessage(&msg);			// プロシージャにメッセージを送る
 	}
+
+	return EndLoop();
 }
 
 bool Window::EndLoop()

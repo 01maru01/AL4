@@ -23,7 +23,7 @@ public:
 	Window();
 	~Window();
 	void Initialize();
-	void MsgUpdate();
+	bool MsgUpdate();
 	bool EndLoop();
 
 	//	getter
