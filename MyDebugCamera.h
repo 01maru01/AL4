@@ -10,6 +10,8 @@ public:
 	Vector3D up;		//	ã•ûŒüƒxƒNƒgƒ‹
 	Matrix billboard;
 private:
+	Input* input = nullptr;
+
 	float disEyeTarget;
 	Vector3D frontVec;
 	Vector2D cursor;
@@ -25,7 +27,7 @@ private:
 	Vector3D downVec;
 public:
 	MyDebugCamera(Vector3D _eye, Vector3D _target, Vector3D _up);
-	void Update(Input& input);
+	void Update();
 	void Init(Vector3D _eye, Vector3D _target, Vector3D _up);
 	void MatUpdate();
 	Vector3D Transfrom() { return eye; }

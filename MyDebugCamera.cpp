@@ -2,20 +2,22 @@
 
 MyDebugCamera::MyDebugCamera(Vector3D _eye, Vector3D _target, Vector3D _up)
 {
+	input = Input::GetInstance();
+
 	Init(_eye, _target, _up);
 	frontVec = target - eye;
 	disEyeTarget = frontVec.length();
 }
 
-void MyDebugCamera::Update(Input& input)
+void MyDebugCamera::Update()
 {
 	prevCursor = cursor;
-	input.CursorPos(cursor);
+	input->CursorPos(cursor);
 	moveCursor = cursor - prevCursor;
 	float cursorDisPrev = moveCursor.length();
 	moveCursor.normalize();
 
-	if (input.Click(Input::LeftClick) && input.GetKey(DIK_LSHIFT)) {
+	if (input->Click(Input::LeftClick) && input->GetKey(DIK_LSHIFT)) {
 		moveCursor /= 1000;
 		moveCursor *= cursorDisPrev;
 		if (up.y < 0) {
@@ -23,13 +25,13 @@ void MyDebugCamera::Update(Input& input)
 		}
 		cursorSpd += moveCursor;
 	}
-	disEyeTarget += -input.Wheel() * (disEyeTarget * 0.001f);
+	disEyeTarget += -input->Wheel() * (disEyeTarget * 0.001f);
 	if (disEyeTarget < 10) {
 		disEyeTarget = 10;
 	}
-	target += rightVec * (input.GetKey(DIK_RIGHT) - input.GetKey(DIK_LEFT));
-	target += downVec * (input.GetKey(DIK_DOWN) - input.GetKey(DIK_UP));
-	target += -frontVec * (input.GetKey(DIK_Z) - input.GetKey(DIK_X));
+	target += rightVec * (input->GetKey(DIK_RIGHT) - input->GetKey(DIK_LEFT));
+	target += downVec * (input->GetKey(DIK_DOWN) - input->GetKey(DIK_UP));
+	target += -frontVec * (input->GetKey(DIK_Z) - input->GetKey(DIK_X));
 
 	frontVec = target - eye;
 	frontVec.normalize();

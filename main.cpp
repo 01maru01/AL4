@@ -1,6 +1,7 @@
 #include "Window.h"
 #include "DirectX.h"
 #include "Input.h"
+
 #include "GPipeline.h"
 #include "Object3D.h"
 #include "ConstBuff.h"
@@ -16,11 +17,9 @@
 int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 {
 #pragma region Initialize
-	//std::unique_ptr<Window> win(new Window());
 	Window* win = Window::GetInstance();
 	win->Initialize();
 
-	//std::unique_ptr<MyDirectX> dx(new MyDirectX(win));
 	MyDirectX* dx = MyDirectX::GetInstance();
 	dx->Initialize();
 	int reimu = dx->LoadTextureGraph(L"Resource/reimu.png");
@@ -29,7 +28,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 	MyXAudio xAudio;
 	
-	//std::unique_ptr<Input> input(new Input(win.get()));
 	Input* input = Input::GetInstance();
 	input->Initialize();
 
@@ -69,7 +67,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		input->Update();
 
 #pragma region Update
-		debugcamera.Update(*input);
+		debugcamera.Update();
 		screen.MatUpdate(matView.mat, orthoProjection);
 		
 		box.mat.trans = debugcamera.target;
