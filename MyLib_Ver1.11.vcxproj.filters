@@ -16,9 +16,6 @@
     <Filter Include="ソース ファイル\Math">
       <UniqueIdentifier>{ddc85c55-7dd0-44fc-ba60-2a9679582e05}</UniqueIdentifier>
     </Filter>
-    <Filter Include="リソース ファイル\MultiPath">
-      <UniqueIdentifier>{2c4236db-4a3d-4c0c-a410-784a5a810070}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\Obj">
       <UniqueIdentifier>{f538b9ee-37be-482b-b8e5-7f7c3ce1d851}</UniqueIdentifier>
     </Filter>
@@ -51,6 +48,12 @@
     </Filter>
     <Filter Include="ソース ファイル\lib\Camera">
       <UniqueIdentifier>{188ae459-f43d-4c22-9439-90a18e6fad50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="リソース ファイル\Basic">
+      <UniqueIdentifier>{9ae76a1c-16b7-4ee4-bbbe-e2c2cde556e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="リソース ファイル\ObjShader">
+      <UniqueIdentifier>{4dd5e3ca-3dd4-4518-bcf0-b514b0134a98}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -138,20 +141,9 @@
     <ClCompile Include="GameScene.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="PShader.hlsl">
-      <Filter>リソース ファイル\MultiPath</Filter>
-    </FxCompile>
-    <FxCompile Include="VShader.hlsl">
-      <Filter>リソース ファイル\MultiPath</Filter>
-    </FxCompile>
-    <FxCompile Include="BasicPS.hlsl">
-      <Filter>リソース ファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="BasicVS.hlsl">
-      <Filter>リソース ファイル</Filter>
-    </FxCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="InputJoypad.h">
@@ -235,10 +227,36 @@
     <ClInclude Include="GameScene.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Basic.hlsli">
-      <Filter>リソース ファイル</Filter>
+    <None Include="Resource\shader\Basic.hlsli">
+      <Filter>リソース ファイル\Basic</Filter>
     </None>
+    <None Include="Resource\shader\ObjHeader.hlsli">
+      <Filter>リソース ファイル\ObjShader</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Resource\shader\PShader.hlsl">
+      <Filter>リソース ファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resource\shader\VShader.hlsl">
+      <Filter>リソース ファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resource\shader\BasicPS.hlsl">
+      <Filter>リソース ファイル\Basic</Filter>
+    </FxCompile>
+    <FxCompile Include="Resource\shader\BasicVS.hlsl">
+      <Filter>リソース ファイル\Basic</Filter>
+    </FxCompile>
+    <FxCompile Include="Resource\shader\ObjPS.hlsl">
+      <Filter>リソース ファイル\ObjShader</Filter>
+    </FxCompile>
+    <FxCompile Include="Resource\shader\ObjVS.hlsl">
+      <Filter>リソース ファイル\ObjShader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

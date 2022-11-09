@@ -31,8 +31,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	Input* input = Input::GetInstance();
 	input->Initialize();
 
-	Shader shader(L"BasicVS.hlsl", L"BasicPS.hlsl");
-	Shader bilShader(L"VShader.hlsl", L"PShader.hlsl");
+	Shader shader(L"Resource/shader/BasicVS.hlsl", L"Resource/shader/BasicPS.hlsl");
+	Shader bilShader(L"Resource/shader/VShader.hlsl", L"Resource/shader/PShader.hlsl");
 	//	描画初期化
 
 	//	定数バッファ
