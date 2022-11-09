@@ -2,7 +2,7 @@
 #include <string>
 #include "Vector3D.h"
 
-class Material
+struct Material
 {
 	std::string name;
 	Vector3D ambient = { 0.3f, 0.3f, 0.3f };

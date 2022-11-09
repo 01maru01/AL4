@@ -3,6 +3,7 @@
 #include "DirectX.h"
 #include "GPipeline.h"
 #include "VertBuff.h"
+#include "Material.h"
 
 class Model :public VertBuff
 {
@@ -11,6 +12,8 @@ private:
 	
 	MyDirectX* dx = nullptr;
 	GPipeline* pipeline = nullptr;
+
+	Material mtl;
 public:
 	MyMath::ObjMatrix mat;
 
@@ -21,6 +24,16 @@ public:
 	ConstBufferDataTransform* constMapTransform = nullptr;
 	D3D12_HEAP_PROPERTIES cbHeapProp{};
 	D3D12_RESOURCE_DESC cbResourceDesc{};
+	struct ConstBufferDataMaterial {
+		Vector3D ambient;
+		float pad1;
+		Vector3D diffuse;
+		float pad2;
+		Vector3D specular;
+		float alpha;
+	};
+	ComPtr<ID3D12Resource> material;
+	ConstBufferDataMaterial* constMapMaterial = nullptr;
 
 	UINT vertexSize;
 	std::vector<Vertex> vertices;

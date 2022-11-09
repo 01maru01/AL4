@@ -33,6 +33,24 @@ void Model::Initialize(Shader shader, const char* filename)
 	//	定数バッファのマッピング
 	result = transform->Map(0, nullptr, (void**)&constMapTransform);	//	マッピング
 	assert(SUCCEEDED(result));
+
+	cbResourceDesc.Width = (sizeof(ConstBufferDataMaterial) + 0xFF) & ~0xFF;
+	result = dx->GetDev()->CreateCommittedResource(
+		&cbHeapProp,	//	ヒープ設定
+		D3D12_HEAP_FLAG_NONE,
+		&cbResourceDesc,	//	リソース設定
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
+		IID_PPV_ARGS(&material));
+	assert(SUCCEEDED(result));
+
+	//	定数バッファのマッピング
+	result = material->Map(0, nullptr, (void**)&constMapMaterial);	//	マッピング
+	assert(SUCCEEDED(result));
+	constMapMaterial->ambient = mtl.ambient;
+	constMapMaterial->diffuse = mtl.diffuse;
+	constMapMaterial->specular = mtl.specular;
+	constMapMaterial->alpha = mtl.alpha;
 #pragma endregion
 	ObjFile objfile(filename, vertices);
 	vertexSize = vertices.size();
