@@ -1,16 +1,14 @@
-cbuffer ConstBufferDataMaterial:register(b0)
-{
-	float4 color;	//	RGBA
-};
-
-cbuffer ConstBufferDataTransform:register(b1)
+cbuffer ConstBufferDataTransform:register(b0)
 {
 	matrix mat;
 };
 
-cbuffer ConstBufferDataMaterial:register(b2)
+cbuffer ConstBufferDataMaterial:register(b1)
 {
-	float time;
+	float3 m_ambient : packoffset(c0);
+	float3 m_diffuse : packoffset(c1);
+	float3 m_specular : packoffset(c2);
+	float m_alpha : packoffset(c2.w);
 };
 
 struct VSOutput
