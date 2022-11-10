@@ -10,5 +10,6 @@ struct Material
 	Vector3D specular;
 	float alpha = 1.0f;
 	std::string textureFilename;
+	wchar_t wfilepath[128];
 };
 

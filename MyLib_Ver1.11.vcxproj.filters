@@ -232,30 +232,30 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resource\shader\Basic.hlsli">
+    <None Include="Resources\shader\Basic.hlsli">
       <Filter>リソース ファイル\Basic</Filter>
     </None>
-    <None Include="Resource\shader\ObjHeader.hlsli">
+    <None Include="Resources\shader\ObjHeader.hlsli">
       <Filter>リソース ファイル\ObjShader</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Resource\shader\PShader.hlsl">
+    <FxCompile Include="Resources\shader\PShader.hlsl">
       <Filter>リソース ファイル</Filter>
     </FxCompile>
-    <FxCompile Include="Resource\shader\VShader.hlsl">
+    <FxCompile Include="Resources\shader\VShader.hlsl">
       <Filter>リソース ファイル</Filter>
     </FxCompile>
-    <FxCompile Include="Resource\shader\BasicPS.hlsl">
+    <FxCompile Include="Resources\shader\BasicPS.hlsl">
       <Filter>リソース ファイル\Basic</Filter>
     </FxCompile>
-    <FxCompile Include="Resource\shader\BasicVS.hlsl">
+    <FxCompile Include="Resources\shader\BasicVS.hlsl">
       <Filter>リソース ファイル\Basic</Filter>
     </FxCompile>
-    <FxCompile Include="Resource\shader\ObjPS.hlsl">
+    <FxCompile Include="Resources\shader\ObjPS.hlsl">
       <Filter>リソース ファイル\ObjShader</Filter>
     </FxCompile>
-    <FxCompile Include="Resource\shader\ObjVS.hlsl">
+    <FxCompile Include="Resources\shader\ObjVS.hlsl">
       <Filter>リソース ファイル\ObjShader</Filter>
     </FxCompile>
   </ItemGroup>

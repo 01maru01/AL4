@@ -40,11 +40,13 @@ public:
 	//UINT indexSize;
 	//std::vector<unsigned short> indices;
 
+	int textureHandle;
+
 	void Initialize(Shader shader, const char* filename);
 public:
 	Model(MyDirectX* dx_, Shader shader, const char* filename, GPipeline* pipeline_);
 	void MatUpdate(Matrix matView, Matrix matProjection);
-	void Draw(int handle);
+	void Draw();
 private:
 	void SetVertices() override;
 };

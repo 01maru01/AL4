@@ -22,7 +22,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 	MyDirectX* dx = MyDirectX::GetInstance();
 	dx->Initialize();
-	int reimu = dx->LoadTextureGraph(L"Resource/reimu.png");
+	int reimu = dx->LoadTextureGraph(L"Resources/reimu.png");
 
 	MyDebugCamera debugcamera(Vector3D(0.0f, 0.0f, -100.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
 
@@ -31,8 +31,9 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	Input* input = Input::GetInstance();
 	input->Initialize();
 
-	Shader shader(L"Resource/shader/BasicVS.hlsl", L"Resource/shader/BasicPS.hlsl");
-	Shader bilShader(L"Resource/shader/VShader.hlsl", L"Resource/shader/PShader.hlsl");
+	Shader shader(L"Resources/shader/BasicVS.hlsl", L"Resources/shader/BasicPS.hlsl");
+	Shader bilShader(L"Resources/shader/VShader.hlsl", L"Resources/shader/PShader.hlsl");
+	Shader objShader(L"Resources/shader/ObjVS.hlsl", L"Resources/shader/ObjPS.hlsl");
 	//	描画初期化
 
 	//	定数バッファ
@@ -53,8 +54,11 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	//gamescene->Initialize(dx.get(), input.get());
 
 	std::unique_ptr<GPipeline> pipeline(new GPipeline(dx->GetDev(), shader));
+	std::unique_ptr<GPipeline> modelpipeline(new GPipeline(dx->GetDev(), objShader));
 	Object3D obj(dx, pipeline.get(), shader);
-	Model box(dx , shader, "Resource\\Model\\box.obj", pipeline.get());
+	//Model box(dx , shader, "Resource\\Model\\box.obj", pipeline.get());
+	Model ground(dx , shader, "ground", modelpipeline.get());
+	Model skydome(dx , shader, "skydome", modelpipeline.get());
 	//	ゲームループ
 	while (true)
 	{
@@ -69,9 +73,10 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		debugcamera.Update();
 		screen.MatUpdate(matView.mat, orthoProjection);
 		
-		box.mat.trans = debugcamera.target;
+		//box.mat.trans = debugcamera.target;
 		obj.MatUpdate(debugcamera.mat, matProjection);
-		box.MatUpdate(debugcamera.mat, matProjection);
+		ground.MatUpdate(debugcamera.mat, matProjection);
+		skydome.MatUpdate(debugcamera.mat, matProjection);
 #pragma endregion
 
 #pragma region Draw
@@ -81,7 +86,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		//gamescene->Draw();
 		// 描画コマンド
 		obj.Draw(dx->GetCmdList(), dx->GetTextureHandle(reimu));
-		box.Draw(reimu);
+		ground.Draw();
+		skydome.Draw();
 		// 描画コマンド
 
 		dx->PostDrawScreen();

@@ -1,9 +1,9 @@
-cbuffer ConstBufferDataTransform:register(b0)
+cbuffer ConstBufferDataTransform:register(b1)
 {
 	matrix mat;
 };
 
-cbuffer ConstBufferDataMaterial:register(b1)
+cbuffer ConstBufferDataMaterial:register(b0)
 {
 	float3 m_ambient : packoffset(c0);
 	float3 m_diffuse : packoffset(c1);

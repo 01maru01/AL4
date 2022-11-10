@@ -47,12 +47,14 @@ void Model::Initialize(Shader shader, const char* filename)
 	//	定数バッファのマッピング
 	result = material->Map(0, nullptr, (void**)&constMapMaterial);	//	マッピング
 	assert(SUCCEEDED(result));
+#pragma endregion
+	ObjFile objfile(filename, vertices, mtl);
+
 	constMapMaterial->ambient = mtl.ambient;
 	constMapMaterial->diffuse = mtl.diffuse;
 	constMapMaterial->specular = mtl.specular;
 	constMapMaterial->alpha = mtl.alpha;
-#pragma endregion
-	ObjFile objfile(filename, vertices);
+	textureHandle = dx->LoadTextureGraph(mtl.wfilepath);
 	vertexSize = vertices.size();
 	//indexSize = indices.size();
 	// 頂点データ全体のサイズ = 頂点データ一つ分のサイズ * 頂点データの要素数
@@ -84,13 +86,14 @@ void Model::MatUpdate(Matrix matView, Matrix matProjection)
 	constMapTransform->mat *= matProjection;
 }
 
-void Model::Draw(int handle)
+void Model::Draw()
 {
 	pipeline->Setting(dx->GetCmdList());
 	pipeline->Update(dx->GetCmdList(), D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	VertBuffUpdate(dx->GetCmdList());
 	//	テクスチャ
-	dx->GetCmdList()->SetGraphicsRootDescriptorTable(1, dx->GetTextureHandle(handle));
+	dx->GetCmdList()->SetGraphicsRootConstantBufferView(0, material->GetGPUVirtualAddress());
+	dx->GetCmdList()->SetGraphicsRootDescriptorTable(1, dx->GetTextureHandle(textureHandle));
 	dx->GetCmdList()->SetGraphicsRootConstantBufferView(2, transform->GetGPUVirtualAddress());
 
 	dx->GetCmdList()->DrawInstanced(vertexSize, 1, 0, 0);

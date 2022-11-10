@@ -103,7 +103,57 @@ using namespace std;
 //	fclose(file);
 //}
 
-ObjFile::ObjFile(const char* filename, std::vector<Vertex>& out_vertices)
+void ObjFile::LoadMaterial(const std::string& directoryPath, const std::string& filename, Material& mtl)
+{
+	std::ifstream file;
+	file.open(directoryPath + filename);
+	if (file.fail()) { assert(0); }
+
+	string line;
+	while (getline(file, line))
+	{
+		std::istringstream line_stream(line);
+
+		string key;
+		getline(line_stream, key, ' ');
+
+		if (key[0] == '\t') {
+			key.erase(key.begin());
+		}
+
+		if (key == "newmtl") {
+			line_stream >> mtl.name;
+		}
+
+		if (key == "Ka") {
+			line_stream >> mtl.ambient.x;
+			line_stream >> mtl.ambient.y;
+			line_stream >> mtl.ambient.z;
+		}
+
+		if (key == "Kd") {
+			line_stream >> mtl.diffuse.x;
+			line_stream >> mtl.diffuse.y;
+			line_stream >> mtl.diffuse.z;
+		}
+
+		if (key == "Ks") {
+			line_stream >> mtl.specular.x;
+			line_stream >> mtl.specular.y;
+			line_stream >> mtl.specular.z;
+		}
+
+		if (key == "map_Kd") {
+			line_stream >> mtl.textureFilename;
+
+			string filepath = directoryPath + mtl.textureFilename;
+			int iBufferSize = MultiByteToWideChar(CP_ACP, 0, filepath.c_str(), -1, mtl.wfilepath, _countof(mtl.wfilepath));
+		}
+	}
+	file.close();
+}
+
+ObjFile::ObjFile(const string modelname, std::vector<Vertex>& out_vertices, Material& mtl)
 {
 	std::vector<unsigned short> vertexIndices, uvIndices, normalIndices;
 	std::vector<Vector3D> temp_poss;
@@ -111,7 +161,9 @@ ObjFile::ObjFile(const char* filename, std::vector<Vertex>& out_vertices)
 	std::vector<Vector3D> temp_normals;
 
 	std::ifstream file_;
-	file_.open(filename);
+	const string filename = modelname + ".obj";
+	const string directoryPath = "Resources/Model/" + modelname + "/";
+	file_.open(directoryPath + filename);
 	assert(!file_.fail());
 
 	string line;
@@ -120,6 +172,12 @@ ObjFile::ObjFile(const char* filename, std::vector<Vertex>& out_vertices)
 
 		string key;
 		getline(line_stream, key, ' ');
+
+		if (key == "mtllib") {
+			string filename;
+			line_stream >> filename;
+			LoadMaterial(directoryPath, filename, mtl);
+		}
 
 		if (key == "v") {
 			Vector3D pos;
