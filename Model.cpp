@@ -88,15 +88,15 @@ void Model::MatUpdate(Matrix matView, Matrix matProjection)
 
 void Model::Draw()
 {
-	pipeline->Setting(dx->GetCmdList());
-	pipeline->Update(dx->GetCmdList(), D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	VertBuffUpdate(dx->GetCmdList());
+	pipeline->Setting(MyDirectX::GetInstance()->GetCmdList());
+	pipeline->Update(MyDirectX::GetInstance()->GetCmdList(), D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	VertBuffUpdate(MyDirectX::GetInstance()->GetCmdList());
 	//	テクスチャ
-	dx->GetCmdList()->SetGraphicsRootConstantBufferView(0, material->GetGPUVirtualAddress());
-	dx->GetCmdList()->SetGraphicsRootDescriptorTable(1, dx->GetTextureHandle(textureHandle));
-	dx->GetCmdList()->SetGraphicsRootConstantBufferView(2, transform->GetGPUVirtualAddress());
+	MyDirectX::GetInstance()->GetCmdList()->SetGraphicsRootConstantBufferView(0, material->GetGPUVirtualAddress());
+	MyDirectX::GetInstance()->GetCmdList()->SetGraphicsRootDescriptorTable(1, dx->GetTextureHandle(textureHandle));
+	MyDirectX::GetInstance()->GetCmdList()->SetGraphicsRootConstantBufferView(2, transform->GetGPUVirtualAddress());
 
-	dx->GetCmdList()->DrawInstanced(vertexSize, 1, 0, 0);
+	MyDirectX::GetInstance()->GetCmdList()->DrawInstanced(vertexSize, 1, 0, 0);
 	//cmdList->DrawIndexedInstanced(indexSize, 1, 0, 0, 0);
 }
 
