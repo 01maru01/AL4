@@ -62,7 +62,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	//Model box(dx , shader, "Resource\\Model\\box.obj", pipeline.get());
 	Model ground(dx , shader, "ground", modelpipeline.get());
 	Model skydome(dx , shader, "skydome", modelpipeline.get());
-	Model airplane(dx , shader, "MiG-25PD", modelpipeline.get());
+	//Model airplane(dx , shader, "MiG-25PD", modelpipeline.get());
 	Model sphere(dx , objShader, "sphere", modelpipeline.get());
 	sphere.mat.trans.x = -1.0f;
 	sphere.mat.trans.y = 1.0f;
