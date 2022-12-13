@@ -14,9 +14,6 @@
 #include "Model.h"
 #include "GameScene.h"
 
-#include "Sprite.h"
-#include "SpriteCommon.h"
-
 int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 {
 #pragma region Initialize
@@ -63,16 +60,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	Model ground(dx , shader, "ground", modelpipeline.get());
 	Model skydome(dx , shader, "skydome", modelpipeline.get());
 	Model airplane(dx , shader, "MiG-25PD", modelpipeline.get());
-	Model sphere(dx , objShader, "sphere", modelpipeline.get());
-	sphere.mat.trans.x = -1.0f;
-	sphere.mat.trans.y = 1.0f;
-	Model sword(dx , objShader, "chr_sword", modelpipeline.get());
-	sword.mat.trans.x = 1.0f;
-
-	std::unique_ptr<SpriteCommon> spriteCommon(new SpriteCommon);
-	spriteCommon->Initialize(dx->GetDev());
-	std::unique_ptr<Sprite> sprite(new Sprite);
-	sprite->Initialize(spriteCommon.get());
 	//	ゲームループ
 	while (true)
 	{
@@ -92,10 +79,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		airplane.MatUpdate(debugcamera.mat, matProjection);
 		ground.MatUpdate(debugcamera.mat, matProjection);
 		skydome.MatUpdate(debugcamera.mat, matProjection);
-		sphere.MatUpdate(debugcamera.mat, matProjection);
-		sword.MatUpdate(debugcamera.mat, matProjection);
-
-		sprite->MatUpdate();
 #pragma endregion
 
 #pragma region Draw
@@ -104,13 +87,10 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 		//gamescene->Draw();
 		// 描画コマンド
-		//obj.Draw(dx->GetCmdList(), dx->GetTextureHandle(reimu));
-		//airplane.Draw();
-		//ground.Draw();
-		//skydome.Draw();
-		sphere.Draw();
-		sword.Draw();
-		//sprite->Draw(reimu);
+		obj.Draw(dx->GetCmdList(), dx->GetTextureHandle(reimu));
+		airplane.Draw();
+		ground.Draw();
+		skydome.Draw();
 		// 描画コマンド
 
 		dx->PostDrawScreen();
