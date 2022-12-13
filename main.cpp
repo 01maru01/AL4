@@ -59,7 +59,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	//Model box(dx , shader, "Resource\\Model\\box.obj", pipeline.get());
 	Model ground(dx , shader, "ground", modelpipeline.get());
 	Model skydome(dx , shader, "skydome", modelpipeline.get());
-	Model airplane(dx , shader, "MiG-25PD", modelpipeline.get());
 	//	ゲームループ
 	while (true)
 	{
@@ -76,7 +75,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		
 		//box.mat.trans = debugcamera.target;
 		obj.MatUpdate(debugcamera.mat, matProjection);
-		airplane.MatUpdate(debugcamera.mat, matProjection);
 		ground.MatUpdate(debugcamera.mat, matProjection);
 		skydome.MatUpdate(debugcamera.mat, matProjection);
 #pragma endregion
@@ -88,7 +86,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		//gamescene->Draw();
 		// 描画コマンド
 		obj.Draw(dx->GetCmdList(), dx->GetTextureHandle(reimu));
-		airplane.Draw();
 		ground.Draw();
 		skydome.Draw();
 		// 描画コマンド
