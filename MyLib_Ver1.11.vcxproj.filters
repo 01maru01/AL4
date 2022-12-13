@@ -144,6 +144,12 @@
     <ClCompile Include="Material.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="SpriteCommon.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="InputJoypad.h">
@@ -230,6 +236,12 @@
     <ClInclude Include="Material.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="SpriteCommon.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shader\Basic.hlsli">
@@ -237,6 +249,9 @@
     </None>
     <None Include="Resources\shader\ObjHeader.hlsli">
       <Filter>リソース ファイル\ObjShader</Filter>
+    </None>
+    <None Include="Resources\shader\SpriteHeader.hlsli">
+      <Filter>リソース ファイル</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -257,6 +272,12 @@
     </FxCompile>
     <FxCompile Include="Resources\shader\ObjVS.hlsl">
       <Filter>リソース ファイル\ObjShader</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shader\SpriteVS.hlsl">
+      <Filter>リソース ファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shader\SpritePS.hlsl">
+      <Filter>リソース ファイル</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

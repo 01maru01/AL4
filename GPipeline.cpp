@@ -107,7 +107,7 @@ void GPipeline::Setting(ID3D12GraphicsCommandList* cmdList)
 	cmdList->SetGraphicsRootSignature(rootSignature.Get());
 }
 
-void GPipeline::Init(ID3D12Device* dev, Shader shader, D3D12_INPUT_ELEMENT_DESC* inputLayout, UINT inputLayoutSize, D3D12_PRIMITIVE_TOPOLOGY_TYPE topologyType, D3D12_FILL_MODE fillmord, D3D12_CULL_MODE cullmord)
+void GPipeline::Init(ID3D12Device* dev, Shader shader, D3D12_INPUT_ELEMENT_DESC* inputLayout, UINT inputLayoutSize, D3D12_PRIMITIVE_TOPOLOGY_TYPE topologyType, D3D12_FILL_MODE fillmord, D3D12_CULL_MODE cullmord, bool isDeep)
 {
 	HRESULT result;
 	// シェーダーの設定
@@ -142,9 +142,15 @@ void GPipeline::Init(ID3D12Device* dev, Shader shader, D3D12_INPUT_ELEMENT_DESC*
 	pipelineDesc.SampleDesc.Count = 1;							  // 1ピクセルにつき1回サンプリング
 
 	//	デプスステンシルステート設定
-	pipelineDesc.DepthStencilState.DepthEnable = true;								//	深度テストを行う
+	if (isDeep) {
+		pipelineDesc.DepthStencilState.DepthEnable = true;								//	深度テストを行う
+		pipelineDesc.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_LESS;			//	小さければ合格
+	}
+	else {
+		pipelineDesc.DepthStencilState.DepthEnable = false;
+		pipelineDesc.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_ALWAYS;
+	}
 	pipelineDesc.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;		//	書き込み許可
-	pipelineDesc.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_LESS;			//	小さければ合格
 	pipelineDesc.DSVFormat = DXGI_FORMAT_D32_FLOAT;									//	深度フォーマット
 
 	SetRootSignature(dev, 3);
