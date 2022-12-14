@@ -16,6 +16,7 @@
 
 #include "Sprite.h"
 #include "SpriteCommon.h"
+#include "AssimpModel.h"
 
 int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 {
@@ -73,6 +74,9 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	spriteCommon->Initialize(dx->GetDev());
 	std::unique_ptr<Sprite> sprite(new Sprite);
 	sprite->Initialize(spriteCommon.get());
+
+	AssimpModel fbxModel(modelpipeline.get());
+	fbxModel.Initialize(L"Assets/Alicia/FBX/Alicia_solid_Unity.FBX");
 	//	ゲームループ
 	while (true)
 	{
@@ -93,6 +97,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		skydome.MatUpdate(debugcamera.mat, matProjection);
 		sphere.MatUpdate(debugcamera.mat, matProjection);
 		sword.MatUpdate(debugcamera.mat, matProjection);
+		fbxModel.MatUpdate(debugcamera.mat, matProjection);
 
 		sprite->MatUpdate();
 #pragma endregion
@@ -109,6 +114,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		//skydome.Draw();
 		sphere.Draw();
 		sword.Draw();
+		fbxModel.Draw();
 		//sprite->Draw(reimu);
 		// 描画コマンド
 
