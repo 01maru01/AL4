@@ -13,6 +13,7 @@ private:
 	GPipeline* pipeline = nullptr;
 
 	std::vector<Mesh> meshes;
+	std::vector<int> textureHandle;
 
 	MyMath::ObjMatrix mat;
 

@@ -460,17 +460,25 @@ void MyDirectX::PostDrawScreen()
 	SetResourceBarrier(screenBarrierDesc, D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
 }
 
-int MyDirectX::LoadTextureGraph(const wchar_t* textureName)
+int MyDirectX::LoadTextureGraph(const wchar_t* textureName, bool tga)
 {
 	textureNum++;
 
 	TexMetadata metadata{};
 	ScratchImage scratchImg{};
 
-	HRESULT result = LoadFromWICFile(
-		textureName,
-		WIC_FLAGS_NONE,
-		&metadata, scratchImg);
+	HRESULT result;
+	if (tga) {
+		result = LoadFromTGAFile(
+			textureName,
+			&metadata, scratchImg);
+	}
+	else {
+		result = LoadFromWICFile(
+			textureName,
+			WIC_FLAGS_NONE,
+			&metadata, scratchImg);
+	}
 
 	//	ミニマップ生成
 	ScratchImage mipChain{};

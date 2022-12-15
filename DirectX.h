@@ -90,7 +90,7 @@ public:
 	void PrevDraw(FLOAT* clearColor = nullptr);
 	void PostDraw();
 
-	int LoadTextureGraph(const wchar_t* textureName);
+	int LoadTextureGraph(const wchar_t* textureName, bool tga = false);
 
 	//	Getter
 	D3D12_GPU_DESCRIPTOR_HANDLE GetTextureHandle(int handle);

@@ -1,6 +1,14 @@
 #include "AssimpModel.h"
 #include "DirectX.h"
 
+#include <filesystem>
+namespace fs = std::filesystem;
+std::wstring ReplaceExtension(const std::wstring& origin, const char* ext)
+{
+	fs::path p = origin.c_str();
+	return p.replace_extension(ext).c_str();
+}
+
 AssimpModel::AssimpModel(GPipeline* pipeline_)
 {
 	pipeline = pipeline_;
@@ -55,11 +63,17 @@ void AssimpModel::Initialize(const wchar_t* filename)
 	assert(SUCCEEDED(result));
 #pragma endregion
 
+	textureHandle.clear();
+	textureHandle.resize(meshes.size());
 	for (size_t i = 0; i < meshes.size(); i++)
 	{
 		meshes[i].Vertices.reserve(meshes.size());
 		meshes[i].Indices.reserve(meshes.size());
 		meshes[i].Initialize();
+
+		auto texPath = ReplaceExtension(meshes[i].DiffuseMap, "tga");
+		wchar_t* wc = texPath.data();
+		textureHandle[i] = MyDirectX::GetInstance()->LoadTextureGraph(wc, true);
 	}
 #pragma region  WorldMatrix初期値
 	mat.Initialize();
@@ -89,7 +103,7 @@ void AssimpModel::Draw()
 		meshes[i].Update();
 		//commandList->SetGraphicsRootConstantBufferView(0, material->GetGPUVirtualAddress());
 		//MyDirectX::GetInstance()->GetCmdList()->SetGraphicsRootConstantBufferView(0, material->GetGPUVirtualAddress());
-		//MyDirectX::GetInstance()->GetCmdList()->SetGraphicsRootDescriptorTable(1, MyDirectX::GetInstance()->GetTextureHandle(1));
+		MyDirectX::GetInstance()->GetCmdList()->SetGraphicsRootDescriptorTable(1, MyDirectX::GetInstance()->GetTextureHandle(textureHandle[i]));
 		MyDirectX::GetInstance()->GetCmdList()->SetGraphicsRootConstantBufferView(2, transform->GetGPUVirtualAddress());
 
 		MyDirectX::GetInstance()->GetCmdList()->DrawIndexedInstanced(meshes[i].Indices.size(), 1, 0, 0, 0); // インデックスの数分描画する
