@@ -6,15 +6,11 @@
 #include <filesystem>
 #include "DirectX.h"
 
-//namespace fs = std::filesystem;
-
 std::wstring GetDirectoryPath(const std::wstring& origin)
 {
     int ind = origin.find_last_of('/');
     ind++;
     return origin.substr(0, ind);
-    //fs::path p = origin.c_str();
-    //return p.remove_filename().c_str();
 }
 
 std::string ToUTF8(const std::wstring& value)

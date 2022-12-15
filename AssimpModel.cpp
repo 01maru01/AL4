@@ -1,8 +1,6 @@
 #include "AssimpModel.h"
 #include "DirectX.h"
 
-//#include <filesystem>
-//namespace fs = std::filesystem;
 std::wstring ReplaceExtension(const std::wstring& origin, const wchar_t* ext)
 {
 	int idx = origin.length();
@@ -10,11 +8,8 @@ std::wstring ReplaceExtension(const std::wstring& origin, const wchar_t* ext)
 	std::wstring ret = origin.substr(0, last + 1);
 	wchar_t buf[5];
 	std::swprintf(buf, 5, L"%s", ext);
-	//std::wstring ext_ = ext;
 	ret.append(ext);
 	return ret;
-	//fs::path p = origin.c_str();
-	//return p.replace_extension(ext).c_str();
 }
 
 AssimpModel::AssimpModel(GPipeline* pipeline_)
@@ -33,7 +28,7 @@ void AssimpModel::Initialize(const wchar_t* filename)
 	};
 
 	AssimpLoader loader;
-	//loader.Load(importSetting);
+
 	if (!loader.Load(importSetting))
 	{
 		return;
