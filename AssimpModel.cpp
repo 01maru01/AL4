@@ -1,12 +1,20 @@
 #include "AssimpModel.h"
 #include "DirectX.h"
 
-#include <filesystem>
-namespace fs = std::filesystem;
-std::wstring ReplaceExtension(const std::wstring& origin, const char* ext)
+//#include <filesystem>
+//namespace fs = std::filesystem;
+std::wstring ReplaceExtension(const std::wstring& origin, const wchar_t* ext)
 {
-	fs::path p = origin.c_str();
-	return p.replace_extension(ext).c_str();
+	int idx = origin.length();
+	int last = origin.find_last_of('.');
+	std::wstring ret = origin.substr(0, last + 1);
+	wchar_t buf[5];
+	std::swprintf(buf, 5, L"%s", ext);
+	//std::wstring ext_ = ext;
+	ret.append(ext);
+	return ret;
+	//fs::path p = origin.c_str();
+	//return p.replace_extension(ext).c_str();
 }
 
 AssimpModel::AssimpModel(GPipeline* pipeline_)
@@ -71,8 +79,8 @@ void AssimpModel::Initialize(const wchar_t* filename)
 		meshes[i].Indices.reserve(meshes.size());
 		meshes[i].Initialize();
 
-		auto texPath = ReplaceExtension(meshes[i].DiffuseMap, "tga");
-		wchar_t* wc = texPath.data();
+		auto texPath = ReplaceExtension(meshes[i].DiffuseMap, L"tga");
+		const wchar_t* wc = texPath.data();
 		textureHandle[i] = MyDirectX::GetInstance()->LoadTextureGraph(wc, true);
 	}
 #pragma region  WorldMatrix‰Šú’l
