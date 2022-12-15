@@ -54,21 +54,19 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	Matrix orthoProjection = MyMath::OrthoLH(Window::window_width, Window::window_height, 0.1f, 1000.0f);
 #pragma endregion Initialize
 
-	//std::unique_ptr<GameScene> gamescene(new GameScene());
-	//gamescene->Initialize(dx.get(), input.get());
-
 	std::unique_ptr<GPipeline> pipeline(new GPipeline(dx->GetDev(), shader));
 	std::unique_ptr<GPipeline> modelpipeline(new GPipeline(dx->GetDev(), objShader));
-	Object3D obj(dx, pipeline.get(), shader);
-	//Model box(dx , shader, "Resource\\Model\\box.obj", pipeline.get());
 	Model ground(dx , shader, "ground", modelpipeline.get());
 	Model skydome(dx , shader, "skydome", modelpipeline.get());
-	//Model airplane(dx , shader, "MiG-25PD", modelpipeline.get());
-	Model sphere(dx , objShader, "sphere", modelpipeline.get());
-	sphere.mat.trans.x = -1.0f;
-	sphere.mat.trans.y = 1.0f;
-	Model sword(dx , objShader, "chr_sword", modelpipeline.get());
-	sword.mat.trans.x = 1.0f;
+	Model cat(dx, objShader, "12161_Cat_v1_L2", modelpipeline.get());
+	cat.mat.scale = { 0.1f,0.1f,0.1f };
+	cat.mat.trans.x = 2.0f;
+	cat.mat.rotAngle.x = -MyMath::PI / 2.0f;
+	cat.mat.rotAngle.y = MyMath::PI / 2.0f;
+	Model skull(dx , objShader, "12140_Skull_v3_L2", modelpipeline.get());
+	skull.mat.scale = { 0.1f,0.1f,0.1f };
+	skull.mat.rotAngle.y = MyMath::PI;
+	skull.mat.trans.x = -2.0f;
 
 	std::unique_ptr<SpriteCommon> spriteCommon(new SpriteCommon);
 	spriteCommon->Initialize(dx->GetDev());
@@ -77,26 +75,27 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 	AssimpModel fbxModel(modelpipeline.get());
 	fbxModel.Initialize(L"Assets/Alicia/FBX/Alicia_solid_Unity.FBX");
+	bool mordFBX = false;
 	//	ゲームループ
 	while (true)
 	{
 #pragma region  WinMsg
 		if (win->MsgUpdate() || input->GetTrigger(DIK_ESCAPE)) { break; }
 #pragma endregion
-
-		//gamescene->Update();
 		input->Update();
 
 #pragma region Update
+		if (input->GetTrigger(DIK_SPACE)) {
+			mordFBX = !mordFBX;
+		}
+
 		debugcamera.Update();
 		screen.MatUpdate(matView.mat, orthoProjection);
 		
-		//box.mat.trans = debugcamera.target;
-		obj.MatUpdate(debugcamera.mat, matProjection);
 		ground.MatUpdate(debugcamera.mat, matProjection);
 		skydome.MatUpdate(debugcamera.mat, matProjection);
-		sphere.MatUpdate(debugcamera.mat, matProjection);
-		sword.MatUpdate(debugcamera.mat, matProjection);
+		cat.MatUpdate(debugcamera.mat, matProjection);
+		skull.MatUpdate(debugcamera.mat, matProjection);
 		fbxModel.MatUpdate(debugcamera.mat, matProjection);
 
 		sprite->MatUpdate();
@@ -106,16 +105,19 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 #pragma region ScreenDraw
 		dx->PrevDrawScreen();
 
-		//gamescene->Draw();
 		// 描画コマンド
-		//obj.Draw(dx->GetCmdList(), dx->GetTextureHandle(reimu));
-		//airplane.Draw();
-		//ground.Draw();
-		//skydome.Draw();
-		sphere.Draw();
-		sword.Draw();
-		fbxModel.Draw();
-		//sprite->Draw(reimu);
+		ground.Draw();
+		skydome.Draw();
+
+		if (mordFBX) {
+			fbxModel.Draw();
+		}
+		else {
+			sprite->Draw(reimu);
+			cat.Draw();
+			skull.Draw();
+		}
+
 		// 描画コマンド
 
 		dx->PostDrawScreen();

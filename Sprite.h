@@ -13,10 +13,10 @@ private:
 	Matrix matTrans;
 
 	float rotAngle;
-	Vector2D trans = { 500.0f,500.0f };
+	Vector2D trans;
 	Vector4D color;
 	Vector2D size = { 100.0f,100.0f };
-	Vector2D anchorPoint = { 0.5f,0.5f };
+	Vector2D anchorPoint;
 
 	Vector2D textureLeftTop;
 	Vector2D textureSize;
