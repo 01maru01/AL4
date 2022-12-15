@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include "VertBuff.h"
+#include "VertBuff.h"
 
 struct AssimpVertex
 {
@@ -14,11 +15,15 @@ struct AssimpVertex
     DirectX::XMFLOAT3 Tangent; // 接空間
     DirectX::XMFLOAT4 Color; // 頂点色
 };
-struct Mesh
+struct Mesh :public VertBuff
 {
     std::vector<Vertex> Vertices; // 頂点データの配列
-    std::vector<uint32_t> Indices; // インデックスの配列
+    std::vector<uint16_t> Indices; // インデックスの配列
     std::wstring DiffuseMap; // テクスチャのファイルパス
+    void Initialize();
+    void Update();
+private:
+    void SetVertices() override;
 };
 
 struct aiMesh;

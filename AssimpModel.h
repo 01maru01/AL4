@@ -5,7 +5,7 @@
 #include "VertBuff.h"
 #include "GPipeline.h"
 
-class AssimpModel :public VertBuff
+class AssimpModel
 {
 private:
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
@@ -13,10 +13,6 @@ private:
 	GPipeline* pipeline = nullptr;
 
 	std::vector<Mesh> meshes;
-	UINT vertexSize;
-	std::vector<Vertex> vertices;
-	UINT indexSize;
-	std::vector<uint16_t> indices;
 
 	MyMath::ObjMatrix mat;
 
@@ -32,7 +28,5 @@ public:
 	void Initialize(const wchar_t* filename);
 	void MatUpdate(Matrix matView, Matrix matProjection);
 	void Draw();
-private:
-	void SetVertices() override;
 };
 

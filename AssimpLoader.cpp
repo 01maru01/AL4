@@ -4,6 +4,7 @@
 #include <assimp/postprocess.h>
 #include <d3dx12.h>
 #include <filesystem>
+#include "DirectX.h"
 
 namespace fs = std::filesystem;
 
@@ -151,4 +152,35 @@ void AssimpLoader::LoadTexture(const wchar_t* filename, Mesh& dst, const aiMater
     {
         dst.DiffuseMap.clear();
     }
+}
+
+void Mesh::Initialize()
+{
+    // 頂点データ全体のサイズ = 頂点データ一つ分のサイズ * 頂点データの要素数
+    UINT sizeVB = static_cast<UINT>(sizeof(Vertices[0]) * Vertices.size());
+    //	全体のサイズ
+    UINT sizeIB = static_cast<UINT>(sizeof(uint16_t) * Indices.size());
+    VBInitialize(MyDirectX::GetInstance()->GetDev(), sizeVB, Vertices.size(), sizeIB, &Indices.front(), Indices.size());
+}
+
+void Mesh::Update()
+{
+    VertBuffUpdate(MyDirectX::GetInstance()->GetCmdList());
+}
+
+void Mesh::SetVertices()
+{
+    //	GPUメモリの値書き換えよう
+    // GPU上のバッファに対応した仮想メモリ(メインメモリ上)を取得
+    Vertex* vertMap = nullptr;
+    HRESULT result = vertBuff->Map(0, nullptr, (void**)&vertMap);
+    assert(SUCCEEDED(result));
+    // 全頂点に対して
+    for (int i = 0; i < Vertices.size(); i++) {
+        vertMap[i] = Vertices[i]; // 座標をコピー
+    }
+    // 繋がりを解除
+    vertBuff->Unmap(0, nullptr);
+    // 頂点1つ分のデータサイズ
+    vbView.StrideInBytes = sizeof(Vertices[0]);
 }
