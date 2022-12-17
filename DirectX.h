@@ -84,7 +84,7 @@ public:
 	MyDirectX();
 	static MyDirectX* GetInstance();
 	void Initialize();
-	static void Destroy();
+	static void DeleteInstance();
 	void PrevDrawScreen(FLOAT* clearColor = nullptr);
 	void PostDrawScreen();
 	void PrevDraw(FLOAT* clearColor = nullptr);

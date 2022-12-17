@@ -12,8 +12,16 @@ private:
 	Shader shader;
 
 	Matrix mat2D;
-public:
+
 	SpriteCommon();
+	~SpriteCommon() {};
+public:
+	static SpriteCommon* GetInstance();
+	static void DeleteInstance();
+
+	SpriteCommon(const SpriteCommon& obj) = delete;
+	SpriteCommon& operator=(const SpriteCommon& obj) = delete;
+
 	void Initialize();
 	void Draw();
 

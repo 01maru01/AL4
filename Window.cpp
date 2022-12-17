@@ -21,7 +21,7 @@ Window* Window::GetInstance()
 	return instance;
 }
 
-void Window::Destroy()
+void Window::DeleteInstance()
 {
 	delete Window::GetInstance();
 }

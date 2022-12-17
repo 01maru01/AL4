@@ -436,7 +436,7 @@ void MyDirectX::PostDraw()
 #pragma endregion ChangeScreen
 }
 
-void MyDirectX::Destroy()
+void MyDirectX::DeleteInstance()
 {
 }
 

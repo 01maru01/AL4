@@ -19,7 +19,7 @@ public:
 	static LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
 	static Window* GetInstance();
-	static void Destroy();
+	static void DeleteInstance();
 	Window();
 	~Window();
 	void Initialize();

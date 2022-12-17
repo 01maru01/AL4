@@ -33,7 +33,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	MyXAudio xAudio;
 	
 	Input* input = Input::GetInstance();
-	input->Initialize();
+
+	SpriteCommon* spriteCommon = SpriteCommon::GetInstance();
 
 	Shader shader(L"Resources/shader/BasicVS.hlsl", L"Resources/shader/BasicPS.hlsl");
 	Shader bilShader(L"Resources/shader/VShader.hlsl", L"Resources/shader/PShader.hlsl");
@@ -65,9 +66,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	skull.mat.rotAngle.y = MyMath::PI;
 	skull.mat.trans.x = -2.0f;
 
-	std::unique_ptr<SpriteCommon> spriteCommon(new SpriteCommon);
 	std::unique_ptr<Sprite> sprite(new Sprite);
-	sprite->Initialize(spriteCommon.get());
+	sprite->Initialize(spriteCommon);
 
 	AssimpModel fbxModel(modelpipeline.get());
 	fbxModel.Initialize(L"Assets/Alicia/FBX/Alicia_solid_Unity.FBX");
@@ -122,16 +122,16 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 #pragma region UIDraw
 		dx->PrevDraw();
 
-		//gamescene->DrawMultiPath();
 		screen.Draw(dx->GetCmdList(), dx->GetTextureHandle(0));
 
 		dx->PostDraw();
 #pragma endregion
 #pragma endregion Draw
 	}
-	Window::Destroy();
-	MyDirectX::Destroy();
-	Input::Destroy();
+	SpriteCommon::DeleteInstance();
+	Input::DeleteInstance();
+	MyDirectX::DeleteInstance();
+	Window::DeleteInstance();
 
 	return 0;
 }

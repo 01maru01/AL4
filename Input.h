@@ -31,10 +31,15 @@ private:
 	DIMOUSESTATE prevclick = {};
 	ComPtr<IDirectInputDevice8> mouse = nullptr;
 	POINT cursor;
+
+	Input();
+	~Input() {};
 public:
 	static Input* GetInstance();
-	static void Destroy();
-	Input() {};
+	static void DeleteInstance();
+	Input(const Input& obj) = delete;
+	Input& operator=(const Input& obj) = delete;
+
 	void Initialize();
 	void Update();
 

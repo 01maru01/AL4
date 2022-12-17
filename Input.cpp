@@ -1,12 +1,17 @@
 #include "Input.h"
 
+Input::Input()
+{
+	Initialize();
+}
+
 Input* Input::GetInstance()
 {
 	static Input* instance = new Input;
 	return instance;
 }
 
-void Input::Destroy()
+void Input::DeleteInstance()
 {
 	delete Input::GetInstance();
 }

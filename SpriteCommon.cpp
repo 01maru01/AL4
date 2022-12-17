@@ -6,6 +6,17 @@ SpriteCommon::SpriteCommon()
 	Initialize();
 }
 
+SpriteCommon* SpriteCommon::GetInstance()
+{
+	static SpriteCommon* instance = new SpriteCommon;
+	return instance;
+}
+
+void SpriteCommon::DeleteInstance()
+{
+	delete SpriteCommon::GetInstance();
+}
+
 void SpriteCommon::Initialize()
 {
 	ID3D12Device* dev = MyDirectX::GetInstance()->GetDev();
