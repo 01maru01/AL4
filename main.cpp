@@ -19,6 +19,7 @@
 #include "AssimpModel.h"
 
 #include "SceneManager.h"
+#include "ScreenPolygon.h"
 
 int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 {
@@ -45,9 +46,10 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	//SceneManager sceneMan;
 	//sceneMan.Initialize();
 #pragma region OrthoProjection
-	Square screen(dx->GetDev(), bilShader);
-	screen.trans.z = 0.1f;
-	screen.scale = { Window::window_width / 2,Window::window_height / 2,0.2f };
+	//Square screen(dx->GetDev(), bilShader);
+	//screen.trans.z = 0.1f;
+	//screen.scale = { Window::window_width / 2,Window::window_height / 2,0.2f };
+	ScreenPolygon screen;
 #pragma endregion
 	MyMath::MatView matView;
 	matView.Init(Vector3D(0.0f, 0.0f, -100.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
@@ -90,7 +92,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		}
 
 		debugcamera.Update();
-		screen.MatUpdate(matView.mat, orthoProjection);
+		//screen.MatUpdate(matView.mat, orthoProjection);
 		
 		ground.MatUpdate(debugcamera.mat, matProjection);
 		skydome.MatUpdate(debugcamera.mat, matProjection);
@@ -127,7 +129,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 #pragma region UIDraw
 		dx->PrevDraw();
 
-		screen.Draw(dx->GetCmdList(), dx->GetTextureHandle(0));
+		screen.Draw();
 
 		dx->PostDraw();
 #pragma endregion
