@@ -13,24 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="ソース ファイル\Math">
-      <UniqueIdentifier>{ddc85c55-7dd0-44fc-ba60-2a9679582e05}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Obj">
-      <UniqueIdentifier>{f538b9ee-37be-482b-b8e5-7f7c3ce1d851}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\Input">
-      <UniqueIdentifier>{6d61ee45-941e-4fce-a5e3-811e68e5ce13}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\Math">
-      <UniqueIdentifier>{de02d834-15bb-4b37-b202-df3a44d4931e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\Obj">
-      <UniqueIdentifier>{3fe43bff-cdde-4cd5-a76e-8b71c17eab6c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\Camera">
-      <UniqueIdentifier>{281a38cb-bad6-4eba-b6ff-e5adba4110dc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\lib">
       <UniqueIdentifier>{331e0e18-3b24-4f17-bc5a-e61d2fe8a167}</UniqueIdentifier>
     </Filter>
@@ -55,22 +37,61 @@
     <Filter Include="リソース ファイル\ObjShader">
       <UniqueIdentifier>{4dd5e3ca-3dd4-4518-bcf0-b514b0134a98}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\lib\Scene">
+      <UniqueIdentifier>{98665880-bf97-4628-8fdb-31730a64deba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\lib\Math">
+      <UniqueIdentifier>{ddc85c55-7dd0-44fc-ba60-2a9679582e05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\lib\Obj">
+      <UniqueIdentifier>{f538b9ee-37be-482b-b8e5-7f7c3ce1d851}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\lib\Model">
+      <UniqueIdentifier>{37cd1151-b7de-40d3-821e-db1624a514da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\lib\Sprite">
+      <UniqueIdentifier>{3fed765f-d9dd-4872-8744-fb1e79dc8549}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\lib\Camera">
+      <UniqueIdentifier>{281a38cb-bad6-4eba-b6ff-e5adba4110dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\lib\Input">
+      <UniqueIdentifier>{6d61ee45-941e-4fce-a5e3-811e68e5ce13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\lib\Math">
+      <UniqueIdentifier>{de02d834-15bb-4b37-b202-df3a44d4931e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\lib\Obj">
+      <UniqueIdentifier>{3fe43bff-cdde-4cd5-a76e-8b71c17eab6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\lib\Sprite">
+      <UniqueIdentifier>{17ac2469-a261-4e0a-8b0a-c1e96c070ee6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\lib\Model">
+      <UniqueIdentifier>{60277e91-8772-4321-915e-5a2e5b30e3a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\lib\Scene">
+      <UniqueIdentifier>{ee7eeafa-ba10-4f48-adda-53d851321279}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="リソース ファイル\SpriteShader">
+      <UniqueIdentifier>{99634278-35ae-4d91-b345-cfc16641b87d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Matrix.cpp">
-      <Filter>ソース ファイル\Math</Filter>
+      <Filter>ソース ファイル\lib\Math</Filter>
     </ClCompile>
     <ClCompile Include="Vector4D.cpp">
-      <Filter>ソース ファイル\Math</Filter>
+      <Filter>ソース ファイル\lib\Math</Filter>
     </ClCompile>
     <ClCompile Include="Vector2D.cpp">
-      <Filter>ソース ファイル\Math</Filter>
+      <Filter>ソース ファイル\lib\Math</Filter>
     </ClCompile>
     <ClCompile Include="Vector3D.cpp">
-      <Filter>ソース ファイル\Math</Filter>
+      <Filter>ソース ファイル\lib\Math</Filter>
     </ClCompile>
     <ClCompile Include="MyMath.cpp">
-      <Filter>ソース ファイル\Math</Filter>
+      <Filter>ソース ファイル\lib\Math</Filter>
     </ClCompile>
     <ClCompile Include="InputJoypad.cpp">
       <Filter>ソース ファイル\lib\Input</Filter>
@@ -79,16 +100,16 @@
       <Filter>ソース ファイル\lib\Input</Filter>
     </ClCompile>
     <ClCompile Include="Object2D.cpp">
-      <Filter>ソース ファイル\Obj</Filter>
+      <Filter>ソース ファイル\lib\Obj</Filter>
     </ClCompile>
     <ClCompile Include="Object3D.cpp">
-      <Filter>ソース ファイル\Obj</Filter>
+      <Filter>ソース ファイル\lib\Obj</Filter>
     </ClCompile>
     <ClCompile Include="DrawSphere.cpp">
-      <Filter>ソース ファイル\Obj</Filter>
+      <Filter>ソース ファイル\lib\Obj</Filter>
     </ClCompile>
     <ClCompile Include="DrawGrid.cpp">
-      <Filter>ソース ファイル\Obj</Filter>
+      <Filter>ソース ファイル\lib\Obj</Filter>
     </ClCompile>
     <ClCompile Include="MyDebugCamera.cpp">
       <Filter>ソース ファイル\lib\Camera</Filter>
@@ -121,78 +142,81 @@
       <Filter>ソース ファイル\lib</Filter>
     </ClCompile>
     <ClCompile Include="Easing.cpp">
-      <Filter>ソース ファイル\Math</Filter>
+      <Filter>ソース ファイル\lib\Math</Filter>
     </ClCompile>
     <ClCompile Include="Square.cpp">
-      <Filter>ソース ファイル\Obj</Filter>
-    </ClCompile>
-    <ClCompile Include="Model.cpp">
-      <Filter>ソース ファイル\Obj</Filter>
+      <Filter>ソース ファイル\lib\Obj</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="ObjFile.cpp">
-      <Filter>ソース ファイル\Obj</Filter>
-    </ClCompile>
     <ClCompile Include="MyXAudio.cpp">
       <Filter>ソース ファイル\lib</Filter>
     </ClCompile>
-    <ClCompile Include="GameScene.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="IScene.cpp">
+      <Filter>ソース ファイル\lib\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Material.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="SpriteCommon.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Sprite.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="AssimpLoader.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\lib\Model</Filter>
     </ClCompile>
     <ClCompile Include="AssimpModel.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\lib\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="AssimpLoader.cpp">
+      <Filter>ソース ファイル\lib\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>ソース ファイル\lib\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjFile.cpp">
+      <Filter>ソース ファイル\lib\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScene.cpp">
+      <Filter>ソース ファイル\lib\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>ソース ファイル\lib\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteCommon.cpp">
+      <Filter>ソース ファイル\lib\Sprite</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="InputJoypad.h">
-      <Filter>ヘッダー ファイル\Input</Filter>
+      <Filter>ヘッダー ファイル\lib\Input</Filter>
     </ClInclude>
     <ClInclude Include="Input.h">
-      <Filter>ヘッダー ファイル\Input</Filter>
+      <Filter>ヘッダー ファイル\lib\Input</Filter>
     </ClInclude>
     <ClInclude Include="Matrix.h">
-      <Filter>ヘッダー ファイル\Math</Filter>
+      <Filter>ヘッダー ファイル\lib\Math</Filter>
     </ClInclude>
     <ClInclude Include="MyMath.h">
-      <Filter>ヘッダー ファイル\Math</Filter>
+      <Filter>ヘッダー ファイル\lib\Math</Filter>
     </ClInclude>
     <ClInclude Include="Vector2D.h">
-      <Filter>ヘッダー ファイル\Math</Filter>
+      <Filter>ヘッダー ファイル\lib\Math</Filter>
     </ClInclude>
     <ClInclude Include="Vector3D.h">
-      <Filter>ヘッダー ファイル\Math</Filter>
+      <Filter>ヘッダー ファイル\lib\Math</Filter>
     </ClInclude>
     <ClInclude Include="Vector4D.h">
-      <Filter>ヘッダー ファイル\Math</Filter>
+      <Filter>ヘッダー ファイル\lib\Math</Filter>
     </ClInclude>
     <ClInclude Include="Object2D.h">
-      <Filter>ヘッダー ファイル\Obj</Filter>
+      <Filter>ヘッダー ファイル\lib\Obj</Filter>
     </ClInclude>
     <ClInclude Include="Object3D.h">
-      <Filter>ヘッダー ファイル\Obj</Filter>
+      <Filter>ヘッダー ファイル\lib\Obj</Filter>
     </ClInclude>
     <ClInclude Include="DrawSphere.h">
-      <Filter>ヘッダー ファイル\Obj</Filter>
+      <Filter>ヘッダー ファイル\lib\Obj</Filter>
     </ClInclude>
     <ClInclude Include="DrawGrid.h">
-      <Filter>ヘッダー ファイル\Obj</Filter>
+      <Filter>ヘッダー ファイル\lib\Obj</Filter>
     </ClInclude>
     <ClInclude Include="MyDebugCamera.h">
-      <Filter>ヘッダー ファイル\Camera</Filter>
+      <Filter>ヘッダー ファイル\lib\Camera</Filter>
     </ClInclude>
     <ClInclude Include="ConstBuff.h">
       <Filter>ヘッダー ファイル\lib</Filter>
@@ -221,38 +245,41 @@
     <ClInclude Include="VertBuff.h">
       <Filter>ヘッダー ファイル\lib</Filter>
     </ClInclude>
-    <ClInclude Include="Model.h">
-      <Filter>ヘッダー ファイル\Obj</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjFile.h">
-      <Filter>ヘッダー ファイル\Obj</Filter>
-    </ClInclude>
     <ClInclude Include="Easing.h">
-      <Filter>ヘッダー ファイル\Math</Filter>
+      <Filter>ヘッダー ファイル\lib\Math</Filter>
     </ClInclude>
     <ClInclude Include="Square.h">
-      <Filter>ヘッダー ファイル\Obj</Filter>
+      <Filter>ヘッダー ファイル\lib\Obj</Filter>
     </ClInclude>
     <ClInclude Include="MyXAudio.h">
       <Filter>ヘッダー ファイル\lib</Filter>
     </ClInclude>
-    <ClInclude Include="GameScene.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Material.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="Sprite.h">
+      <Filter>ヘッダー ファイル\lib\Sprite</Filter>
     </ClInclude>
     <ClInclude Include="SpriteCommon.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\lib\Sprite</Filter>
     </ClInclude>
-    <ClInclude Include="Sprite.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="AssimpLoader.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="Material.h">
+      <Filter>ヘッダー ファイル\lib\Model</Filter>
     </ClInclude>
     <ClInclude Include="AssimpModel.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\lib\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="AssimpLoader.h">
+      <Filter>ヘッダー ファイル\lib\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>ヘッダー ファイル\lib\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjFile.h">
+      <Filter>ヘッダー ファイル\lib\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene.h">
+      <Filter>ヘッダー ファイル\lib\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="IScene.h">
+      <Filter>ヘッダー ファイル\lib\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -263,7 +290,7 @@
       <Filter>リソース ファイル\ObjShader</Filter>
     </None>
     <None Include="Resources\shader\SpriteHeader.hlsli">
-      <Filter>リソース ファイル</Filter>
+      <Filter>リソース ファイル\SpriteShader</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -285,11 +312,11 @@
     <FxCompile Include="Resources\shader\ObjVS.hlsl">
       <Filter>リソース ファイル\ObjShader</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\shader\SpriteVS.hlsl">
-      <Filter>リソース ファイル</Filter>
-    </FxCompile>
     <FxCompile Include="Resources\shader\SpritePS.hlsl">
-      <Filter>リソース ファイル</Filter>
+      <Filter>リソース ファイル\SpriteShader</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shader\SpriteVS.hlsl">
+      <Filter>リソース ファイル\SpriteShader</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

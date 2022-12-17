@@ -1,16 +1,22 @@
 #pragma once
 #include "Input.h"
 #include "DirectX.h"
-class GameScene
+#include "IScene.h"
+class GameScene :public IScene
 {
 private:
-	MyDirectX* dx = nullptr;
-	Input* input = Input::GetInstance();
+	
 public:
 	GameScene();
-	void Initialize(MyDirectX* dx_, Input* input_);
-	void Update();
-	void Draw();
-	void DrawMultiPath();
+	~GameScene() override;
+	void Initialize() override;
+	void LoadResources() override;
+	void Update() override;
+	void Draw() override;
+private:
+	MyDirectX* dx = MyDirectX::GetInstance();
+	Input* input = Input::GetInstance();
+
+	void MatUpdate() override;
 };
 

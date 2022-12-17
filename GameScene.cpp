@@ -1,23 +1,33 @@
 #include "GameScene.h"
 
+void GameScene::MatUpdate()
+{
+}
+
 GameScene::GameScene()
 {
 }
 
-void GameScene::Initialize(MyDirectX* dx_, Input* input_)
+GameScene::~GameScene()
 {
-	dx = dx_;
-	input = input_;
+}
+
+void GameScene::Initialize()
+{
+}
+
+void GameScene::LoadResources()
+{
 }
 
 void GameScene::Update()
 {
+#pragma region çXêVèàóù
+
+#pragma endregion
+	MatUpdate();
 }
 
 void GameScene::Draw()
-{
-}
-
-void GameScene::DrawMultiPath()
 {
 }

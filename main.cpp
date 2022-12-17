@@ -40,9 +40,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	Shader objShader(L"Resources/shader/ObjVS.hlsl", L"Resources/shader/ObjPS.hlsl");
 	//	描画初期化
 
-	//	定数バッファ
-	ConstBuff cBuff(dx->GetDev(), Window::window_width, Window::window_height);
-
 #pragma region OrthoProjection
 	Square screen(dx->GetDev(), bilShader);
 	screen.trans.z = 0.1f;
@@ -69,7 +66,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	skull.mat.trans.x = -2.0f;
 
 	std::unique_ptr<SpriteCommon> spriteCommon(new SpriteCommon);
-	spriteCommon->Initialize(dx->GetDev());
 	std::unique_ptr<Sprite> sprite(new Sprite);
 	sprite->Initialize(spriteCommon.get());
 

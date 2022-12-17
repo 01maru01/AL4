@@ -13,7 +13,8 @@ private:
 
 	Matrix mat2D;
 public:
-	void Initialize(ID3D12Device* dev);
+	SpriteCommon();
+	void Initialize();
 	void Draw();
 
 	const Matrix& Get2DMat() const { return mat2D; }
