@@ -18,6 +18,8 @@
 #include "SpriteCommon.h"
 #include "AssimpModel.h"
 
+#include "SceneManager.h"
+
 int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 {
 #pragma region Initialize
@@ -40,7 +42,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	Shader bilShader(L"Resources/shader/VShader.hlsl", L"Resources/shader/PShader.hlsl");
 	Shader objShader(L"Resources/shader/ObjVS.hlsl", L"Resources/shader/ObjPS.hlsl");
 	//	•`‰æ‰Šú‰»
-
+	//SceneManager sceneMan;
+	//sceneMan.Initialize();
 #pragma region OrthoProjection
 	Square screen(dx->GetDev(), bilShader);
 	screen.trans.z = 0.1f;
@@ -67,7 +70,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	skull.mat.trans.x = -2.0f;
 
 	std::unique_ptr<Sprite> sprite(new Sprite);
-	sprite->Initialize(spriteCommon);
+	sprite->Initialize();
 
 	AssimpModel fbxModel(modelpipeline.get());
 	fbxModel.Initialize(L"Assets/Alicia/FBX/Alicia_solid_Unity.FBX");
@@ -81,6 +84,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		input->Update();
 
 #pragma region Update
+		//sceneMan.Update();
 		if (input->GetTrigger(DIK_SPACE)) {
 			mordFBX = !mordFBX;
 		}
@@ -98,6 +102,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 #pragma endregion
 
 #pragma region Draw
+		//sceneMan.Draw();
 #pragma region ScreenDraw
 		dx->PrevDrawScreen();
 

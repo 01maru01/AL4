@@ -1,9 +1,9 @@
 #include "Sprite.h"
 #include "DirectX.h"
 
-void Sprite::Initialize(SpriteCommon* spriteCommon_)
+void Sprite::Initialize()
 {
-	common = spriteCommon_;
+	common = SpriteCommon::GetInstance();
 
 	HRESULT result;
 

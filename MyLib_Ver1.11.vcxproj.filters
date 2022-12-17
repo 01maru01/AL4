@@ -180,6 +180,12 @@
     <ClCompile Include="SpriteCommon.cpp">
       <Filter>ソース ファイル\lib\Sprite</Filter>
     </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>ソース ファイル\lib\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="ScreenPolygon.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="InputJoypad.h">
@@ -280,6 +286,12 @@
     </ClInclude>
     <ClInclude Include="IScene.h">
       <Filter>ヘッダー ファイル\lib\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>ヘッダー ファイル\lib\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="ScreenPolygon.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

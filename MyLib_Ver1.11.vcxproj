@@ -33,7 +33,9 @@
     <ClCompile Include="Object2D.cpp" />
     <ClCompile Include="Object3D.cpp" />
     <ClCompile Include="ObjFile.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="ScissorRect.cpp" />
+    <ClCompile Include="ScreenPolygon.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="SpriteCommon.cpp" />
     <ClCompile Include="TextureData.cpp" />
@@ -68,7 +70,9 @@
     <ClInclude Include="Object2D.h" />
     <ClInclude Include="Object3D.h" />
     <ClInclude Include="ObjFile.h" />
+    <ClInclude Include="SceneManager.h" />
     <ClInclude Include="ScissorRect.h" />
+    <ClInclude Include="ScreenPolygon.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="SpriteCommon.h" />
     <ClInclude Include="TextureData.h" />

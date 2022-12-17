@@ -50,7 +50,7 @@ private:
 	ComPtr<ID3D12Resource> material;
 	ConstBufferDataMaterial* mapMaterial = nullptr;
 public:
-	void Initialize(SpriteCommon* spriteCommon_);
+	void Initialize();
 	void MatUpdate();
 	void Draw(int handle);
 
