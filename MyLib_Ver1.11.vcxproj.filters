@@ -304,12 +304,15 @@
     <None Include="Resources\shader\SpriteHeader.hlsli">
       <Filter>リソース ファイル\SpriteShader</Filter>
     </None>
+    <None Include="Resources\shader\ScreenHeader.hlsli">
+      <Filter>リソース ファイル</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Resources\shader\PShader.hlsl">
+    <FxCompile Include="Resources\shader\ScreenPS.hlsl">
       <Filter>リソース ファイル</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\shader\VShader.hlsl">
+    <FxCompile Include="Resources\shader\ScreenVS.hlsl">
       <Filter>リソース ファイル</Filter>
     </FxCompile>
     <FxCompile Include="Resources\shader\BasicPS.hlsl">

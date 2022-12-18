@@ -20,7 +20,7 @@ private:
 
 	GPipeline pipeline;
 	Shader shader;
-	std::vector<Vertex> vertices;
+	std::vector<ScreenVertex> vertices;
 	UINT indexSize;
 	unsigned short indices[6];
 public:

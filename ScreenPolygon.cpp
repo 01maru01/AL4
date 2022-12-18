@@ -3,17 +3,11 @@
 
 ScreenPolygon::ScreenPolygon()
 {
-	HRESULT result;
-
-	//pv[0] = { {-0.5f,-0.5f,0.0f},{},{0,1} };
-	//pv[1] = { {-0.5f, 0.5f,0.0f},{},{0,0} };
-	//pv[2] = { { 0.5f,-0.5f,0.0f},{},{1,1} };
-	//pv[3] = { { 0.5f, 0.5f,0.0f},{},{1,0} };
 	vertices.clear();
-	vertices.push_back({ {-1.0f,-1.0f,0.0f},{},{0,1} });
-	vertices.push_back({ {-1.0f, 1.0f,0.0f},{},{0,0} });
-	vertices.push_back({ { 1.0f,-1.0f,0.0f},{},{1,1} });
-	vertices.push_back({ { 1.0f, 1.0f,0.0f},{},{1,0} });
+	vertices.push_back({ {-1.0f,-1.0f,0.0f},{0,1} });
+	vertices.push_back({ {-1.0f, 1.0f,0.0f},{0,0} });
+	vertices.push_back({ { 1.0f,-1.0f,0.0f},{1,1} });
+	vertices.push_back({ { 1.0f, 1.0f,0.0f},{1,0} });
 	
 	UINT sizePV = static_cast<UINT>(sizeof(vertices[0]) * vertices.size());
 	indexSize = 6;
@@ -29,10 +23,9 @@ ScreenPolygon::ScreenPolygon()
 
 	D3D12_INPUT_ELEMENT_DESC inputLayout[] = {
 		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,	D3D12_APPEND_ALIGNED_ELEMENT,	D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},		//	xyz座標
-		{"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,	D3D12_APPEND_ALIGNED_ELEMENT,	D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},		//	法線ベクトル
 		{"TEXCOORD",0,DXGI_FORMAT_R32G32_FLOAT,0,D3D12_APPEND_ALIGNED_ELEMENT,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0},				//	uv座標
 	};
-	shader.Init(L"Resources/shader/VShader.hlsl", L"Resources/shader/PShader.hlsl");
+	shader.Init(L"Resources/shader/ScreenVS.hlsl", L"Resources/shader/ScreenPS.hlsl");
 	pipeline.Init(MyDirectX::GetInstance()->GetDev(), shader, inputLayout, _countof(inputLayout), D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE
 		, D3D12_FILL_MODE_SOLID, D3D12_CULL_MODE_NONE);
 }
@@ -56,7 +49,7 @@ void ScreenPolygon::SetVertices()
 
 	//	GPUメモリの値書き換えよう
 	// GPU上のバッファに対応した仮想メモリ(メインメモリ上)を取得
-	Vertex* vertMap = nullptr;
+	ScreenVertex* vertMap = nullptr;
 	HRESULT result = vertBuff->Map(0, nullptr, (void**)&vertMap);
 	assert(SUCCEEDED(result));
 	// 全頂点に対して
