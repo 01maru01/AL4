@@ -43,12 +43,9 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	//Shader bilShader(L"Resources/shader/VShader.hlsl", L"Resources/shader/PShader.hlsl");
 	Shader objShader(L"Resources/shader/ObjVS.hlsl", L"Resources/shader/ObjPS.hlsl");
 	//	描画初期化
-	//SceneManager sceneMan;
-	//sceneMan.Initialize();
+	SceneManager sceneMan;
+	sceneMan.Initialize();
 #pragma region OrthoProjection
-	//Square screen(dx->GetDev(), bilShader);
-	//screen.trans.z = 0.1f;
-	//screen.scale = { Window::window_width / 2,Window::window_height / 2,0.2f };
 	ScreenPolygon screen;
 #pragma endregion
 	MyMath::MatView matView;
@@ -76,7 +73,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 	AssimpModel fbxModel(modelpipeline.get());
 	fbxModel.Initialize(L"Assets/Alicia/FBX/Alicia_solid_Unity.FBX");
-	bool mordFBX = false;
 	//	ゲームループ
 	while (true)
 	{
@@ -87,12 +83,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 #pragma region Update
 		//sceneMan.Update();
-		if (input->GetTrigger(DIK_SPACE)) {
-			mordFBX = !mordFBX;
-		}
 
 		debugcamera.Update();
-		//screen.MatUpdate(matView.mat, orthoProjection);
 		
 		ground.MatUpdate(debugcamera.mat, matProjection);
 		skydome.MatUpdate(debugcamera.mat, matProjection);
@@ -112,14 +104,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		ground.Draw();
 		skydome.Draw();
 
-		if (mordFBX) {
-			fbxModel.Draw();
-		}
-		else {
-			sprite->Draw(reimu);
-			cat.Draw();
-			skull.Draw();
-		}
+
 
 		// 描画コマンド
 

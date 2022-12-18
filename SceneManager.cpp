@@ -23,7 +23,7 @@ void SceneManager::Draw()
 #pragma region MultiPath
 	dx->PrevDraw();
 
-	//screen.Draw(dx->GetCmdList(), dx->GetTextureHandle(0));
+	screen.Draw();
 
 	dx->PostDraw();
 #pragma endregion
