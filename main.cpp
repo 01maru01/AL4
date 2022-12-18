@@ -68,6 +68,13 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	skull.mat.rotAngle.y = MyMath::PI;
 	skull.mat.trans.x = -2.0f;
 
+	Model sphere(dx, objShader, "sphere", modelpipeline.get());
+	sphere.mat.trans.x = -1.0f;
+	sphere.mat.trans.y = 1.0f;
+	Model sword(dx, objShader, "chr_sword", modelpipeline.get());
+	sword.mat.trans.x = 1.0f;
+	sword.mat.rotAngle.y = MyMath::PI;
+
 	std::unique_ptr<Sprite> sprite(new Sprite);
 	sprite->Initialize();
 
@@ -88,8 +95,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		
 		ground.MatUpdate(debugcamera.mat, matProjection);
 		skydome.MatUpdate(debugcamera.mat, matProjection);
-		cat.MatUpdate(debugcamera.mat, matProjection);
-		skull.MatUpdate(debugcamera.mat, matProjection);
+		sphere.MatUpdate(debugcamera.mat, matProjection);
+		sword.MatUpdate(debugcamera.mat, matProjection);
 		fbxModel.MatUpdate(debugcamera.mat, matProjection);
 
 		sprite->MatUpdate();
@@ -104,7 +111,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		ground.Draw();
 		skydome.Draw();
 
-
+		sphere.Draw();
+		sword.Draw();
 
 		// •`‰æƒRƒ}ƒ“ƒh
 
