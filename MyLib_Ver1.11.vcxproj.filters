@@ -76,6 +76,9 @@
     <Filter Include="リソース ファイル\SpriteShader">
       <UniqueIdentifier>{99634278-35ae-4d91-b345-cfc16641b87d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="リソース ファイル\ScreenShader">
+      <UniqueIdentifier>{ff9620a1-dd83-45e4-bcf1-c7ba4f3beded}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Matrix.cpp">
@@ -184,7 +187,7 @@
       <Filter>ソース ファイル\lib\Scene</Filter>
     </ClCompile>
     <ClCompile Include="ScreenPolygon.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\lib\Sprite</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -291,7 +294,7 @@
       <Filter>ヘッダー ファイル\lib\Scene</Filter>
     </ClInclude>
     <ClInclude Include="ScreenPolygon.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\lib\Sprite</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -305,16 +308,10 @@
       <Filter>リソース ファイル\SpriteShader</Filter>
     </None>
     <None Include="Resources\shader\ScreenHeader.hlsli">
-      <Filter>リソース ファイル</Filter>
+      <Filter>リソース ファイル\ScreenShader</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Resources\shader\ScreenPS.hlsl">
-      <Filter>リソース ファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shader\ScreenVS.hlsl">
-      <Filter>リソース ファイル</Filter>
-    </FxCompile>
     <FxCompile Include="Resources\shader\BasicPS.hlsl">
       <Filter>リソース ファイル\Basic</Filter>
     </FxCompile>
@@ -332,6 +329,12 @@
     </FxCompile>
     <FxCompile Include="Resources\shader\SpriteVS.hlsl">
       <Filter>リソース ファイル\SpriteShader</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shader\ScreenPS.hlsl">
+      <Filter>リソース ファイル\ScreenShader</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shader\ScreenVS.hlsl">
+      <Filter>リソース ファイル\ScreenShader</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>
