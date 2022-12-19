@@ -29,10 +29,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 	SceneManager sceneMan;
 	sceneMan.Initialize();
-
-	//AssimpModel fbxModel(modelpipeline.get());
-	//fbxModel.Initialize(L"Assets/Alicia/FBX/Alicia_solid_Unity.FBX");
-	
 	//	ÉQÅ[ÉÄÉãÅ[Év
 	while (true)
 	{
