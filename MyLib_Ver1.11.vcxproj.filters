@@ -190,7 +190,7 @@
       <Filter>ソース ファイル\lib\Sprite</Filter>
     </ClCompile>
     <ClCompile Include="Light.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\lib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -300,7 +300,7 @@
       <Filter>ヘッダー ファイル\lib\Sprite</Filter>
     </ClInclude>
     <ClInclude Include="Light.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\lib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
