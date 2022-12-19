@@ -153,7 +153,7 @@ void GPipeline::Init(ID3D12Device* dev, Shader shader, D3D12_INPUT_ELEMENT_DESC*
 	pipelineDesc.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;		//	書き込み許可
 	pipelineDesc.DSVFormat = DXGI_FORMAT_D32_FLOAT;									//	深度フォーマット
 
-	SetRootSignature(dev, 3);
+	SetRootSignature(dev, 4);
 
 	// パイプラインにルートシグネチャをセット
 	pipelineDesc.pRootSignature = rootSignature.Get();
@@ -236,6 +236,7 @@ void GPipeline::SetRootSignature(ID3D12Device* dev, UINT rootParamNum)
 	SetRootParam(rootParams[0], D3D12_ROOT_PARAMETER_TYPE_CBV, 0, 0);
 	SetRootParam(rootParams[1], D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE, descriptorRange, 1);
 	SetRootParam(rootParams[2], D3D12_ROOT_PARAMETER_TYPE_CBV, 1, 0);
+	SetRootParam(rootParams[3], D3D12_ROOT_PARAMETER_TYPE_CBV, 2, 0);
 #pragma endregion
 
 #pragma region sampler

@@ -20,6 +20,7 @@
 
 #include "SceneManager.h"
 #include "ScreenPolygon.h"
+#include "Light.h"
 
 int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 {
@@ -39,6 +40,10 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 	SpriteCommon* spriteCommon = SpriteCommon::GetInstance();
 
+	Light* light = nullptr;
+	light = light->Create();
+	light->SetLightColor({ 1,1,1 });
+
 	Shader shader(L"Resources/shader/BasicVS.hlsl", L"Resources/shader/BasicPS.hlsl");
 	//Shader bilShader(L"Resources/shader/VShader.hlsl", L"Resources/shader/PShader.hlsl");
 	Shader objShader(L"Resources/shader/ObjVS.hlsl", L"Resources/shader/ObjPS.hlsl");
@@ -56,6 +61,9 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 	std::unique_ptr<GPipeline> pipeline(new GPipeline(dx->GetDev(), shader));
 	std::unique_ptr<GPipeline> modelpipeline(new GPipeline(dx->GetDev(), objShader));
+
+	Model::SetLight(light);
+
 	Model ground(dx , shader, "ground", modelpipeline.get());
 	Model skydome(dx , shader, "skydome", modelpipeline.get());
 	Model cat(dx, objShader, "12161_Cat_v1_L2", modelpipeline.get());
@@ -68,7 +76,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	skull.mat.rotAngle.y = MyMath::PI;
 	skull.mat.trans.x = -2.0f;
 
-	Model sphere(dx, objShader, "sphere", modelpipeline.get());
+	Model sphere(dx, objShader, "sphere", modelpipeline.get(), true);
 	sphere.mat.trans.x = -1.0f;
 	sphere.mat.trans.y = 1.0f;
 	Model sword(dx, objShader, "chr_sword", modelpipeline.get());
@@ -90,13 +98,15 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 #pragma region Update
 		//sceneMan.Update();
+		light->Update();
 
 		debugcamera.Update();
+		sphere.mat.rotAngle.y += 0.1f;
 		
-		ground.MatUpdate(debugcamera.mat, matProjection);
-		skydome.MatUpdate(debugcamera.mat, matProjection);
-		sphere.MatUpdate(debugcamera.mat, matProjection);
-		sword.MatUpdate(debugcamera.mat, matProjection);
+		ground.MatUpdate(debugcamera.mat, matProjection, debugcamera.eye);
+		skydome.MatUpdate(debugcamera.mat, matProjection, debugcamera.eye);
+		sphere.MatUpdate(debugcamera.mat, matProjection, debugcamera.eye);
+		sword.MatUpdate(debugcamera.mat, matProjection, debugcamera.eye);
 		fbxModel.MatUpdate(debugcamera.mat, matProjection);
 
 		sprite->MatUpdate();

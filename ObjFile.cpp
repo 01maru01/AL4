@@ -153,7 +153,29 @@ void ObjFile::LoadMaterial(const std::string& directoryPath, const std::string& 
 	file.close();
 }
 
-ObjFile::ObjFile(const string modelname, std::vector<Vertex>& out_vertices, Material& mtl)
+void ObjFile::AddSmoothData(unsigned short index, unsigned short vertex)
+{
+	smoothData[index].emplace_back(vertex);
+}
+
+void ObjFile::CalcSmoothedVertexNormals(std::vector<Vertex>& vertices)
+{
+	auto itr = smoothData.begin();
+	for (; itr != smoothData.end(); ++itr) {
+		std::vector<unsigned short>& v = itr->second;
+		Vector3D normal;
+		for (unsigned short index : v) {
+			normal += vertices[index].normal;
+		}
+		normal /= (float)v.size();
+		normal.normalize();
+		for (unsigned short index : v) {
+			vertices[index].normal = normal;
+		}
+	}
+}
+
+ObjFile::ObjFile(const string modelname, std::vector<Vertex>& out_vertices, Material& mtl, bool smoothing)
 {
 	std::vector<unsigned short> vertexIndices, uvIndices, normalIndices;
 	std::vector<Vector3D> temp_poss;
@@ -222,10 +244,19 @@ ObjFile::ObjFile(const string modelname, std::vector<Vertex>& out_vertices, Mate
 				vertex.pos = temp_poss[indexPos - 1];
 				vertex.normal = temp_normals[indexNormal - 1];
 				vertex.uv = temp_uvs[indexUV - 1];
+
 				out_vertices.emplace_back(vertex);
+
+				if (smoothing) {
+					AddSmoothData(indexPos, (unsigned short)out_vertices.size() - 1);
+				}
 			}
 		}
 	}
 
 	file_.close();
+
+	if (smoothing) {
+		CalcSmoothedVertexNormals(out_vertices);
+	}
 }

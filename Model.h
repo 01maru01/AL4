@@ -4,6 +4,7 @@
 #include "GPipeline.h"
 #include "VertBuff.h"
 #include "Material.h"
+#include "Light.h"
 
 class Model :public VertBuff
 {
@@ -12,13 +13,16 @@ private:
 	
 	MyDirectX* dx = nullptr;
 	GPipeline* pipeline = nullptr;
+	static Light* light;
 
 	Material mtl;
 public:
 	MyMath::ObjMatrix mat;
 
 	struct ConstBufferDataTransform {
-		Matrix mat;
+		Matrix matview;
+		Matrix matworld;
+		Vector3D cameraPos;
 	};
 	ComPtr<ID3D12Resource> transform;
 	ConstBufferDataTransform* constMapTransform = nullptr;
@@ -42,10 +46,12 @@ public:
 
 	int textureHandle;
 
-	void Initialize(Shader shader, const char* filename);
+	void Initialize(Shader shader, const char* filename, bool smoothing);
 public:
-	Model(MyDirectX* dx_, Shader shader, const char* filename, GPipeline* pipeline_);
-	void MatUpdate(Matrix matView, Matrix matProjection);
+	static void SetLight(Light* light);
+public:
+	Model(MyDirectX* dx_, Shader shader, const char* filename, GPipeline* pipeline_, bool smoothing = false);
+	void MatUpdate(Matrix matView, Matrix matProjection, const Vector3D& cameraPos);
 	void Draw();
 private:
 	void SetVertices() override;

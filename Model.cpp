@@ -1,7 +1,9 @@
 #include "Model.h"
 #include "ObjFile.h"
 
-void Model::Initialize(Shader shader, const char* filename)
+Light* Model::light = nullptr;
+
+void Model::Initialize(Shader shader, const char* filename, bool smoothing)
 {
 	HRESULT result;
 
@@ -48,7 +50,7 @@ void Model::Initialize(Shader shader, const char* filename)
 	result = material->Map(0, nullptr, (void**)&constMapMaterial);	//	マッピング
 	assert(SUCCEEDED(result));
 #pragma endregion
-	ObjFile objfile(filename, vertices, mtl);
+	ObjFile objfile(filename, vertices, mtl, smoothing);
 
 	constMapMaterial->ambient = mtl.ambient;
 	constMapMaterial->diffuse = mtl.diffuse;
@@ -68,22 +70,28 @@ void Model::Initialize(Shader shader, const char* filename)
 #pragma endregion
 }
 
-Model::Model(MyDirectX* dx_, Shader shader, const char* filename, GPipeline* pipeline_)
+void Model::SetLight(Light* light)
+{
+	Model::light = light;
+}
+
+Model::Model(MyDirectX* dx_, Shader shader, const char* filename, GPipeline* pipeline_, bool smoothing)
 {
 	dx = dx_;
 	pipeline = pipeline_;
-	Initialize(shader,filename);
+	Initialize(shader,filename, smoothing);
 }
 
-void Model::MatUpdate(Matrix matView, Matrix matProjection)
+void Model::MatUpdate(Matrix matView, Matrix matProjection, const Vector3D& cameraPos)
 {
 #pragma region WorldMatrix
 	mat.Update();
 #pragma endregion
 
-	constMapTransform->mat = mat.matWorld;
-	constMapTransform->mat *= matView;
-	constMapTransform->mat *= matProjection;
+	constMapTransform->matworld = mat.matWorld;
+	constMapTransform->matview = matView;
+	constMapTransform->matview *= matProjection;
+	constMapTransform->cameraPos = cameraPos;
 }
 
 void Model::Draw()
@@ -95,6 +103,7 @@ void Model::Draw()
 	MyDirectX::GetInstance()->GetCmdList()->SetGraphicsRootConstantBufferView(0, material->GetGPUVirtualAddress());
 	MyDirectX::GetInstance()->GetCmdList()->SetGraphicsRootDescriptorTable(1, dx->GetTextureHandle(textureHandle));
 	MyDirectX::GetInstance()->GetCmdList()->SetGraphicsRootConstantBufferView(2, transform->GetGPUVirtualAddress());
+	light->Draw();
 
 	MyDirectX::GetInstance()->GetCmdList()->DrawInstanced(vertexSize, 1, 0, 0);
 	//cmdList->DrawIndexedInstanced(indexSize, 1, 0, 0, 0);
