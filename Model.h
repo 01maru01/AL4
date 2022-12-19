@@ -11,8 +11,9 @@ class Model :public VertBuff
 private:
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	
-	MyDirectX* dx = nullptr;
 	GPipeline* pipeline = nullptr;
+
+	static MyDirectX* dx;
 	static Light* light;
 
 	Material mtl;
@@ -46,11 +47,12 @@ public:
 
 	int textureHandle;
 
-	void Initialize(Shader shader, const char* filename, bool smoothing);
+	void Initialize(const char* filename, bool smoothing);
 public:
 	static void SetLight(Light* light);
 public:
-	Model(MyDirectX* dx_, Shader shader, const char* filename, GPipeline* pipeline_, bool smoothing = false);
+	Model() {};
+	Model(const char* filename, GPipeline* pipeline_, bool smoothing = false);
 	void MatUpdate(Matrix matView, Matrix matProjection, const Vector3D& cameraPos);
 	void Draw();
 private:

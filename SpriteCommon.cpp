@@ -25,7 +25,7 @@ void SpriteCommon::Initialize()
 		{"TEXCOORD",0,DXGI_FORMAT_R32G32_FLOAT,0,D3D12_APPEND_ALIGNED_ELEMENT,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0},				//	uvç¿ïW
 	};
 
-	shader.Init(L"Resources/shader/SpriteVS.hlsl", L"Resources/shader/SpritePS.hlsl");
+	shader.Initialize(L"Resources/shader/SpriteVS.hlsl", L"Resources/shader/SpritePS.hlsl");
 	pipeline.Init(dev, shader, inputLayout, _countof(inputLayout), D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE, D3D12_FILL_MODE_SOLID, D3D12_CULL_MODE_NONE, false);
 	pipeline.SetBlend(dev, GPipeline::ALPHA_BLEND);
 

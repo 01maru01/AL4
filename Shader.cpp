@@ -2,16 +2,12 @@
 #include <string>
 #include <cassert>
 
-Shader::Shader()
-{
-}
-
 Shader::Shader(LPCWSTR VSFileName, LPCWSTR PSFileName, LPCSTR pEntryPoint,LPCWSTR GSFileName, LPCWSTR DSFileName, LPCWSTR HSFileName)
 {
-	Init(VSFileName, PSFileName, pEntryPoint, GSFileName, DSFileName, HSFileName);
+	Initialize(VSFileName, PSFileName, pEntryPoint, GSFileName, DSFileName, HSFileName);
 }
 
-void Shader::Init(LPCWSTR VSFileName, LPCWSTR PSFileName, LPCSTR pEntryPoint, LPCWSTR GSFileName, LPCWSTR DSFileName, LPCWSTR HSFileName)
+void Shader::Initialize(LPCWSTR VSFileName, LPCWSTR PSFileName, LPCSTR pEntryPoint, LPCWSTR GSFileName, LPCWSTR DSFileName, LPCWSTR HSFileName)
 {
 #pragma region VertexShader
 	//	頂点シェーダファイル読み込み＆コンパイル

@@ -21,6 +21,17 @@ MyXAudio::~MyXAudio()
 	}
 }
 
+MyXAudio* MyXAudio::GetInstance()
+{
+	static MyXAudio* instance = new MyXAudio;
+	return instance;
+}
+
+void MyXAudio::DeleteInstance()
+{
+	delete MyXAudio::GetInstance();
+}
+
 int MyXAudio::SoundLoadWave(const char* filename)
 {
 	std::ifstream file;

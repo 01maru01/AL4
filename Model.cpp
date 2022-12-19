@@ -2,8 +2,9 @@
 #include "ObjFile.h"
 
 Light* Model::light = nullptr;
+MyDirectX* Model::dx = MyDirectX::GetInstance();
 
-void Model::Initialize(Shader shader, const char* filename, bool smoothing)
+void Model::Initialize(const char* filename, bool smoothing)
 {
 	HRESULT result;
 
@@ -56,13 +57,12 @@ void Model::Initialize(Shader shader, const char* filename, bool smoothing)
 	constMapMaterial->diffuse = mtl.diffuse;
 	constMapMaterial->specular = mtl.specular;
 	constMapMaterial->alpha = mtl.alpha;
+	material->Unmap(0, nullptr);
+
 	textureHandle = dx->LoadTextureGraph(mtl.wfilepath);
 	vertexSize = vertices.size();
-	//indexSize = indices.size();
 	// 頂点データ全体のサイズ = 頂点データ一つ分のサイズ * 頂点データの要素数
 	UINT sizeVB = static_cast<UINT>(sizeof(vertices[0]) * vertexSize);
-	//	全体のサイズ
-	//UINT sizeIB = static_cast<UINT>(sizeof(uint16_t) * indexSize);
 
 	VBInitialize(dx->GetDev(), sizeVB, vertexSize);
 #pragma region  WorldMatrix初期値
@@ -75,11 +75,10 @@ void Model::SetLight(Light* light)
 	Model::light = light;
 }
 
-Model::Model(MyDirectX* dx_, Shader shader, const char* filename, GPipeline* pipeline_, bool smoothing)
+Model::Model(const char* filename, GPipeline* pipeline_, bool smoothing)
 {
-	dx = dx_;
 	pipeline = pipeline_;
-	Initialize(shader,filename, smoothing);
+	Initialize(filename, smoothing);
 }
 
 void Model::MatUpdate(Matrix matView, Matrix matProjection, const Vector3D& cameraPos)
@@ -96,17 +95,16 @@ void Model::MatUpdate(Matrix matView, Matrix matProjection, const Vector3D& came
 
 void Model::Draw()
 {
-	pipeline->Setting(MyDirectX::GetInstance()->GetCmdList());
-	pipeline->Update(MyDirectX::GetInstance()->GetCmdList(), D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	VertBuffUpdate(MyDirectX::GetInstance()->GetCmdList());
+	pipeline->Setting(dx->GetCmdList());
+	pipeline->Update(dx->GetCmdList(), D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	VertBuffUpdate(dx->GetCmdList());
 	//	テクスチャ
-	MyDirectX::GetInstance()->GetCmdList()->SetGraphicsRootConstantBufferView(0, material->GetGPUVirtualAddress());
-	MyDirectX::GetInstance()->GetCmdList()->SetGraphicsRootDescriptorTable(1, dx->GetTextureHandle(textureHandle));
-	MyDirectX::GetInstance()->GetCmdList()->SetGraphicsRootConstantBufferView(2, transform->GetGPUVirtualAddress());
+	dx->GetCmdList()->SetGraphicsRootConstantBufferView(0, material->GetGPUVirtualAddress());
+	dx->GetCmdList()->SetGraphicsRootDescriptorTable(1, dx->GetTextureHandle(textureHandle));
+	dx->GetCmdList()->SetGraphicsRootConstantBufferView(2, transform->GetGPUVirtualAddress());
 	light->Draw();
 
-	MyDirectX::GetInstance()->GetCmdList()->DrawInstanced(vertexSize, 1, 0, 0);
-	//cmdList->DrawIndexedInstanced(indexSize, 1, 0, 0, 0);
+	dx->GetCmdList()->DrawInstanced(vertexSize, 1, 0, 0);
 }
 
 void Model::SetVertices()

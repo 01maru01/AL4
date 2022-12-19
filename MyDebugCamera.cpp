@@ -1,10 +1,18 @@
 #include "MyDebugCamera.h"
 
-MyDebugCamera::MyDebugCamera(Vector3D _eye, Vector3D _target, Vector3D _up)
+MyDebugCamera::MyDebugCamera()
 {
 	input = Input::GetInstance();
+}
 
-	Init(_eye, _target, _up);
+void MyDebugCamera::Initialize(Vector3D _eye, Vector3D _target, Vector3D _up)
+{
+	eye = _eye;
+	target = _target;
+	up = _up;
+
+	MatUpdate();
+
 	frontVec = target - eye;
 	disEyeTarget = frontVec.length();
 }
@@ -68,24 +76,7 @@ void MyDebugCamera::Update()
 	MatUpdate();
 }
 
-void MyDebugCamera::Init(Vector3D _eye, Vector3D _target, Vector3D _up)
-{
-	eye = _eye;
-	target = _target;
-	up = _up;
-
-	MatUpdate();
-}
-
 void MyDebugCamera::MatUpdate()
 {
 	mat = MyMath::LookAtLH(eye, target, up);
-}
-
-void MyDebugCamera::Move(float camerapos)
-{
-	eye.x = camerapos;
-	target.x = camerapos;
-
-	MatUpdate();
 }

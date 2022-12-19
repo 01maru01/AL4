@@ -25,13 +25,15 @@ private:
 
 	Vector3D rightVec;
 	Vector3D downVec;
+
 public:
-	MyDebugCamera(Vector3D _eye, Vector3D _target, Vector3D _up);
+	MyDebugCamera();
+
+	void Initialize(Vector3D _eye, Vector3D _target, Vector3D _up);
 	void Update();
-	void Init(Vector3D _eye, Vector3D _target, Vector3D _up);
 	void MatUpdate();
+
 	Vector3D Transfrom() { return eye; }
 	Vector3D FrontVec() { return frontVec; }
-	void Move(float camerapos);
 };
 

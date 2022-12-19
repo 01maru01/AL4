@@ -89,6 +89,11 @@ void Sprite::Initialize()
 	color = { 1.0f,1.0f,1.0f,1.0f };
 }
 
+Sprite::Sprite()
+{
+	Initialize();
+}
+
 void Sprite::MatUpdate()
 {
 #pragma region WorldMatrix
