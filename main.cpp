@@ -6,8 +6,6 @@
 #include "SceneManager.h"
 #include "Light.h"
 
-#include "AssimpModel.h"
-
 int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 {
 #pragma region Initialize
@@ -27,13 +25,10 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	light = light->Create();
 	light->SetLightDir({ 0,0,1 });
 	light->SetLightColor({ 1,1,1 });
+	Model::SetLight(light);
 
 	SceneManager sceneMan;
 	sceneMan.Initialize();
-	
-	//Matrix orthoProjection = MyMath::OrthoLH(Window::window_width, Window::window_height, 0.1f, 1000.0f);
-
-	Model::SetLight(light);
 
 	//AssimpModel fbxModel(modelpipeline.get());
 	//fbxModel.Initialize(L"Assets/Alicia/FBX/Alicia_solid_Unity.FBX");
@@ -55,6 +50,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		sceneMan.Draw();
 #pragma endregion Draw
 	}
+	delete light;
 	SpriteCommon::DeleteInstance();
 	Input::DeleteInstance();
 	MyXAudio::DeleteInstance();

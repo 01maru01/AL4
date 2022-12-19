@@ -46,6 +46,12 @@ void GameScene::LoadResources()
 	sword = std::make_unique<Model>("chr_sword", modelpipeline.get());
 #pragma endregion
 
+#pragma region AssimpModel
+	fbxModel = std::make_unique<AssimpModel>(modelpipeline.get());
+	fbxModel->Initialize(L"Assets/Alicia/FBX/Alicia_solid_Unity.FBX");
+#pragma endregion
+
+
 #pragma region Sprite
 	sprite = std::make_unique<Sprite>();
 #pragma endregion

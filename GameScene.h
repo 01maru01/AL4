@@ -5,6 +5,7 @@
 #include "MyDebugCamera.h"
 #include "Shader.h"
 #include "Model.h"
+#include "AssimpModel.h"
 #include "Sprite.h"
 
 class GameScene :public IScene
@@ -23,6 +24,7 @@ private:
 	std::unique_ptr<Model> ground;
 	std::unique_ptr<Model> sphere;
 	std::unique_ptr<Model> sword;
+	std::unique_ptr<AssimpModel> fbxModel;
 #pragma endregion
 
 #pragma region Sprite
