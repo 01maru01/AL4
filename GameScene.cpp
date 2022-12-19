@@ -37,6 +37,10 @@ void GameScene::Initialize()
 	sword->mat.rotAngle.y = MyMath::PI;
 }
 
+void GameScene::Finalize()
+{
+}
+
 void GameScene::LoadResources()
 {
 #pragma region Model

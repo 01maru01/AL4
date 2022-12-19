@@ -27,8 +27,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	light->SetLightColor({ 1,1,1 });
 	Model::SetLight(light);
 
-	SceneManager sceneMan;
-	sceneMan.Initialize();
+	SceneManager* sceneMan = SceneManager::GetInstance();
+	sceneMan->Initialize();
 	//	ƒQ[ƒ€ƒ‹[ƒv
 	while (true)
 	{
@@ -39,14 +39,15 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 #pragma region Update
 		input->Update();
 		light->Update();
-		sceneMan.Update();
+		sceneMan->Update();
 #pragma endregion
 
 #pragma region Draw
-		sceneMan.Draw();
+		sceneMan->Draw();
 #pragma endregion Draw
 	}
 	delete light;
+	SceneManager::DeleteInstance();
 	SpriteCommon::DeleteInstance();
 	Input::DeleteInstance();
 	MyXAudio::DeleteInstance();

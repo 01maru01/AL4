@@ -39,6 +39,7 @@ public:
 	GameScene();
 	~GameScene() override;
 	void Initialize() override;
+	void Finalize() override;
 	void LoadResources() override;
 	void Update() override;
 	void Draw() override;
