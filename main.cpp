@@ -42,6 +42,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 	Light* light = nullptr;
 	light = light->Create();
+	light->SetLightDir({ 0,0,1 });
 	light->SetLightColor({ 1,1,1 });
 
 	Shader shader(L"Resources/shader/BasicVS.hlsl", L"Resources/shader/BasicPS.hlsl");
@@ -79,7 +80,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	Model sphere(dx, objShader, "sphere", modelpipeline.get(), true);
 	sphere.mat.trans.x = -1.0f;
 	sphere.mat.trans.y = 1.0f;
-	Model sword(dx, objShader, "chr_sword", modelpipeline.get());
+	Model sword(dx, objShader, "chr_sword", modelpipeline.get(), true);
 	sword.mat.trans.x = 1.0f;
 	sword.mat.rotAngle.y = MyMath::PI;
 
