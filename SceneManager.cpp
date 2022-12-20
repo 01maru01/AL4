@@ -4,6 +4,8 @@ SceneManager::~SceneManager()
 {
 	scene->Finalize();
 	delete scene;
+	imguiMan->Finalize();
+	delete imguiMan;
 }
 
 SceneManager* SceneManager::GetInstance()
@@ -21,6 +23,9 @@ void SceneManager::Initialize()
 {
 	scene = sceneFactry->CreateScene("GAMESCENE");
 	scene->Initialize();
+
+	imguiMan = new ImGuiManager();
+	imguiMan->Initialize();
 }
 
 void SceneManager::Update()
@@ -36,6 +41,9 @@ void SceneManager::Update()
 		scene->Initialize();
 	}
 	scene->Update();
+
+	imguiMan->Begin();
+	imguiMan->End();
 }
 
 void SceneManager::Draw()
@@ -53,6 +61,7 @@ void SceneManager::Draw()
 
 	screen.Draw();
 
+	imguiMan->Draw();
 	dx->PostDraw();
 #pragma endregion
 }

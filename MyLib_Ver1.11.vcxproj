@@ -20,6 +20,7 @@
     <ClCompile Include="DrawSphere.cpp" />
     <ClCompile Include="Easing.cpp" />
     <ClCompile Include="GameScene.cpp" />
+    <ClCompile Include="ImGuiManager.cpp" />
     <ClCompile Include="IScene.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="Material.cpp" />
@@ -61,6 +62,7 @@
     <ClInclude Include="DrawSphere.h" />
     <ClInclude Include="Easing.h" />
     <ClInclude Include="GameScene.h" />
+    <ClInclude Include="ImGuiManager.h" />
     <ClInclude Include="IScene.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Material.h" />

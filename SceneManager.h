@@ -3,6 +3,7 @@
 #include "DirectX.h"
 #include "ScreenPolygon.h"
 #include "SceneFactory.h"
+#include "ImGuiManager.h"
 
 class SceneManager
 {
@@ -11,6 +12,7 @@ private:
 	IScene* scene = nullptr;
 	IScene* nextScene = nullptr;
 	AbstractSceneFactory* sceneFactry = new SceneFactory();
+	ImGuiManager* imguiMan = nullptr;
 
 	ScreenPolygon screen;
 
