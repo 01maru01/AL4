@@ -193,8 +193,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(ProjectDir)lib\assimp\include;$(VC_IncludePath);$(SolutionDir)DirectXTex;$(SolutionDir)imgui</IncludePath>
-    <LibraryPath>$(ProjectDir)lib\assimp\lib;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
+    <IncludePath>$(ProjectDir)lib\assimp\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)DirectXTex;$(SolutionDir)imgui</IncludePath>
+    <LibraryPath>$(ProjectDir)lib\assimp\lib;$(LibraryPath);</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -220,6 +220,7 @@
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>Default</LanguageStandard>
+      <Optimization>MaxSpeed</Optimization>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
