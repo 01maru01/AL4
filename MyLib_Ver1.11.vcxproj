@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AbstractSceneFactory.cpp" />
     <ClCompile Include="AssimpLoader.cpp" />
     <ClCompile Include="AssimpModel.cpp" />
     <ClCompile Include="ConstBuff.cpp" />
@@ -34,6 +35,7 @@
     <ClCompile Include="Object2D.cpp" />
     <ClCompile Include="Object3D.cpp" />
     <ClCompile Include="ObjFile.cpp" />
+    <ClCompile Include="SceneFactory.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="ScissorRect.cpp" />
     <ClCompile Include="ScreenPolygon.cpp" />
@@ -50,6 +52,7 @@
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AbstractSceneFactory.h" />
     <ClInclude Include="AssimpLoader.h" />
     <ClInclude Include="AssimpModel.h" />
     <ClInclude Include="ConstBuff.h" />
@@ -72,6 +75,7 @@
     <ClInclude Include="Object2D.h" />
     <ClInclude Include="Object3D.h" />
     <ClInclude Include="ObjFile.h" />
+    <ClInclude Include="SceneFactory.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="ScissorRect.h" />
     <ClInclude Include="ScreenPolygon.h" />

@@ -3,13 +3,15 @@
 #include "DirectX.h"
 #include "ScreenPolygon.h"
 #include "GameScene.h"
+#include "SceneFactory.h"
 
 class SceneManager
 {
 private:
 	MyDirectX* dx = MyDirectX::GetInstance();
-	IScene* scene = new GameScene();
+	IScene* scene = nullptr;
 	IScene* nextScene = nullptr;
+	AbstractSceneFactory* sceneFactry = new SceneFactory();
 
 	ScreenPolygon screen;
 
