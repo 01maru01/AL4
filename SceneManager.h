@@ -2,7 +2,6 @@
 #include "IScene.h"
 #include "DirectX.h"
 #include "ScreenPolygon.h"
-#include "GameScene.h"
 #include "SceneFactory.h"
 
 class SceneManager
