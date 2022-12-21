@@ -46,9 +46,6 @@
     <Filter Include="ソース ファイル\lib\Obj">
       <UniqueIdentifier>{f538b9ee-37be-482b-b8e5-7f7c3ce1d851}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\lib\Model">
-      <UniqueIdentifier>{37cd1151-b7de-40d3-821e-db1624a514da}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\lib\Sprite">
       <UniqueIdentifier>{3fed765f-d9dd-4872-8744-fb1e79dc8549}</UniqueIdentifier>
     </Filter>
@@ -78,6 +75,9 @@
     </Filter>
     <Filter Include="リソース ファイル\ScreenShader">
       <UniqueIdentifier>{ff9620a1-dd83-45e4-bcf1-c7ba4f3beded}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\lib\Model">
+      <UniqueIdentifier>{37cd1151-b7de-40d3-821e-db1624a514da}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -201,6 +201,9 @@
     <ClCompile Include="SceneFactory.cpp">
       <Filter>ソース ファイル\lib</Filter>
     </ClCompile>
+    <ClCompile Include="Quaternion.cpp">
+      <Filter>ソース ファイル\lib\Math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="InputJoypad.h">
@@ -319,6 +322,9 @@
     </ClInclude>
     <ClInclude Include="ImGuiManager.h">
       <Filter>ヘッダー ファイル\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="Quaternion.h">
+      <Filter>ヘッダー ファイル\lib\Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

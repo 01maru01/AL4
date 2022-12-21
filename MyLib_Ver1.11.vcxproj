@@ -36,6 +36,7 @@
     <ClCompile Include="Object2D.cpp" />
     <ClCompile Include="Object3D.cpp" />
     <ClCompile Include="ObjFile.cpp" />
+    <ClCompile Include="Quaternion.cpp" />
     <ClCompile Include="SceneFactory.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="ScissorRect.cpp" />
@@ -77,6 +78,7 @@
     <ClInclude Include="Object2D.h" />
     <ClInclude Include="Object3D.h" />
     <ClInclude Include="ObjFile.h" />
+    <ClInclude Include="Quaternion.h" />
     <ClInclude Include="SceneFactory.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="ScissorRect.h" />
