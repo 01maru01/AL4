@@ -12,6 +12,17 @@ InputJoypad::~InputJoypad()
     //XInputEnable(false);
 }
 
+InputJoypad* InputJoypad::GetInstance()
+{
+    static InputJoypad* instance = new InputJoypad;
+    return instance;
+}
+
+void InputJoypad::DeleteInstance()
+{
+    delete InputJoypad::GetInstance();
+}
+
 void InputJoypad::Update()
 {
 	prevState = state;

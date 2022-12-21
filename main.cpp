@@ -1,6 +1,7 @@
 #include "Window.h"
 #include "DirectX.h"
 #include "Input.h"
+#include "InputJoypad.h"
 #include "MyXAudio.h"
 #include "SpriteCommon.h"
 #include "SceneManager.h"
@@ -19,6 +20,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	MyXAudio* xAudio = MyXAudio::GetInstance();
 
 	Input* input = Input::GetInstance();
+	InputJoypad* joypad = InputJoypad::GetInstance();
 
 	SpriteCommon* spriteCommon = SpriteCommon::GetInstance();
 
@@ -39,6 +41,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 #pragma region Update
 		input->Update();
+		joypad->Update();
 		light->Update();
 		sceneMan->Update();
 #pragma endregion
@@ -50,6 +53,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	delete light;
 	SceneManager::DeleteInstance();
 	SpriteCommon::DeleteInstance();
+	InputJoypad::DeleteInstance();
 	Input::DeleteInstance();
 	MyXAudio::DeleteInstance();
 	MyDirectX::DeleteInstance();

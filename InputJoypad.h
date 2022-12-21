@@ -11,8 +11,15 @@ private:
     XINPUT_STATE prevState;
 private:
     void SetDeadZone(short& sThumb, const short& deaadzone);
-public:
+
+    InputJoypad() {};
     ~InputJoypad();
+public:
+    static InputJoypad* GetInstance();
+    static void DeleteInstance();
+    InputJoypad(const InputJoypad& obj) = delete;
+    InputJoypad& operator=(const InputJoypad& obj) = delete;
+
     void Update();
     bool GetButton(WORD button);
     bool GetLTrigger();

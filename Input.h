@@ -4,7 +4,6 @@
 #include <cassert>
 #include <wrl.h>
 #include "Vector2D.h"
-#include "Window.h"
 
 #pragma comment(lib,"dinput8.lib")
 #pragma comment(lib,"dxguid.lib")
@@ -19,8 +18,6 @@ public:
 	};
 private:
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
-
-	Window* win = nullptr;
 
 	BYTE key[256] = {};
 	BYTE prev[256] = {};

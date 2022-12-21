@@ -1,4 +1,5 @@
 #include "Input.h"
+#include "Window.h"
 
 Input::Input()
 {
@@ -18,7 +19,7 @@ void Input::DeleteInstance()
 
 void Input::Initialize()
 {
-	win = Window::GetInstance();
+	Window* win = Window::GetInstance();
 
 	//inputHwnd = win->GetHwnd();
 	//	DirectInput‰Šú‰»
@@ -71,7 +72,7 @@ void Input::Update()
 	mouse->Poll();
 	mouse->GetDeviceState(sizeof(DIMOUSESTATE), &click);
 	GetCursorPos(&cursor);
-	ScreenToClient(win->GetHwnd(), &cursor);
+	ScreenToClient(Window::GetInstance()->GetHwnd(), &cursor);
 }
 
 bool Input::GetKey(int _key)
