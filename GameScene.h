@@ -8,10 +8,13 @@
 #include "AssimpModel.h"
 #include "Sprite.h"
 
+#include "Player.h"
+#include "ICamera.h"
+
 class GameScene :public IScene
 {
 private:
-	MyDebugCamera debugcamera;
+	ICamera* camera = nullptr;
 	
 	Shader objShader;
 	std::unique_ptr<GPipeline> modelpipeline;
@@ -34,6 +37,8 @@ private:
 #pragma region Texture
 	int reimuG;
 #pragma endregion
+
+	std::unique_ptr<Player> player;
 
 public:
 	GameScene();

@@ -20,6 +20,7 @@
     <ClCompile Include="DrawSphere.cpp" />
     <ClCompile Include="Easing.cpp" />
     <ClCompile Include="GameScene.cpp" />
+    <ClCompile Include="ICamera.cpp" />
     <ClCompile Include="ImGuiManager.cpp" />
     <ClCompile Include="IScene.cpp" />
     <ClCompile Include="Light.cpp" />
@@ -36,6 +37,7 @@
     <ClCompile Include="Object2D.cpp" />
     <ClCompile Include="Object3D.cpp" />
     <ClCompile Include="ObjFile.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Quaternion.cpp" />
     <ClCompile Include="SceneFactory.cpp" />
     <ClCompile Include="SceneManager.cpp" />
@@ -63,6 +65,7 @@
     <ClInclude Include="DrawSphere.h" />
     <ClInclude Include="Easing.h" />
     <ClInclude Include="GameScene.h" />
+    <ClInclude Include="ICamera.h" />
     <ClInclude Include="ImGuiManager.h" />
     <ClInclude Include="IScene.h" />
     <ClInclude Include="Light.h" />
@@ -78,6 +81,7 @@
     <ClInclude Include="Object2D.h" />
     <ClInclude Include="Object3D.h" />
     <ClInclude Include="ObjFile.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="Quaternion.h" />
     <ClInclude Include="SceneFactory.h" />
     <ClInclude Include="SceneManager.h" />

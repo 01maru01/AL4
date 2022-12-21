@@ -37,12 +37,6 @@
     <Filter Include="リソース ファイル\ObjShader">
       <UniqueIdentifier>{4dd5e3ca-3dd4-4518-bcf0-b514b0134a98}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\lib\Scene">
-      <UniqueIdentifier>{98665880-bf97-4628-8fdb-31730a64deba}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\lib\Math">
-      <UniqueIdentifier>{ddc85c55-7dd0-44fc-ba60-2a9679582e05}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\lib\Obj">
       <UniqueIdentifier>{f538b9ee-37be-482b-b8e5-7f7c3ce1d851}</UniqueIdentifier>
     </Filter>
@@ -78,6 +72,12 @@
     </Filter>
     <Filter Include="ソース ファイル\lib\Model">
       <UniqueIdentifier>{37cd1151-b7de-40d3-821e-db1624a514da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\lib\Math">
+      <UniqueIdentifier>{ddc85c55-7dd0-44fc-ba60-2a9679582e05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\lib\Scene">
+      <UniqueIdentifier>{98665880-bf97-4628-8fdb-31730a64deba}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -198,11 +198,17 @@
     <ClCompile Include="ImGuiManager.cpp">
       <Filter>ソース ファイル\lib\Sprite</Filter>
     </ClCompile>
-    <ClCompile Include="SceneFactory.cpp">
-      <Filter>ソース ファイル\lib</Filter>
-    </ClCompile>
     <ClCompile Include="Quaternion.cpp">
       <Filter>ソース ファイル\lib\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="ICamera.cpp">
+      <Filter>ソース ファイル\lib\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneFactory.cpp">
+      <Filter>ソース ファイル\lib\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -311,12 +317,6 @@
     <ClInclude Include="ScreenPolygon.h">
       <Filter>ヘッダー ファイル\lib\Sprite</Filter>
     </ClInclude>
-    <ClInclude Include="Light.h">
-      <Filter>ヘッダー ファイル\lib</Filter>
-    </ClInclude>
-    <ClInclude Include="AbstractSceneFactory.h">
-      <Filter>ヘッダー ファイル\lib\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="SceneFactory.h">
       <Filter>ヘッダー ファイル\lib\Scene</Filter>
     </ClInclude>
@@ -325,6 +325,18 @@
     </ClInclude>
     <ClInclude Include="Quaternion.h">
       <Filter>ヘッダー ファイル\lib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="ICamera.h">
+      <Filter>ヘッダー ファイル\lib\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>ヘッダー ファイル\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="AbstractSceneFactory.h">
+      <Filter>ヘッダー ファイル\lib\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -75,8 +75,3 @@ void MyDebugCamera::Update()
 	eye.z = target.z - disEyeTarget * cosf(angle.y) * cosf(angle.x);
 	MatUpdate();
 }
-
-void MyDebugCamera::MatUpdate()
-{
-	mat = MyMath::LookAtLH(eye, target, up);
-}

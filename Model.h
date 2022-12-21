@@ -11,9 +11,10 @@ class Model :public VertBuff
 private:
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	
-	GPipeline* pipeline = nullptr;
+	//GPipeline* pipeline = nullptr;
 
 	static MyDirectX* dx;
+	static GPipeline* pipeline;
 	static Light* light;
 
 	Material mtl;
@@ -50,9 +51,10 @@ public:
 	void Initialize(const char* filename, bool smoothing);
 public:
 	static void SetLight(Light* light);
+	static void SetPipeline(GPipeline* pipeline_);
 public:
 	Model() {};
-	Model(const char* filename, GPipeline* pipeline_, bool smoothing = false);
+	Model(const char* filename, bool smoothing = false);
 	void MatUpdate(Matrix matView, Matrix matProjection, const Vector3D& cameraPos);
 	void Draw();
 private:

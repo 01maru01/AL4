@@ -2,6 +2,7 @@
 #include "ObjFile.h"
 
 Light* Model::light = nullptr;
+GPipeline* Model::pipeline = nullptr;
 MyDirectX* Model::dx = MyDirectX::GetInstance();
 
 void Model::Initialize(const char* filename, bool smoothing)
@@ -75,9 +76,13 @@ void Model::SetLight(Light* light)
 	Model::light = light;
 }
 
-Model::Model(const char* filename, GPipeline* pipeline_, bool smoothing)
+void Model::SetPipeline(GPipeline* pipeline_)
 {
-	pipeline = pipeline_;
+	Model::pipeline = pipeline_;
+}
+
+Model::Model(const char* filename, bool smoothing)
+{
 	Initialize(filename, smoothing);
 }
 
