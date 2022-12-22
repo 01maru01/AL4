@@ -14,6 +14,7 @@ protected:
 
 	void MatUpdate();
 public:
+	virtual ~ICamera() = default;
 	virtual void Initialize(Vector3D eye_, Vector3D target_, Vector3D up_) = 0;
 	virtual void Update() = 0;
 

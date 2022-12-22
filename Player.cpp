@@ -5,6 +5,7 @@ void Player::PlayerInitialize()
 {
 	Initialize("chr_sword", false);
 	mat.rotAngle.y = MyMath::PI;
+	mat.scale = { 2.0f,2.0f,2.0f };
 }
 
 void Player::Update()

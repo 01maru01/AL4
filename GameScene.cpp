@@ -1,4 +1,6 @@
 #include "GameScene.h"
+#include "MyDebugCamera.h"
+#include "GameCamera.h"
 
 void GameScene::MatUpdate()
 {
@@ -22,15 +24,15 @@ GameScene::~GameScene()
 
 void GameScene::Initialize()
 {
-	camera = new MyDebugCamera();
-	camera->Initialize(Vector3D(0.0f, 0.0f, -100.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
+	camera = new GameCamera();
+	camera->Initialize(Vector3D(0.0f, 0.0f, -10.0f), Vector3D(0.0f, 2.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
 
 	objShader.Initialize(L"Resources/shader/ObjVS.hlsl", L"Resources/shader/ObjPS.hlsl");
 
 	modelpipeline = std::make_unique<GPipeline>(dx->GetDev(), objShader);
 
 	matView.Init(Vector3D(0.0f, 0.0f, -100.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
-	matProjection = MyMath::PerspectiveFovLH(Window::window_width, Window::window_height, MyMath::ConvertToRad(45.0f), 0.1f, 1000.0f);
+	matProjection = MyMath::PerspectiveFovLH(Window::window_width, Window::window_height, MyMath::ConvertToRad(48.0f), 0.1f, 1000.0f);
 
 	Model::SetPipeline(modelpipeline.get());
 	LoadResources();
@@ -42,6 +44,7 @@ void GameScene::Initialize()
 
 	player = std::make_unique<Player>();
 	player->Initialize("chr_sword", true);
+	player->PlayerInitialize();
 }
 
 void GameScene::Finalize()
@@ -89,8 +92,8 @@ void GameScene::Draw()
 	ground->Draw();
 	skydome->Draw();
 
-	sphere->Draw();
-	sword->Draw();
+	//sphere->Draw();
+	//sword->Draw();
 
 	player->Draw();
 

@@ -5,11 +5,15 @@ MyDebugCamera::MyDebugCamera()
 	input = Input::GetInstance();
 }
 
-void MyDebugCamera::Initialize(Vector3D _eye, Vector3D _target, Vector3D _up)
+MyDebugCamera::~MyDebugCamera()
 {
-	eye = _eye;
-	target = _target;
-	up = _up;
+}
+
+void MyDebugCamera::Initialize(Vector3D eye_, Vector3D target_, Vector3D up_)
+{
+	eye = eye_;
+	target = target_;
+	up = up_;
 
 	MatUpdate();
 
@@ -19,9 +23,7 @@ void MyDebugCamera::Initialize(Vector3D _eye, Vector3D _target, Vector3D _up)
 
 void MyDebugCamera::Update()
 {
-	prevCursor = cursor;
-	input->CursorPos(cursor);
-	moveCursor = cursor - prevCursor;
+	moveCursor = input->GetCursor() - input->GetPrevCursor();
 	float cursorDisPrev = moveCursor.length();
 	moveCursor.normalize();
 
@@ -67,7 +69,6 @@ void MyDebugCamera::Update()
 	billboard.m[2][1] = frontVec.y;
 	billboard.m[2][2] = frontVec.z;
 #pragma endregion
-
 
 	up.y = cosf(angle.y);
 	eye.x = target.x - disEyeTarget * cosf(angle.y) * sinf(angle.x);

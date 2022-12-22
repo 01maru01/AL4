@@ -1,25 +1,24 @@
 #pragma once
-#include "MyMath.h"
-#include "Input.h"
 #include "ICamera.h"
-class MyDebugCamera :public ICamera
+
+class GameCamera :public ICamera
 {
-public:
-	Matrix billboard;
 private:
 	Input* input = nullptr;
 
-	float disEyeTarget = 0.0f;
+	bool rockOn = false;
 
-	Vector2D moveCursor;
+	float disEyeTarget;
+
+	Vector2D cursorMoveVec;
 	Vector2D cursorSpd;
 
 	Vector2D rotAngle;
 	Vector2D prevRotAngle;
 	Vector2D endRotAngle;
 public:
-	MyDebugCamera();
-	~MyDebugCamera() override;
+	GameCamera();
+	~GameCamera() override;
 
 	void Initialize(Vector3D eye_, Vector3D target_, Vector3D up_) override;
 	void Update() override;

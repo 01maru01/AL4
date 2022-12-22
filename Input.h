@@ -27,7 +27,8 @@ private:
 	DIMOUSESTATE click = {};
 	DIMOUSESTATE prevclick = {};
 	ComPtr<IDirectInputDevice8> mouse = nullptr;
-	POINT cursor;
+	Vector2D cursor;
+	Vector2D prevCursor;
 
 	Input();
 	~Input() {};
@@ -47,8 +48,9 @@ public:
 	bool Click(int type);
 	bool ClickTrriger(int type);
 
-	Vector2D CursorPos();
-	void CursorPos(Vector2D& pos);
+	Vector2D GetCursor() { return cursor; }
+	Vector2D GetPrevCursor() { return prevCursor; }
+	//void SetCursorPos(Vector2D& pos);
 	LONG Wheel();
 };
 

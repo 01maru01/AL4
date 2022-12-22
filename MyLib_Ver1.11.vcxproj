@@ -19,6 +19,7 @@
     <ClCompile Include="DrawGrid.cpp" />
     <ClCompile Include="DrawSphere.cpp" />
     <ClCompile Include="Easing.cpp" />
+    <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="ICamera.cpp" />
     <ClCompile Include="ImGuiManager.cpp" />
@@ -64,6 +65,7 @@
     <ClInclude Include="DrawGrid.h" />
     <ClInclude Include="DrawSphere.h" />
     <ClInclude Include="Easing.h" />
+    <ClInclude Include="GameCamera.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="ICamera.h" />
     <ClInclude Include="ImGuiManager.h" />

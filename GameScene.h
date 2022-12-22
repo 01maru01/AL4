@@ -2,7 +2,6 @@
 #include "IScene.h"
 #include "DirectX.h"
 #include "Input.h"
-#include "MyDebugCamera.h"
 #include "Shader.h"
 #include "Model.h"
 #include "AssimpModel.h"

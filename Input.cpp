@@ -62,6 +62,7 @@ void Input::Update()
 	}
 
 	prevclick = click;
+	prevCursor = cursor;
 
 	//	キー情報取得
 	keyboard->Acquire();
@@ -71,8 +72,36 @@ void Input::Update()
 	mouse->Acquire();
 	mouse->Poll();
 	mouse->GetDeviceState(sizeof(DIMOUSESTATE), &click);
-	GetCursorPos(&cursor);
-	ScreenToClient(Window::GetInstance()->GetHwnd(), &cursor);
+	POINT cursor_;
+
+
+	RECT* rec = new RECT();
+	if (GetKey(DIK_SPACE)) {
+		GetCursorPos(&cursor_);
+
+		cursor.x = cursor_.x;
+		cursor.y = cursor_.y;
+		if (GetKey(DIK_F)) {
+			ShowCursor(false);
+		}
+		GetWindowRect(Window::GetInstance()->GetHwnd(), rec);
+		Vector2D center((rec->right + rec->left) / 2, (rec->bottom + rec->top) / 2);
+		float width = Window::window_width / 2.0f;
+		float height = Window::window_height / 2.0f;
+		rec->left = center.x - width;
+		rec->right = center.x + width;
+		rec->top = center.y - height;
+		rec->bottom = center.y + height;
+		prevCursor = center;
+		SetCursorPos(center.x, center.y);
+		//	カーソル表示しない
+		//	範囲指定
+		ClipCursor(rec);
+	}
+	else {
+		ClipCursor(NULL);
+		ScreenToClient(Window::GetInstance()->GetHwnd(), &cursor_);
+	}
 }
 
 bool Input::GetKey(int _key)
@@ -101,17 +130,10 @@ bool Input::ClickTrriger(int type)
 	return (click.rgbButtons[type] & (0x80)) && !(prevclick.rgbButtons[type] & (0x80));
 }
 
-Vector2D Input::CursorPos()
-{
-	Vector2D ans(cursor.x, cursor.y);
-	return ans;
-}
-
-void Input::CursorPos(Vector2D& pos)
-{
-	pos.x = cursor.x;
-	pos.y = cursor.y;
-}
+//void Input::SetCursorPos(Vector2D& pos)
+//{
+//	pos = cursor;
+//}
 
 LONG Input::Wheel()
 {
