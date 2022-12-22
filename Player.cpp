@@ -3,6 +3,7 @@
 
 ICamera* Player::camera = nullptr;
 const float Player::MAX_SPD = 0.1f;
+const int Player::INVINCIBLE_TIME = 90;
 
 void Player::SetCamera(ICamera* camera_)
 {

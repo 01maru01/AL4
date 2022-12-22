@@ -73,17 +73,13 @@ void Input::Update()
 	mouse->Poll();
 	mouse->GetDeviceState(sizeof(DIMOUSESTATE), &click);
 	POINT cursor_;
+	GetCursorPos(&cursor_);
 
+	cursor.x = cursor_.x;
+	cursor.y = cursor_.y;
 
 	RECT* rec = new RECT();
-	if (GetKey(DIK_SPACE)) {
-		GetCursorPos(&cursor_);
-
-		cursor.x = cursor_.x;
-		cursor.y = cursor_.y;
-		if (GetKey(DIK_F)) {
-			ShowCursor(false);
-		}
+	if (rockCursor) {
 		GetWindowRect(Window::GetInstance()->GetHwnd(), rec);
 		Vector2D center((rec->right + rec->left) / 2, (rec->bottom + rec->top) / 2);
 		float width = Window::window_width / 2.0f;
@@ -95,6 +91,7 @@ void Input::Update()
 		prevCursor = center;
 		SetCursorPos(center.x, center.y);
 		//	カーソル表示しない
+		ShowCursor(false);
 		//	範囲指定
 		ClipCursor(rec);
 	}

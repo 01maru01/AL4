@@ -29,6 +29,7 @@ private:
 	ComPtr<IDirectInputDevice8> mouse = nullptr;
 	Vector2D cursor;
 	Vector2D prevCursor;
+	bool rockCursor = false;
 
 	Input();
 	~Input() {};
@@ -50,7 +51,7 @@ public:
 
 	Vector2D GetCursor() { return cursor; }
 	Vector2D GetPrevCursor() { return prevCursor; }
-	//void SetCursorPos(Vector2D& pos);
+	void RockCursor(bool isRock) { rockCursor = isRock; }
 	LONG Wheel();
 };
 
