@@ -2,7 +2,6 @@
 #include "Input.h"
 
 ICamera* Player::camera = nullptr;
-//float Player::spd = 0.05f;
 const float Player::MAX_SPD = 0.1f;
 
 void Player::SetCamera(ICamera* camera_)

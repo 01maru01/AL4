@@ -9,7 +9,6 @@ private:
 	float spd;
 
 	static ICamera* camera;
-	//static float spd;
 	static const float MAX_SPD;
 public:
 	static void SetCamera(ICamera* camera_);
