@@ -25,7 +25,7 @@ GameScene::~GameScene()
 void GameScene::Initialize()
 {
 	camera = new GameCamera();
-	camera->Initialize(Vector3D(0.0f, 0.0f, -10.0f), Vector3D(0.0f, 2.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
+	camera->Initialize(Vector3D(0.0f, 0.0f, -10.0f), Vector3D(0.0f, 1.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
 
 	objShader.Initialize(L"Resources/shader/ObjVS.hlsl", L"Resources/shader/ObjPS.hlsl");
 
@@ -45,6 +45,7 @@ void GameScene::Initialize()
 	player = std::make_unique<Player>();
 	player->Initialize("chr_sword", true);
 	player->PlayerInitialize();
+	player->SetCamera(camera);
 }
 
 void GameScene::Finalize()

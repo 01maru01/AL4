@@ -12,11 +12,11 @@ protected:
 	Vector3D rightVec;
 	Vector3D downVec;
 
-	void MatUpdate();
 public:
 	virtual ~ICamera() = default;
 	virtual void Initialize(Vector3D eye_, Vector3D target_, Vector3D up_) = 0;
 	virtual void Update() = 0;
+	void MatUpdate();
 
 	//	Getter
 	Vector3D GetEye() { return eye; }
@@ -26,5 +26,9 @@ public:
 	Vector3D GetRightVec() { return rightVec; }
 	Vector3D GetDownVec() { return downVec; }
 	Matrix GetMatrix() { return mat; }
+	//	Setter
+	void SetTarget(Vector3D t) { target = t; }
+	void SetEye(Vector3D e) { eye = e; }
+	void EyeMove(Vector3D moveE) { eye += moveE; }
 };
 
