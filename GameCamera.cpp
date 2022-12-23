@@ -1,4 +1,5 @@
 #include "GameCamera.h"
+#include "Window.h"
 
 GameCamera::GameCamera()
 {
@@ -19,6 +20,7 @@ void GameCamera::Initialize(Vector3D eye_, Vector3D target_, Vector3D up_)
 
 	frontVec = target - eye;
 	disEyeTarget = frontVec.length();
+	matProjection = MyMath::PerspectiveFovLH(Window::window_width, Window::window_height, MyMath::ConvertToRad(48.0f), 0.1f, 1000.0f);
 }
 
 void GameCamera::Update()

@@ -47,6 +47,7 @@
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="ScissorRect.cpp" />
     <ClCompile Include="ScreenPolygon.cpp" />
+    <ClCompile Include="SphereCollider.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="SpriteCommon.cpp" />
     <ClCompile Include="TextureData.cpp" />
@@ -96,6 +97,7 @@
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="ScissorRect.h" />
     <ClInclude Include="ScreenPolygon.h" />
+    <ClInclude Include="SphereCollider.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="SpriteCommon.h" />
     <ClInclude Include="TextureData.h" />

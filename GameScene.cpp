@@ -45,7 +45,7 @@ void GameScene::Initialize()
 	player = std::make_unique<Player>();
 	player->Initialize("chr_sword", true);
 	player->PlayerInitialize();
-	player->SetCamera(camera);
+	Player::SetCamera(camera);
 }
 
 void GameScene::Finalize()
