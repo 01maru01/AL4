@@ -1,8 +1,8 @@
 #pragma once
 #include "GPipeline.h"
-#include "VertBuff.h"
+#include "VertIdxBuff.h"
 
-class ScreenPolygon :public VertBuff
+class ScreenPolygon :public VertIdxBuff
 {
 private:
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;

@@ -1,53 +1,19 @@
-#include "VertBuff.h"
-#include <wrl.h>
-#include <vector>
+#include "VertIdxBuff.h"
 
-VertBuff::VertBuff()
-{
-}
+MyDirectX* VertIdxBuff::dx = MyDirectX::GetInstance();
 
-void VertBuff::SetLighting()
-{
-	//for (int i = 0; i < indicesSize / 3; i++)
-	//{
-	//	unsigned short index0 = indices[i * 3];
-	//	unsigned short index1 = indices[i * 3 + 1];
-	//	unsigned short index2 = indices[i * 3 + 2];
-
-	//	Vector4D p0(vertices[index0].pos, 0.0f);
-	//	Vector4D p1(vertices[index1].pos, 0.0f);
-	//	Vector4D p2(vertices[index2].pos, 0.0f);
-
-	//	Vector4D v1 = p1 - p0;
-	//	Vector4D v2 = p2 - p0;
-	//	Vector4D normal = v1 - v2;
-
-	//	normal.normalize();
-	//	Vector3D normal3D(normal.x, normal.y, normal.z);
-	//	vertices[index0].normal = normal3D;
-	//	vertices[index1].normal = normal3D;
-	//	vertices[index2].normal = normal3D;
-	//}
-}
-
-void VertBuff::VertBuffUpdate(ID3D12GraphicsCommandList* cmdList)
+void VertIdxBuff::BuffUpdate()
 {
 	// 頂点バッファビューの設定コマンド
-	cmdList->IASetVertexBuffers(0, 1, &vbView);
+	dx->GetCmdList()->IASetVertexBuffers(0, 1, &vbView);
 	//	インデックスバッファビュー設定コマンド
 	if (ibExist) {
-		cmdList->IASetIndexBuffer(&ibView);
+		dx->GetCmdList()->IASetIndexBuffer(&ibView);
 	}
 }
 
-void VertBuff::SetVertices()
+void VertIdxBuff::BuffInitialize(UINT sizeVB, UINT vertSize, UINT sizeIB, uint16_t* indices, UINT indicesSize)
 {
-}
-
-void VertBuff::VBInitialize(ID3D12Device* dev, UINT sizeVB, UINT vertSize, UINT sizeIB, uint16_t* indices, UINT indicesSize)
-{
-	SetLighting();
-
 	//	ヒープの設定
 	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD; // GPUへの転送用(CPUからアクセスできる)
 
@@ -56,7 +22,7 @@ void VertBuff::VBInitialize(ID3D12Device* dev, UINT sizeVB, UINT vertSize, UINT 
 	SetResDesc(sizeVB);
 
 	//	GPU側にメモリ確保
-	result = dev->CreateCommittedResource(
+	HRESULT result = dx->GetDev()->CreateCommittedResource(
 		&heapProp,							// ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
 		&resDesc,							// リソース設定
@@ -64,7 +30,6 @@ void VertBuff::VBInitialize(ID3D12Device* dev, UINT sizeVB, UINT vertSize, UINT 
 		nullptr,
 		IID_PPV_ARGS(&vertBuff));
 	assert(SUCCEEDED(result));
-
 	// 頂点バッファビューの作成(GPUで利用するため)
 	// GPU仮想アドレス
 	vbView.BufferLocation = vertBuff->GetGPUVirtualAddress();
@@ -79,7 +44,7 @@ void VertBuff::VBInitialize(ID3D12Device* dev, UINT sizeVB, UINT vertSize, UINT 
 		ibExist = true;
 
 		SetResDesc(sizeIB);
-		result = dev->CreateCommittedResource(
+		result = dx->GetDev()->CreateCommittedResource(
 			&heapProp, // ヒープ設定
 			D3D12_HEAP_FLAG_NONE,
 			&resDesc, // リソース設定
@@ -105,7 +70,7 @@ void VertBuff::VBInitialize(ID3D12Device* dev, UINT sizeVB, UINT vertSize, UINT 
 #pragma endregion
 }
 
-void VertBuff::SetResDesc(UINT size)
+void VertIdxBuff::SetResDesc(UINT size)
 {
 	resDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
 	resDesc.Width = size; // 頂点データ全体のサイズ
@@ -114,18 +79,4 @@ void VertBuff::SetResDesc(UINT size)
 	resDesc.MipLevels = 1;
 	resDesc.SampleDesc.Count = 1;		//	アンチエイリアシング用のパラメータ
 	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
-}
-
-void VertBuff::BuffTransferGPU(ID3D12Resource* buff, ID3D12Device* dev)
-{
-#pragma region バッファの生成
-	result = dev->CreateCommittedResource(
-		&heapProp, // ヒープ設定
-		D3D12_HEAP_FLAG_NONE,
-		&resDesc, // リソース設定
-		D3D12_RESOURCE_STATE_GENERIC_READ,
-		nullptr,
-		IID_PPV_ARGS(&buff));
-	assert(SUCCEEDED(result));
-#pragma endregion
 }

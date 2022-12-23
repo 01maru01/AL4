@@ -10,7 +10,7 @@ UISquare::UISquare(ID3D12Device* dev, Shader shader)
 	pv[3] = { { 1.0f, 1.0f,0.1f},{1,0} };
 	vertexSize = 4;
 	UINT sizePV = static_cast<UINT>(sizeof(pv[0]) * vertexSize);
-	VBInitialize(dev, sizePV, vertexSize);
+	BuffInitialize(sizePV, vertexSize);
 
 	D3D12_INPUT_ELEMENT_DESC inputLayout[] = {
 		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,	D3D12_APPEND_ALIGNED_ELEMENT,	D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},		//	xyz座標
@@ -42,7 +42,7 @@ void UISquare::Draw(ID3D12GraphicsCommandList* cmdList, D3D12_GPU_DESCRIPTOR_HAN
 {
 	pipeline.Setting(cmdList);
 	pipeline.Update(cmdList, D3D10_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
-	VertBuffUpdate(cmdList);
+	BuffUpdate();
 	//	テクスチャ
 	cmdList->SetGraphicsRootDescriptorTable(1, handle);
 	cmdList->DrawInstanced(4, 1, 0, 0);
@@ -124,7 +124,7 @@ void Square::SquareInit(ID3D12Device* dev, Shader shader, int blendMord)
 	indices[4] = 1;
 	indices[5] = 3;
 	UINT sizeIB = static_cast<UINT>(sizeof(uint16_t) * indexSize);
-	VBInitialize(dev, sizePV, vertexSize, sizeIB, indices, indexSize);
+	BuffInitialize(sizePV, vertexSize, sizeIB, indices, indexSize);
 
 	D3D12_INPUT_ELEMENT_DESC inputLayout[] = {
 		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,	D3D12_APPEND_ALIGNED_ELEMENT,	D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},		//	xyz座標
@@ -204,7 +204,7 @@ void Square::Draw(ID3D12GraphicsCommandList* cmdList, D3D12_GPU_DESCRIPTOR_HANDL
 {
 	pipeline.Setting(cmdList);
 	pipeline.Update(cmdList, D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	VertBuffUpdate(cmdList);
+	BuffUpdate();
 	//	テクスチャ
 	cmdList->SetGraphicsRootDescriptorTable(1, handle);
 	cmdList->SetGraphicsRootConstantBufferView(2, transform->GetGPUVirtualAddress());

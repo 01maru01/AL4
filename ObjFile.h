@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include "MyMath.h"
-#include "VertBuff.h"
+#include "VertIdxBuff.h"
 #include "Material.h"
 #include <unordered_map>
 

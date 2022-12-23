@@ -132,7 +132,7 @@
     <ClCompile Include="Shader.cpp">
       <Filter>ソース ファイル\lib</Filter>
     </ClCompile>
-    <ClCompile Include="VertBuff.cpp">
+    <ClCompile Include="VertIdxBuff.cpp">
       <Filter>ソース ファイル\lib</Filter>
     </ClCompile>
     <ClCompile Include="ViewPort.cpp">
@@ -213,6 +213,15 @@
     <ClCompile Include="GameCamera.cpp">
       <Filter>ソース ファイル\lib\Camera</Filter>
     </ClCompile>
+    <ClCompile Include="ICollider.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Object3D.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionInfo.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="InputJoypad.h">
@@ -275,7 +284,7 @@
     <ClInclude Include="Window.h">
       <Filter>ヘッダー ファイル\lib</Filter>
     </ClInclude>
-    <ClInclude Include="VertBuff.h">
+    <ClInclude Include="VertIdxBuff.h">
       <Filter>ヘッダー ファイル\lib</Filter>
     </ClInclude>
     <ClInclude Include="Easing.h">
@@ -343,6 +352,21 @@
     </ClInclude>
     <ClInclude Include="GameCamera.h">
       <Filter>ヘッダー ファイル\lib\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="ICollider.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionType.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Object3D.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionInfo.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexStruct.h">
+      <Filter>ソース ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

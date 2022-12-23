@@ -2,7 +2,7 @@
 #include "MyMath.h"
 #include "DirectX.h"
 #include "AssimpLoader.h"
-#include "VertBuff.h"
+#include "VertIdxBuff.h"
 #include "GPipeline.h"
 
 class AssimpModel

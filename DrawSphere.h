@@ -1,8 +1,8 @@
 #pragma once
 #include "GPipeline.h"
-#include "VertBuff.h"
+#include "VertIdxBuff.h"
 #include "MyMath.h"
-class SphereObj :public VertBuff
+class SphereObj :public VertIdxBuff
 {
 private:
 public:

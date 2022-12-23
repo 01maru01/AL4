@@ -65,7 +65,7 @@ void Model::Initialize(const char* filename, bool smoothing)
 	// 頂点データ全体のサイズ = 頂点データ一つ分のサイズ * 頂点データの要素数
 	UINT sizeVB = static_cast<UINT>(sizeof(vertices[0]) * vertexSize);
 
-	VBInitialize(dx->GetDev(), sizeVB, vertexSize);
+	BuffInitialize(sizeVB, vertexSize);
 #pragma region  WorldMatrix初期値
 	mat.Initialize();
 #pragma endregion
@@ -102,7 +102,7 @@ void Model::Draw()
 {
 	pipeline->Setting(dx->GetCmdList());
 	pipeline->Update(dx->GetCmdList(), D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	VertBuffUpdate(dx->GetCmdList());
+	BuffUpdate();
 	//	テクスチャ
 	dx->GetCmdList()->SetGraphicsRootConstantBufferView(0, material->GetGPUVirtualAddress());
 	dx->GetCmdList()->SetGraphicsRootDescriptorTable(1, dx->GetTextureHandle(textureHandle));
