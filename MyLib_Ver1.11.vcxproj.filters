@@ -105,7 +105,7 @@
     <ClCompile Include="Object2D.cpp">
       <Filter>ソース ファイル\lib\Obj</Filter>
     </ClCompile>
-    <ClCompile Include="Object3D.cpp">
+    <ClCompile Include="Box.cpp">
       <Filter>ソース ファイル\lib\Obj</Filter>
     </ClCompile>
     <ClCompile Include="DrawSphere.cpp">
@@ -239,7 +239,7 @@
     <ClInclude Include="Object2D.h">
       <Filter>ヘッダー ファイル\lib\Obj</Filter>
     </ClInclude>
-    <ClInclude Include="Object3D.h">
+    <ClInclude Include="Box.h">
       <Filter>ヘッダー ファイル\lib\Obj</Filter>
     </ClInclude>
     <ClInclude Include="DrawSphere.h">

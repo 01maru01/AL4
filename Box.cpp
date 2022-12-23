@@ -1,9 +1,9 @@
-#include "Object3D.h"
+#include "Box.h"
 #include <cmath>
 #include "MyMath.h"
 #include <cassert>
 
-void Object3D::Initialize(Shader shader)
+void Box::Initialize(Shader shader)
 {
 	HRESULT result;
 
@@ -100,11 +100,11 @@ void Object3D::Initialize(Shader shader)
 #pragma endregion
 }
 
-Object3D::Object3D()
+Box::Box()
 {
 }
 
-Object3D::Object3D(MyDirectX* dx_, GPipeline* pipeline_, Shader shader)
+Box::Box(MyDirectX* dx_, GPipeline* pipeline_, Shader shader)
 {
 	dx = dx_;
 	pipeline = pipeline_;
@@ -112,7 +112,7 @@ Object3D::Object3D(MyDirectX* dx_, GPipeline* pipeline_, Shader shader)
 }
 
 
-void Object3D::MatUpdate(Matrix matView, Matrix matProjection)
+void Box::MatUpdate(Matrix matView, Matrix matProjection)
 {
 	mat.Update();
 
@@ -121,7 +121,7 @@ void Object3D::MatUpdate(Matrix matView, Matrix matProjection)
 	constMapTransform->mat *= matProjection;
 }
 
-void Object3D::SetVertices()
+void Box::SetVertices()
 {
 	//	GPUメモリの値書き換えよう
 	// GPU上のバッファに対応した仮想メモリ(メインメモリ上)を取得
@@ -138,7 +138,7 @@ void Object3D::SetVertices()
 	vbView.StrideInBytes = sizeof(vertices[0]);
 }
 
-void Object3D::Draw(ID3D12GraphicsCommandList* cmdList, D3D12_GPU_DESCRIPTOR_HANDLE handle)
+void Box::Draw(ID3D12GraphicsCommandList* cmdList, D3D12_GPU_DESCRIPTOR_HANDLE handle)
 {
 	pipeline->Setting(cmdList);
 	pipeline->Update(cmdList, D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
