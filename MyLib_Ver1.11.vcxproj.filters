@@ -259,7 +259,7 @@
       <Filter>ソース ファイル\lib\Obj</Filter>
     </ClCompile>
     <ClCompile Include="SphereCollider.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\lib\Collider</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -408,7 +408,7 @@
       <Filter>ヘッダー ファイル\lib\Obj</Filter>
     </ClInclude>
     <ClInclude Include="SphereCollider.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\lib\Collider</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
