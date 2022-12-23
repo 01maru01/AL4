@@ -201,17 +201,17 @@
     <ClCompile Include="Quaternion.cpp">
       <Filter>ソース ファイル\lib\Math</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="ICamera.cpp">
       <Filter>ソース ファイル\lib\Camera</Filter>
     </ClCompile>
     <ClCompile Include="SceneFactory.cpp">
       <Filter>ソース ファイル\lib\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>ソース ファイル\GameObj</Filter>
+    </ClCompile>
     <ClCompile Include="GameCamera.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\lib\Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -329,9 +329,6 @@
     <ClInclude Include="Quaternion.h">
       <Filter>ヘッダー ファイル\lib\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="ICamera.h">
       <Filter>ヘッダー ファイル\lib\Camera</Filter>
     </ClInclude>
@@ -341,8 +338,11 @@
     <ClInclude Include="AbstractSceneFactory.h">
       <Filter>ヘッダー ファイル\lib\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>ヘッダー ファイル\GameObj</Filter>
+    </ClInclude>
     <ClInclude Include="GameCamera.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\lib\Camera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
