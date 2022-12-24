@@ -5,6 +5,7 @@
 #include "VertIdxBuff.h"
 #include "Material.h"
 #include "Light.h"
+#include "Mesh.h"
 
 class Model :public VertIdxBuff
 {
@@ -17,7 +18,9 @@ private:
 	static GPipeline* pipeline;
 	static Light* light;
 
-	Material mtl;
+	Material* mtl = nullptr;
+	std::vector<Material> materials;
+	std::vector<Mesh*> meshes;
 public:
 	MyMath::ObjMatrix mat;
 
@@ -30,16 +33,6 @@ public:
 	ConstBufferDataTransform* constMapTransform = nullptr;
 	D3D12_HEAP_PROPERTIES cbHeapProp{};
 	D3D12_RESOURCE_DESC cbResourceDesc{};
-	struct ConstBufferDataMaterial {
-		Vector3D ambient;
-		float pad1;
-		Vector3D diffuse;
-		float pad2;
-		Vector3D specular;
-		float alpha;
-	};
-	ComPtr<ID3D12Resource> material;
-	ConstBufferDataMaterial* constMapMaterial = nullptr;
 
 	UINT vertexSize;
 	std::vector<Vertex> vertices;
@@ -58,6 +51,8 @@ public:
 	void MatUpdate(Matrix matView, Matrix matProjection, const Vector3D& cameraPos);
 	void Draw();
 private:
+	void LoadModel(const std::string& filename, bool smoothing = false);
+	void LoadMaterial(const std::string& directoryPath, const std::string& filename);
 	void SetVertices() override;
 };
 

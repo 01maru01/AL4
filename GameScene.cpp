@@ -62,8 +62,8 @@ void GameScene::LoadResources()
 #pragma endregion
 
 #pragma region AssimpModel
-	fbxModel = std::make_unique<AssimpModel>(modelpipeline.get());
-	fbxModel->Initialize(L"Assets/Alicia/FBX/Alicia_solid_Unity.FBX");
+	//fbxModel = std::make_unique<AssimpModel>(modelpipeline.get());
+	//fbxModel->Initialize(L"Assets/Alicia/FBX/Alicia_solid_Unity.FBX");
 #pragma endregion
 
 

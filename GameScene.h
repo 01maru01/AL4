@@ -26,7 +26,7 @@ private:
 	std::unique_ptr<Model> ground;
 	std::unique_ptr<Model> sphere;
 	std::unique_ptr<Model> sword;
-	std::unique_ptr<AssimpModel> fbxModel;
+	//std::unique_ptr<AssimpModel> fbxModel;
 #pragma endregion
 
 #pragma region Sprite
