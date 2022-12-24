@@ -1,4 +1,5 @@
 #include "Object3D.h"
+#include "BaseCollider.h"
 
 Light* Object3D::light = nullptr;
 GPipeline* Object3D::pipeline = nullptr;
@@ -23,6 +24,19 @@ void Object3D::SetCamera(ICamera* camera)
 void Object3D::SetModel(Model* model)
 {
 	this->model = model;
+}
+
+void Object3D::SetCollider(BaseCollider* collider)
+{
+	collider->SetObject3D(this);
+	this->collider = collider;
+}
+
+Object3D::~Object3D()
+{
+	if (collider) {
+		delete collider;
+	}
 }
 
 Object3D* Object3D::Create(Model* model)
@@ -71,6 +85,13 @@ void Object3D::Initialize()
 	assert(SUCCEEDED(result));
 
 	mat.Initialize();
+}
+
+void Object3D::ColliderUpdate()
+{
+	if (collider) {
+		collider->Update();
+	}
 }
 
 void Object3D::MatUpdate()

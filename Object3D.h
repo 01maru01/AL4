@@ -4,6 +4,9 @@
 #include "MyMath.h"
 #include "Model.h"
 #include "ICamera.h"
+#include "CollisionInfo.h"
+
+class BaseCollider;
 
 class Object3D
 {
@@ -28,16 +31,26 @@ private:
 	Model* model = nullptr;
 protected:
 	MyMath::ObjMatrix mat;
+
+	BaseCollider* collider = nullptr;
 public:
+	Object3D() = default;
+	virtual ~Object3D();
+
 	static Object3D* Create(Model* model = nullptr);
 
 	static void SetLight(Light* light);
 	static void SetPipeline(GPipeline* pipeline_);
 	static void SetCamera(ICamera* camera);
 	void SetModel(Model* model);
+	void SetCollider(BaseCollider* collider);
 
-	void Initialize();
+	virtual void Initialize();
+	virtual void ColliderUpdate();
 	void MatUpdate();
-	void Draw();
+	virtual void Draw();
+
+	const Matrix& GetMatWorld() { return mat.matWorld; }
+	virtual void OnCollision(const CollisionInfo& info) {};
 };
 

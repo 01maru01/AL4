@@ -79,6 +79,9 @@
     <Filter Include="ソース ファイル\lib\Scene">
       <UniqueIdentifier>{98665880-bf97-4628-8fdb-31730a64deba}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\lib\Screen">
+      <UniqueIdentifier>{0cf03d78-c0e8-4f3a-a0a3-88ae52a7c450}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Matrix.cpp">
@@ -213,8 +216,17 @@
     <ClCompile Include="GameCamera.cpp">
       <Filter>ソース ファイル\lib\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="Object3D.cpp">
+    <ClCompile Include="CollisionInfo.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseCollider.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="SphereCollider.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Object3D.cpp">
+      <Filter>ソース ファイル\lib\Obj</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -347,8 +359,20 @@
     <ClInclude Include="GameCamera.h">
       <Filter>ヘッダー ファイル\lib\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="Object3D.h">
+    <ClInclude Include="CollisionInfo.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionType.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseCollider.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="SphereCollider.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Object3D.h">
+      <Filter>ヘッダー ファイル\lib\Obj</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

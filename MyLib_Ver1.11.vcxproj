@@ -14,6 +14,7 @@
     <ClCompile Include="AbstractSceneFactory.cpp" />
     <ClCompile Include="AssimpLoader.cpp" />
     <ClCompile Include="AssimpModel.cpp" />
+    <ClCompile Include="CollisionInfo.cpp" />
     <ClCompile Include="ConstBuff.cpp" />
     <ClCompile Include="DirectX.cpp" />
     <ClCompile Include="DrawGrid.cpp" />
@@ -22,6 +23,7 @@
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="ICamera.cpp" />
+    <ClCompile Include="BaseCollider.cpp" />
     <ClCompile Include="ImGuiManager.cpp" />
     <ClCompile Include="IScene.cpp" />
     <ClCompile Include="Light.cpp" />
@@ -45,6 +47,7 @@
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="ScissorRect.cpp" />
     <ClCompile Include="ScreenPolygon.cpp" />
+    <ClCompile Include="SphereCollider.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="SpriteCommon.cpp" />
     <ClCompile Include="TextureData.cpp" />
@@ -61,6 +64,8 @@
     <ClInclude Include="AbstractSceneFactory.h" />
     <ClInclude Include="AssimpLoader.h" />
     <ClInclude Include="AssimpModel.h" />
+    <ClInclude Include="CollisionInfo.h" />
+    <ClInclude Include="CollisionType.h" />
     <ClInclude Include="ConstBuff.h" />
     <ClInclude Include="DirectX.h" />
     <ClInclude Include="DrawGrid.h" />
@@ -69,6 +74,7 @@
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="ICamera.h" />
+    <ClInclude Include="BaseCollider.h" />
     <ClInclude Include="ImGuiManager.h" />
     <ClInclude Include="IScene.h" />
     <ClInclude Include="Light.h" />
@@ -91,6 +97,7 @@
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="ScissorRect.h" />
     <ClInclude Include="ScreenPolygon.h" />
+    <ClInclude Include="SphereCollider.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="SpriteCommon.h" />
     <ClInclude Include="TextureData.h" />
