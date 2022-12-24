@@ -1,8 +1,6 @@
 #include "Model.h"
 #include "ObjFile.h"
 
-Light* Model::light = nullptr;
-GPipeline* Model::pipeline = nullptr;
 MyDirectX* Model::dx = MyDirectX::GetInstance();
 
 void Model::Initialize(const char* filename, bool smoothing)
@@ -10,35 +8,20 @@ void Model::Initialize(const char* filename, bool smoothing)
 	HRESULT result;
 
 #pragma region  ConstBuffer
-	D3D12_HEAP_PROPERTIES heapProp{};
-	D3D12_RESOURCE_DESC resourceDesc{};
+	D3D12_HEAP_PROPERTIES cbHeapProp{};
+	D3D12_RESOURCE_DESC cbResourceDesc{};
 	//	ヒープ設定
 	cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;	//	GPU転送用
 
 	//	リソース設定
 	cbResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	cbResourceDesc.Width = (sizeof(ConstBufferDataTransform) + 0xFF) & ~0xFF;
+	cbResourceDesc.Width = (sizeof(ConstBufferDataMaterial) + 0xFF) & ~0xFF;
 	cbResourceDesc.Height = 1;
 	cbResourceDesc.DepthOrArraySize = 1;
 	cbResourceDesc.MipLevels = 1;
 	cbResourceDesc.SampleDesc.Count = 1;
 	cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
-	//	生成
-	result = dx->GetDev()->CreateCommittedResource(
-		&cbHeapProp,	//	ヒープ設定
-		D3D12_HEAP_FLAG_NONE,
-		&cbResourceDesc,	//	リソース設定
-		D3D12_RESOURCE_STATE_GENERIC_READ,
-		nullptr,
-		IID_PPV_ARGS(&transform));
-	assert(SUCCEEDED(result));
-
-	//	定数バッファのマッピング
-	result = transform->Map(0, nullptr, (void**)&constMapTransform);	//	マッピング
-	assert(SUCCEEDED(result));
-
-	cbResourceDesc.Width = (sizeof(ConstBufferDataMaterial) + 0xFF) & ~0xFF;
 	result = dx->GetDev()->CreateCommittedResource(
 		&cbHeapProp,	//	ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
@@ -49,16 +32,18 @@ void Model::Initialize(const char* filename, bool smoothing)
 	assert(SUCCEEDED(result));
 
 	//	定数バッファのマッピング
+	ConstBufferDataMaterial* constMapMaterial = nullptr;
 	result = material->Map(0, nullptr, (void**)&constMapMaterial);	//	マッピング
 	assert(SUCCEEDED(result));
-#pragma endregion
-	ObjFile objfile(filename, vertices, mtl, smoothing);
 
 	constMapMaterial->ambient = mtl.ambient;
 	constMapMaterial->diffuse = mtl.diffuse;
 	constMapMaterial->specular = mtl.specular;
 	constMapMaterial->alpha = mtl.alpha;
 	material->Unmap(0, nullptr);
+#pragma endregion
+
+	ObjFile objfile(filename, vertices, mtl, smoothing);
 
 	textureHandle = dx->LoadTextureGraph(mtl.wfilepath);
 	vertexSize = vertices.size();
@@ -66,19 +51,6 @@ void Model::Initialize(const char* filename, bool smoothing)
 	UINT sizeVB = static_cast<UINT>(sizeof(vertices[0]) * vertexSize);
 
 	VBInitialize(dx->GetDev(), sizeVB, vertexSize);
-#pragma region  WorldMatrix初期値
-	mat.Initialize();
-#pragma endregion
-}
-
-void Model::SetLight(Light* light)
-{
-	Model::light = light;
-}
-
-void Model::SetPipeline(GPipeline* pipeline_)
-{
-	Model::pipeline = pipeline_;
 }
 
 Model::Model(const char* filename, bool smoothing)
@@ -86,28 +58,12 @@ Model::Model(const char* filename, bool smoothing)
 	Initialize(filename, smoothing);
 }
 
-void Model::MatUpdate(Matrix matView, Matrix matProjection, const Vector3D& cameraPos)
-{
-#pragma region WorldMatrix
-	mat.Update();
-#pragma endregion
-
-	constMapTransform->matworld = mat.matWorld;
-	constMapTransform->matview = matView;
-	constMapTransform->matview *= matProjection;
-	constMapTransform->cameraPos = cameraPos;
-}
-
 void Model::Draw()
 {
-	pipeline->Setting(dx->GetCmdList());
-	pipeline->Update(dx->GetCmdList(), D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	VertBuffUpdate(dx->GetCmdList());
 	//	テクスチャ
 	dx->GetCmdList()->SetGraphicsRootConstantBufferView(0, material->GetGPUVirtualAddress());
 	dx->GetCmdList()->SetGraphicsRootDescriptorTable(1, dx->GetTextureHandle(textureHandle));
-	dx->GetCmdList()->SetGraphicsRootConstantBufferView(2, transform->GetGPUVirtualAddress());
-	light->Draw();
 
 	dx->GetCmdList()->DrawInstanced(vertexSize, 1, 0, 0);
 }

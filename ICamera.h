@@ -1,6 +1,7 @@
 #pragma once
 #include "MyMath.h"
 #include "Input.h"
+#include "Window.h"
 class ICamera
 {
 protected:
@@ -12,6 +13,7 @@ protected:
 	Vector3D rightVec;
 	Vector3D downVec;
 
+	Matrix matProjection = MyMath::PerspectiveFovLH(Window::window_width, Window::window_height, MyMath::ConvertToRad(48.0f), 0.1f, 1000.0f);
 public:
 	virtual ~ICamera() = default;
 	virtual void Initialize(Vector3D eye_, Vector3D target_, Vector3D up_) = 0;
@@ -26,6 +28,7 @@ public:
 	Vector3D GetRightVec() { return rightVec; }
 	Vector3D GetDownVec() { return downVec; }
 	Matrix GetMatrix() { return mat; }
+	Matrix GetProjection() { return matProjection; }
 	//	Setter
 	void SetTarget(Vector3D t) { target = t; }
 	void SetEye(Vector3D e) { eye = e; }

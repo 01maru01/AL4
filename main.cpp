@@ -6,7 +6,7 @@
 #include "SpriteCommon.h"
 #include "SceneManager.h"
 #include "Light.h"
-#include "Model.h"
+#include "Object3D.h"
 
 int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 {
@@ -28,7 +28,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	light = light->Create();
 	light->SetLightDir({ 0,0,1 });
 	light->SetLightColor({ 1,1,1 });
-	Model::SetLight(light);
+	Object3D::SetLight(light);
+	
 
 	SceneManager* sceneMan = SceneManager::GetInstance();
 	sceneMan->Initialize();

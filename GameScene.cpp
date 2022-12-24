@@ -4,11 +4,10 @@
 
 void GameScene::MatUpdate()
 {
-	ground->MatUpdate(camera->GetMatrix(), matProjection, camera->GetEye());
-	skydome->MatUpdate(camera->GetMatrix(), matProjection, camera->GetEye());
-	sphere->MatUpdate(camera->GetMatrix(), matProjection, camera->GetEye());
-	sword->MatUpdate(camera->GetMatrix(), matProjection, camera->GetEye());
-	player->MatUpdate(camera->GetMatrix(), matProjection, camera->GetEye());
+	ground->Update();
+	skydome->Update();
+	sword->Update();
+	//player->MatUpdate(camera->GetMatrix(), matProjection, camera->GetEye());
 
 	sprite->MatUpdate();
 }
@@ -24,28 +23,21 @@ GameScene::~GameScene()
 
 void GameScene::Initialize()
 {
-	camera = new GameCamera();
+	camera = new MyDebugCamera();
 	camera->Initialize(Vector3D(0.0f, 0.0f, -10.0f), Vector3D(0.0f, 1.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
 
 	objShader.Initialize(L"Resources/shader/ObjVS.hlsl", L"Resources/shader/ObjPS.hlsl");
 
 	modelpipeline = std::make_unique<GPipeline>(dx->GetDev(), objShader);
 
-	matView.Init(Vector3D(0.0f, 0.0f, -100.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
-	matProjection = MyMath::PerspectiveFovLH(Window::window_width, Window::window_height, MyMath::ConvertToRad(48.0f), 0.1f, 1000.0f);
-
-	Model::SetPipeline(modelpipeline.get());
+	Object3D::SetPipeline(modelpipeline.get());
+	Object3D::SetCamera(camera);
 	LoadResources();
 
-	sphere->mat.trans.x = -1.0f;
-	sphere->mat.trans.y = 1.0f;
-	sword->mat.trans.x = 1.0f;
-	sword->mat.rotAngle.y = MyMath::PI;
-
-	player = std::make_unique<Player>();
-	player->Initialize("chr_sword", true);
-	player->PlayerInitialize();
-	player->SetCamera(camera);
+	//player = std::make_unique<Player>();
+	//player->Initialize("chr_sword", true);
+	//player->PlayerInitialize();
+	//player->SetCamera(camera);
 }
 
 void GameScene::Finalize()
@@ -55,18 +47,18 @@ void GameScene::Finalize()
 void GameScene::LoadResources()
 {
 #pragma region Model
-	skydome = std::make_unique<Model>("skydome");
-	ground = std::make_unique<Model>("ground");
-	sphere = std::make_unique<Model>("sphere");
-	sword = std::make_unique<Model>("chr_sword");
+	modelSword = std::make_unique<Model>("12161_Cat_v1_L2");
+	modelSkydome = std::make_unique<Model>("skydome");
+	modelGround = std::make_unique<Model>("ground");
 #pragma endregion
 
 #pragma region AssimpModel
-	fbxModel = std::make_unique<AssimpModel>(modelpipeline.get());
-	fbxModel->Initialize(L"Assets/Alicia/FBX/Alicia_solid_Unity.FBX");
+	//fbxModel = std::make_unique<AssimpModel>(modelpipeline.get());
+	//fbxModel->Initialize(L"Assets/Alicia/FBX/Alicia_solid_Unity.FBX");
 #pragma endregion
-
-
+	sword = Object3D::Create(modelSword.get());
+	skydome.reset(Object3D::Create(modelSkydome.get()));
+	ground.reset(Object3D::Create(modelGround.get()));
 #pragma region Sprite
 	sprite = std::make_unique<Sprite>();
 #pragma endregion
@@ -81,9 +73,7 @@ void GameScene::Update()
 #pragma region XVˆ—
 	camera->Update();
 
-	player->Update();
-
-	sphere->mat.rotAngle.y += 0.01f;
+	//player->Update();
 #pragma endregion
 	MatUpdate();
 }
@@ -93,10 +83,9 @@ void GameScene::Draw()
 	ground->Draw();
 	skydome->Draw();
 
-	//sphere->Draw();
-	//sword->Draw();
+	sword->Draw();
 
-	player->Draw();
+	//player->Draw();
 
 	sprite->Draw(reimuG);
 }

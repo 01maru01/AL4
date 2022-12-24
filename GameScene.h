@@ -6,6 +6,7 @@
 #include "Model.h"
 #include "AssimpModel.h"
 #include "Sprite.h"
+#include "Object3D.h"
 
 #include "Player.h"
 #include "ICamera.h"
@@ -18,14 +19,11 @@ private:
 	Shader objShader;
 	std::unique_ptr<GPipeline> modelpipeline;
 
-	MyMath::MatView matView;
-	Matrix matProjection;
 
 #pragma region Model
-	std::unique_ptr<Model> skydome;
-	std::unique_ptr<Model> ground;
-	std::unique_ptr<Model> sphere;
-	std::unique_ptr<Model> sword;
+	std::unique_ptr<Model> modelSkydome;
+	std::unique_ptr<Model> modelGround;
+	std::unique_ptr<Model> modelSword;
 	std::unique_ptr<AssimpModel> fbxModel;
 #pragma endregion
 
@@ -36,8 +34,10 @@ private:
 #pragma region Texture
 	int reimuG;
 #pragma endregion
-
-	std::unique_ptr<Player> player;
+	std::unique_ptr<Object3D> skydome;
+	std::unique_ptr<Object3D> ground;
+	Object3D* sword;
+	//std::unique_ptr<Player> player;
 
 public:
 	GameScene();
