@@ -47,7 +47,7 @@ void GameScene::Finalize()
 void GameScene::LoadResources()
 {
 #pragma region Model
-	modelSword = std::make_unique<Model>("12161_Cat_v1_L2");
+	modelSword = std::make_unique<Model>("chr_sword");
 	modelSkydome = std::make_unique<Model>("skydome");
 	modelGround = std::make_unique<Model>("ground");
 #pragma endregion

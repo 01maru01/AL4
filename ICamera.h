@@ -5,7 +5,7 @@
 class ICamera
 {
 protected:
-	Matrix mat;
+	Matrix matView;
 	Vector3D eye;		//	視点座標
 	Vector3D target;	//	注視点座標
 	Vector3D up;		//	上方向ベクトル
@@ -27,8 +27,13 @@ public:
 	Vector3D GetFrontVec() { return frontVec; }
 	Vector3D GetRightVec() { return rightVec; }
 	Vector3D GetDownVec() { return downVec; }
-	Matrix GetMatrix() { return mat; }
+	Matrix GetView() { return matView; }
 	Matrix GetProjection() { return matProjection; }
+	Matrix GetViewProj() { 
+		Matrix mat = matView;
+		mat *= matProjection;
+		return mat;
+	}
 	//	Setter
 	void SetTarget(Vector3D t) { target = t; }
 	void SetEye(Vector3D e) { eye = e; }

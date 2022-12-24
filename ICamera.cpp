@@ -2,5 +2,5 @@
 
 void ICamera::MatUpdate()
 {
-	mat = MyMath::LookAtLH(eye, target, up);
+	matView = MyMath::LookAtLH(eye, target, up);
 }

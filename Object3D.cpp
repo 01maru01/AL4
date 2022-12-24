@@ -95,7 +95,7 @@ void Object3D::Update()
 		mat.matWorld *= parent->mat.matWorld;
 	}
 
-	const Matrix& matViewProjection = camera->GetProjection();
+	const Matrix& matViewProjection = camera->GetViewProj();
 	const Vector3D& cameraPos = camera->GetEye();
 
 	ConstBufferDataTransform* constMap = nullptr;
