@@ -7,6 +7,8 @@
 class Mesh :public VertIdxBuff
 {
 private:
+	static MyDirectX* dx;
+
 	// 頂点データ配列
 	std::vector<Vertex> vertices;
 	// 頂点インデックス配列
@@ -15,10 +17,12 @@ private:
 	std::unordered_map<unsigned short, std::vector<unsigned short>> smoothData;
 	// マテリアル
 	Material* material = nullptr;
-
 public:
-
+	void CreateBuff();
 	void Draw();
+
+	void AddSmoothData(unsigned short index, unsigned short vertex);
+	void CalcSmoothedVertexNormals();
 private:
 	void SetVertices() override;
 };
