@@ -1,8 +1,8 @@
 #pragma once
-#include "Model.h"
+#include "Object3D.h"
 #include "ICamera.h"
 
-class Player :public Model
+class Player :public Object3D
 {
 private:
 	Vector2D frontVec;
@@ -13,7 +13,7 @@ private:
 	static const int INVINCIBLE_TIME;
 public:
 	static void SetCamera(ICamera* camera_);
-	void PlayerInitialize();
+	void PlayerInitialize(Model* model);
 	void Update();
 };
 

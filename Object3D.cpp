@@ -73,7 +73,7 @@ void Object3D::Initialize()
 	mat.Initialize();
 }
 
-void Object3D::Update()
+void Object3D::MatUpdate()
 {
 	HRESULT result;
 #pragma region WorldMatrix

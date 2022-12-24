@@ -23,10 +23,11 @@ private:
 
 
 
-	MyMath::ObjMatrix mat;
 	ComPtr<ID3D12Resource> transform;
 	Object3D* parent = nullptr;
 	Model* model = nullptr;
+protected:
+	MyMath::ObjMatrix mat;
 public:
 	static Object3D* Create(Model* model = nullptr);
 
@@ -36,7 +37,7 @@ public:
 	void SetModel(Model* model);
 
 	void Initialize();
-	void Update();
+	void MatUpdate();
 	void Draw();
 };
 

@@ -32,12 +32,11 @@ private:
 #pragma endregion
 
 #pragma region Texture
-	int reimuG;
+	int reimuG = -1;
 #pragma endregion
 	std::unique_ptr<Object3D> skydome;
 	std::unique_ptr<Object3D> ground;
-	Object3D* sword;
-	//std::unique_ptr<Player> player;
+	std::unique_ptr<Player> player;
 
 public:
 	GameScene();

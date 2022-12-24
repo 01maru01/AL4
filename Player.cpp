@@ -10,9 +10,10 @@ void Player::SetCamera(ICamera* camera_)
 	camera = camera_;
 }
 
-void Player::PlayerInitialize()
+void Player::PlayerInitialize(Model* model)
 {
-	Initialize("chr_sword", false);
+	Initialize();
+	SetModel(model);
 	//mat.rotAngle.y = MyMath::PI;
 	//mat.scale = { 2.0f,2.0f,2.0f };
 }
@@ -32,13 +33,13 @@ void Player::Update()
 		spd = MAX_SPD;
 	}
 	moveVec *= spd;
-	//mat.trans += moveVec;
-	//camera->SetTarget({ mat.trans.x,mat.trans.y + 1.0f,mat.trans.z });
+	mat.trans += moveVec;
+	camera->SetTarget({ mat.trans.x,mat.trans.y + 1.0f,mat.trans.z });
 	camera->EyeMove(moveVec);
 	camera->MatUpdate();
 
 	if (Input::GetInstance()->GetKey(DIK_W) || Input::GetInstance()->GetKey(DIK_S) ||
 		Input::GetInstance()->GetKey(DIK_A) || Input::GetInstance()->GetKey(DIK_D)) {
-		//mat.rotAngle.y = atan2(moveVec.x, moveVec.z);
+		mat.rotAngle.y = atan2(moveVec.x, moveVec.z);
 	}
 }
