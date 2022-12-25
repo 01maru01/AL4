@@ -261,11 +261,11 @@
     <ClCompile Include="Window.cpp">
       <Filter>ソース ファイル\lib\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="CollisionManager.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Collision.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\lib\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionManager.cpp">
+      <Filter>ソース ファイル\lib\Collider</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -416,14 +416,14 @@
     <ClInclude Include="VertexStruct.h">
       <Filter>ヘッダー ファイル\lib\Buffer</Filter>
     </ClInclude>
+    <ClInclude Include="Collision.h">
+      <Filter>ヘッダー ファイル\lib\Collider</Filter>
+    </ClInclude>
     <ClInclude Include="CollisionManager.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\lib\Collider</Filter>
     </ClInclude>
     <ClInclude Include="CollisionPrimitive.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Collision.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\lib\Collider</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
