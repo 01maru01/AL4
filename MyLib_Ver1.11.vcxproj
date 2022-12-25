@@ -107,6 +107,7 @@
     <ClInclude Include="Vector4D.h" />
     <ClInclude Include="VertBuff.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="VertexStruct.h" />
     <ClInclude Include="ViewPort.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>

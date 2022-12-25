@@ -6,30 +6,11 @@
 #include "MyMath.h"
 #include <wrl.h>
 #include <vector>
+#include "VertexStruct.h"
 
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxgi.lib")
 
-struct Vertex
-{
-	Vector3D pos;
-	Vector3D normal;
-	Vector2D uv;
-};
-
-struct VertexObj
-{
-	Vector3D pos;
-	Vector3D normal;
-	Vector2D uv;
-	Vector4D color;
-};
-
-struct ScreenVertex
-{
-	Vector3D pos;
-	Vector2D uv;
-};
 
 class VertBuff
 {

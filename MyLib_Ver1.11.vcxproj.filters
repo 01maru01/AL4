@@ -407,6 +407,9 @@
     <ClInclude Include="GPipeline.h">
       <Filter>ヘッダー ファイル\lib\Engine</Filter>
     </ClInclude>
+    <ClInclude Include="VertexStruct.h">
+      <Filter>ヘッダー ファイル\lib\Buffer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shader\Basic.hlsli">
