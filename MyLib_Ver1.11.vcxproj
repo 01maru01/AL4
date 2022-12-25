@@ -17,6 +17,7 @@
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="CollisionInfo.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
+    <ClCompile Include="CollisionPrimitive.cpp" />
     <ClCompile Include="ConstBuff.cpp" />
     <ClCompile Include="DirectX.cpp" />
     <ClCompile Include="DrawGrid.cpp" />

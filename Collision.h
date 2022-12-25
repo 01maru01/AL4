@@ -17,5 +17,7 @@ public:
 	static bool CheckRay2Plane(const Ray& ray, const Plane& plane, float* distance = nullptr, Vector3D* inter = nullptr);
 	static bool CheckRay2Sphere(const Ray& ray, const Sphere& sphere,
 		float* distance = nullptr, Vector3D* inter = nullptr);
+	static bool CheckRay2Triangle(const Ray& ray, const Triangle& triangle,
+		float* distance = nullptr, Vector3D* inter = nullptr);
 };
 
