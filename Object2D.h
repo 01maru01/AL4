@@ -1,7 +1,7 @@
 #pragma once
 #include "GPipeline.h"
-#include "VertBuff.h"
-class Object2D:public VertBuff
+#include "VertIdxBuff.h"
+class Object2D:public VertIdxBuff
 {
 private:
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;

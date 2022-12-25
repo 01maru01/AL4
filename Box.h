@@ -2,13 +2,13 @@
 #include "MyMath.h"
 #include "GPipeline.h"
 #include "DirectX.h"
-#include "VertBuff.h"
+#include "VertIdxBuff.h"
 #include <d3d12.h>
 #include <wrl.h>
 
 #pragma comment(lib, "d3d12.lib")
 
-class Box :public VertBuff
+class Box :public VertIdxBuff
 {
 private:
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;

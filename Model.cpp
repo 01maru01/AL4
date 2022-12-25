@@ -50,7 +50,7 @@ void Model::Initialize(const char* filename, bool smoothing)
 	// 頂点データ全体のサイズ = 頂点データ一つ分のサイズ * 頂点データの要素数
 	UINT sizeVB = static_cast<UINT>(sizeof(vertices[0]) * vertexSize);
 
-	VBInitialize(dx->GetDev(), sizeVB, vertexSize);
+	BuffInitialize(dx->GetDev(), sizeVB, vertexSize);
 }
 
 Model::Model(const char* filename, bool smoothing)
@@ -60,7 +60,7 @@ Model::Model(const char* filename, bool smoothing)
 
 void Model::Draw()
 {
-	VertBuffUpdate(dx->GetCmdList());
+	BuffUpdate(dx->GetCmdList());
 	//	テクスチャ
 	dx->GetCmdList()->SetGraphicsRootConstantBufferView(0, material->GetGPUVirtualAddress());
 	dx->GetCmdList()->SetGraphicsRootDescriptorTable(1, dx->GetTextureHandle(textureHandle));

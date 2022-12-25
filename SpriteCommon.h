@@ -1,6 +1,6 @@
 #pragma once
 #include "GPipeline.h"
-#include "VertBuff.h"
+#include "VertIdxBuff.h"
 #include "Shader.h"
 
 class SpriteCommon

@@ -4,8 +4,7 @@
 #include <DirectXMath.h>
 #include <string>
 #include <vector>
-#include "VertBuff.h"
-#include "VertBuff.h"
+#include "VertIdxBuff.h"
 
 struct AssimpVertex
 {
@@ -15,7 +14,7 @@ struct AssimpVertex
     DirectX::XMFLOAT3 Tangent; // 接空間
     DirectX::XMFLOAT4 Color; // 頂点色
 };
-struct Mesh :public VertBuff
+struct Mesh :public VertIdxBuff
 {
     std::vector<Vertex> Vertices; // 頂点データの配列
     std::vector<uint16_t> Indices; // インデックスの配列

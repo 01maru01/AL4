@@ -234,7 +234,7 @@
     <ClCompile Include="ConstBuff.cpp">
       <Filter>ソース ファイル\lib\Buffer</Filter>
     </ClCompile>
-    <ClCompile Include="VertBuff.cpp">
+    <ClCompile Include="VertIdxBuff.cpp">
       <Filter>ソース ファイル\lib\Buffer</Filter>
     </ClCompile>
     <ClCompile Include="DirectX.cpp">
@@ -359,7 +359,7 @@
     <ClInclude Include="ScreenPolygon.h">
       <Filter>ヘッダー ファイル\lib\Screen</Filter>
     </ClInclude>
-    <ClInclude Include="VertBuff.h">
+    <ClInclude Include="VertIdxBuff.h">
       <Filter>ヘッダー ファイル\lib\Buffer</Filter>
     </ClInclude>
     <ClInclude Include="ConstBuff.h">

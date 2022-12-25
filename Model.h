@@ -2,11 +2,11 @@
 #include "MyMath.h"
 #include "DirectX.h"
 #include "GPipeline.h"
-#include "VertBuff.h"
+#include "VertIdxBuff.h"
 #include "Material.h"
 #include "Light.h"
 
-class Model :public VertBuff
+class Model :public VertIdxBuff
 {
 private:
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;

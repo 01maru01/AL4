@@ -1,9 +1,9 @@
 #pragma once
 #include "MyMath.h"
 #include "GPipeline.h"
-#include "VertBuff.h"
+#include "VertIdxBuff.h"
 
-class UISquare :public VertBuff
+class UISquare :public VertIdxBuff
 {
 private:
 	GPipeline pipeline;
@@ -16,7 +16,7 @@ private:
 	void SetVertices() override;
 };
 
-class Square :public VertBuff
+class Square :public VertIdxBuff
 {
 private:
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;

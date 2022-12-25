@@ -159,12 +159,12 @@ void Mesh::Initialize()
     UINT sizeVB = static_cast<UINT>(sizeof(Vertices[0]) * Vertices.size());
     //	全体のサイズ
     UINT sizeIB = static_cast<UINT>(sizeof(uint16_t) * Indices.size());
-    VBInitialize(MyDirectX::GetInstance()->GetDev(), sizeVB, Vertices.size(), sizeIB, &Indices.front(), Indices.size());
+    BuffInitialize(MyDirectX::GetInstance()->GetDev(), sizeVB, Vertices.size(), sizeIB, &Indices.front(), Indices.size());
 }
 
 void Mesh::Update()
 {
-    VertBuffUpdate(MyDirectX::GetInstance()->GetCmdList());
+    BuffUpdate(MyDirectX::GetInstance()->GetCmdList());
 }
 
 void Mesh::SetVertices()

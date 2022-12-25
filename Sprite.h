@@ -1,7 +1,7 @@
 #pragma once
 #include "SpriteCommon.h"
 
-class Sprite :public VertBuff
+class Sprite :public VertIdxBuff
 {
 private:
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;

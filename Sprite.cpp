@@ -31,7 +31,7 @@ void Sprite::Initialize()
 	vertices[RT].uv = { 1.0f,0.0f };
 	vertexSize = 4;
 	UINT sizePV = static_cast<UINT>(sizeof(vertices[0]) * vertexSize);
-	VBInitialize(MyDirectX::GetInstance()->GetDev(), sizePV, vertexSize);
+	BuffInitialize(MyDirectX::GetInstance()->GetDev(), sizePV, vertexSize);
 
 #pragma region  ConstBuffer
 	//	ヒープ設定
@@ -120,7 +120,7 @@ void Sprite::Draw(int handle)
 		return;
 	}
 	common->Draw();
-	VertBuffUpdate(MyDirectX::GetInstance()->GetCmdList());
+	BuffUpdate(MyDirectX::GetInstance()->GetCmdList());
 	//	テクスチャ
 	MyDirectX::GetInstance()->GetCmdList()->SetGraphicsRootConstantBufferView(0, material->GetGPUVirtualAddress());
 	MyDirectX::GetInstance()->GetCmdList()->SetGraphicsRootDescriptorTable(1, MyDirectX::GetInstance()->GetTextureHandle(handle));

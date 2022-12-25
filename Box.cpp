@@ -93,7 +93,7 @@ void Box::Initialize(Shader shader)
 	};
 	//	全体のサイズ
 	UINT sizeIB = static_cast<UINT>(sizeof(uint16_t) * indexSize);
-	VBInitialize(dx->GetDev(), sizeVB, vertexSize, sizeIB, &indices.front(), indexSize);
+	BuffInitialize(dx->GetDev(), sizeVB, vertexSize, sizeIB, &indices.front(), indexSize);
 
 #pragma region  WorldMatrix初期値
 	mat.Initialize();
@@ -142,7 +142,7 @@ void Box::Draw(ID3D12GraphicsCommandList* cmdList, D3D12_GPU_DESCRIPTOR_HANDLE h
 {
 	pipeline->Setting(cmdList);
 	pipeline->Update(cmdList, D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	VertBuffUpdate(cmdList);
+	BuffUpdate(cmdList);
 	//	テクスチャ
 	cmdList->SetGraphicsRootDescriptorTable(1, handle);
 	cmdList->SetGraphicsRootConstantBufferView(2, transform->GetGPUVirtualAddress());

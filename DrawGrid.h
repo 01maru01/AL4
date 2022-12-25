@@ -1,11 +1,11 @@
 #pragma once
 #include "GPipeline.h"
-#include "VertBuff.h"
+#include "VertIdxBuff.h"
 struct GritVertex
 {
 	Vector3D pos;
 };
-class DrawGrid :public VertBuff
+class DrawGrid :public VertIdxBuff
 {
 private:
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
