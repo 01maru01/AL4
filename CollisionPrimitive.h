@@ -10,3 +10,17 @@ struct Plane {
 	Vector3D normal = { 0.0f,1.0f,0.0f };
 	float distance = 0.0f;
 };
+
+struct Ray
+{
+	Vector3D start;
+	Vector3D dir = { 1.0f,0.0f,0.0f };
+};
+
+struct Triangle
+{
+	Vector3D p0;
+	Vector3D p1;
+	Vector3D p2;
+	Vector3D normal;
+};

@@ -36,3 +36,39 @@ void CollisionManager::CheckAllCollisions()
         }
     }
 }
+
+bool CollisionManager::Raycast(const Ray& ray, RayCast* hitinfo, float maxDistance)
+{
+    bool ans = false;
+    std::forward_list<BaseCollider*>::iterator itr;
+    std::forward_list<BaseCollider*>::iterator itr_hit;
+    float distance = maxDistance;
+    Vector3D inter;
+
+    itr = colliders.begin();
+    for (; itr != colliders.end(); ++itr) {
+        BaseCollider* colA = *itr;
+        if (colA->GetShapeType() == COLLISIONSHAPE_SPHERE) {
+            Sphere* sphere = dynamic_cast<Sphere*>(colA);
+            float tempDis;
+            Vector3D tempInter;
+
+            //if(!Collision::)
+            if (tempDis >= distance) continue;
+
+            ans = true;
+            distance = tempDis;
+            inter = tempInter;
+            itr_hit = itr;
+        }
+    }
+
+    if (ans && hitinfo) {
+        hitinfo->distance = distance;
+        hitinfo->inter = inter;
+        hitinfo->collider = *itr_hit;
+        hitinfo->object = hitinfo->collider->GetObject3D();
+    }
+
+    return ans;
+}
