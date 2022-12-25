@@ -53,7 +53,7 @@ bool CollisionManager::Raycast(const Ray& ray, RayCast* hitinfo, float maxDistan
             float tempDis;
             Vector3D tempInter;
 
-            //if(!Collision::)
+            if (!Collision::CheckRay2Sphere(ray, *sphere, &tempDis, &tempInter)) continue;
             if (tempDis >= distance) continue;
 
             ans = true;
