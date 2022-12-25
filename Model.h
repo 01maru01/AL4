@@ -18,15 +18,18 @@ public:
 	std::unordered_map<std::string, Material*> materials;
 	Material* defaultMaterial = nullptr;
 
+public:
+	Model(const char* filename, bool smoothing = false);
+	~Model();
+
 	void Initialize(const char* filename, bool smoothing);
+	void Draw();
+
+	inline const std::vector<Mesh*>& GetMeshes() { return meshes; }
+private:
 	void LoadMaterial(const std::string& directoryPath, const std::string& filename);
 	void LoadModel(const std::string& modelname, bool smoothing);
-public:
-	Model() {};
-	~Model();
-	Model(const char* filename, bool smoothing = false);
-	void Draw();
-private:
+	
 	void AddMaterial(Material* material) { materials.emplace(material->name, material); }
 };
 

@@ -51,7 +51,9 @@ public:
 	void MatUpdate();
 	virtual void Draw();
 
+	inline Model* GetModel() { return model; }
 	const Matrix& GetMatWorld() { return mat.matWorld; }
+
 	virtual void OnCollision(const CollisionInfo& info) {};
 };
 

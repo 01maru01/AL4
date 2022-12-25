@@ -43,9 +43,6 @@
     <Filter Include="ヘッダー ファイル\lib\Camera">
       <UniqueIdentifier>{281a38cb-bad6-4eba-b6ff-e5adba4110dc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\lib\Input">
-      <UniqueIdentifier>{6d61ee45-941e-4fce-a5e3-811e68e5ce13}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ヘッダー ファイル\lib\Math">
       <UniqueIdentifier>{de02d834-15bb-4b37-b202-df3a44d4931e}</UniqueIdentifier>
     </Filter>
@@ -114,6 +111,9 @@
     </Filter>
     <Filter Include="ソース ファイル\lib\Engine">
       <UniqueIdentifier>{1f0ccf88-d0c0-44b1-b621-34a6efb37278}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\lib\Input">
+      <UniqueIdentifier>{6d61ee45-941e-4fce-a5e3-811e68e5ce13}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -273,11 +273,11 @@
     <ClCompile Include="CollisionPrimitive.cpp">
       <Filter>ソース ファイル\lib\Collider</Filter>
     </ClCompile>
-    <ClCompile Include="MeshCollider.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Mesh.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\lib\Obj</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshCollider.cpp">
+      <Filter>ソース ファイル\lib\Collider</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -440,11 +440,11 @@
     <ClInclude Include="RayCast.h">
       <Filter>ヘッダー ファイル\lib\Collider</Filter>
     </ClInclude>
-    <ClInclude Include="MeshCollider.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Mesh.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\lib\Obj</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshCollider.h">
+      <Filter>ヘッダー ファイル\lib\Collider</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

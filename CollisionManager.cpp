@@ -1,6 +1,7 @@
 #include "CollisionManager.h"
 #include "BaseCollider.h"
 #include "Collision.h"
+#include "MeshCollider.h"
 
 CollisionManager* CollisionManager::GetInstance()
 {
@@ -33,6 +34,26 @@ void CollisionManager::CheckAllCollisions()
                     colB->OnCollision(CollisionInfo(colA->GetObject3D(), colA, inter));
                 }
             }
+            else if (colA->GetShapeType() == COLLISIONSHAPE_MESH &&
+                colB->GetShapeType() == COLLISIONSHAPE_SPHERE) {
+                MeshCollider* meshCollider = dynamic_cast<MeshCollider*>(colA);
+                Sphere* sphere = dynamic_cast<Sphere*>(colB);
+                Vector3D inter;
+                if (meshCollider->CheckCollisionSphere(*sphere, &inter)) {
+                    colA->OnCollision(CollisionInfo(colB->GetObject3D(), colB, inter));
+                    colB->OnCollision(CollisionInfo(colA->GetObject3D(), colA, inter));
+                }
+            }
+            else if (colA->GetShapeType() == COLLISIONSHAPE_SPHERE &&
+                colB->GetShapeType() == COLLISIONSHAPE_MESH) {
+                MeshCollider* meshCollider = dynamic_cast<MeshCollider*>(colB);
+                Sphere* sphere = dynamic_cast<Sphere*>(colA);
+                Vector3D inter;
+                if (meshCollider->CheckCollisionSphere(*sphere, &inter)) {
+                    colA->OnCollision(CollisionInfo(colB->GetObject3D(), colB, inter));
+                    colB->OnCollision(CollisionInfo(colA->GetObject3D(), colA, inter));
+                }
+            }
         }
     }
 }
@@ -58,6 +79,19 @@ bool CollisionManager::Raycast(const Ray& ray, RayCast* hitinfo, float maxDistan
 
             ans = true;
             distance = tempDis;
+            inter = tempInter;
+            itr_hit = itr;
+        }
+        else if (colA->GetShapeType() == COLLISIONSHAPE_MESH) {
+            MeshCollider* meshCollider = dynamic_cast<MeshCollider*>(colA);
+
+            float tempDistance;
+            Vector3D tempInter;
+            if (!meshCollider->CheckCollisionRay(ray, &tempDistance, &tempInter)) continue;
+            if (tempDistance >= distance) continue;
+
+            ans = true;
+            distance = tempDistance;
             inter = tempInter;
             itr_hit = itr;
         }
