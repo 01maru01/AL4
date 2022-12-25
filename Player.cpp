@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "Input.h"
+#include "SphereCollider.h"
 
 ICamera* Player::camera = nullptr;
 const float Player::MAX_SPD = 0.1f;
@@ -15,7 +16,8 @@ void Player::PlayerInitialize(Model* model)
 	Initialize();
 	SetModel(model);
 	//mat.rotAngle.y = MyMath::PI;
-	//mat.scale = { 2.0f,2.0f,2.0f };
+	//mat.scale = { 2.0f,2.0f,2.0f 
+	SetCollider(new SphereCollider(Vector3D(0, 0.5f, 0)));
 }
 
 void Player::Update()
@@ -42,4 +44,13 @@ void Player::Update()
 		Input::GetInstance()->GetKey(DIK_A) || Input::GetInstance()->GetKey(DIK_D)) {
 		mat.rotAngle.y = atan2(moveVec.x, moveVec.z);
 	}
+
+	ColliderUpdate();
+}
+
+void Player::OnCollision(const CollisionInfo& info)
+{
+	mat.trans.x -= camera->GetFrontVec().x;
+	mat.trans.z -= camera->GetFrontVec().z;
+	MatUpdate();
 }

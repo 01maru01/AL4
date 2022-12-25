@@ -1,12 +1,15 @@
 #include "GameScene.h"
 #include "MyDebugCamera.h"
 #include "GameCamera.h"
+#include "CollisionManager.h"
+#include "SphereCollider.h"
 
 void GameScene::MatUpdate()
 {
 	ground->MatUpdate();
 	skydome->MatUpdate();
 	player->MatUpdate();
+	sphere->MatUpdate();
 
 	sprite->MatUpdate();
 }
@@ -22,6 +25,8 @@ GameScene::~GameScene()
 
 void GameScene::Initialize()
 {
+	collisionMan = CollisionManager::GetInstance();
+
 	camera = new GameCamera();
 	camera->Initialize(Vector3D(0.0f, 0.0f, -10.0f), Vector3D(0.0f, 1.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
 
@@ -33,6 +38,9 @@ void GameScene::Initialize()
 	Object3D::SetCamera(camera);
 	LoadResources();
 
+	sphere->SetCollider(new SphereCollider());
+	sphere->SetPosition(Vector3D(3.0f, 1.0f, 0.0f));
+	
 	Player::SetCamera(camera);
 	player = std::make_unique<Player>();
 	player->PlayerInitialize(modelSword.get());
@@ -48,6 +56,7 @@ void GameScene::LoadResources()
 	modelSword = std::make_unique<Model>("chr_sword");
 	modelSkydome = std::make_unique<Model>("skydome");
 	modelGround = std::make_unique<Model>("ground");
+	modelSphere = std::make_unique<Model>("sphere");
 #pragma endregion
 
 #pragma region AssimpModel
@@ -56,6 +65,7 @@ void GameScene::LoadResources()
 #pragma endregion
 	skydome.reset(Object3D::Create(modelSkydome.get()));
 	ground.reset(Object3D::Create(modelGround.get()));
+	sphere.reset(Object3D::Create(modelSphere.get()));
 #pragma region Sprite
 	sprite = std::make_unique<Sprite>();
 #pragma endregion
@@ -71,7 +81,10 @@ void GameScene::Update()
 	camera->Update();
 
 	player->Update();
+	sphere->ColliderUpdate();
 #pragma endregion
+	collisionMan->CheckAllCollisions();
+
 	MatUpdate();
 }
 
@@ -79,7 +92,7 @@ void GameScene::Draw()
 {
 	ground->Draw();
 	skydome->Draw();
-
+	sphere->Draw();
 	player->Draw();
 
 	sprite->Draw(reimuG);

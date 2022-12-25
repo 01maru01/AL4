@@ -1,5 +1,6 @@
 #include "Object3D.h"
 #include "BaseCollider.h"
+#include "CollisionManager.h"
 
 Light* Object3D::light = nullptr;
 GPipeline* Object3D::pipeline = nullptr;
@@ -30,11 +31,14 @@ void Object3D::SetCollider(BaseCollider* collider)
 {
 	collider->SetObject3D(this);
 	this->collider = collider;
+	CollisionManager::GetInstance()->AddCollider(collider);
+	collider->Update();
 }
 
 Object3D::~Object3D()
 {
 	if (collider) {
+		CollisionManager::GetInstance()->RemoveCollider(collider);
 		delete collider;
 	}
 }

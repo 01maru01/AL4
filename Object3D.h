@@ -44,6 +44,7 @@ public:
 	static void SetCamera(ICamera* camera);
 	void SetModel(Model* model);
 	void SetCollider(BaseCollider* collider);
+	void SetPosition(const Vector3D& vec) { mat.trans = vec; }
 
 	virtual void Initialize();
 	virtual void ColliderUpdate();

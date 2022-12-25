@@ -11,6 +11,8 @@
 #include "Player.h"
 #include "ICamera.h"
 
+class CollisionManager;
+
 class GameScene :public IScene
 {
 private:
@@ -19,11 +21,13 @@ private:
 	Shader objShader;
 	std::unique_ptr<GPipeline> modelpipeline;
 
+	CollisionManager* collisionMan = nullptr;
 
 #pragma region Model
 	std::unique_ptr<Model> modelSkydome;
 	std::unique_ptr<Model> modelGround;
 	std::unique_ptr<Model> modelSword;
+	std::unique_ptr<Model> modelSphere;
 	std::unique_ptr<AssimpModel> fbxModel;
 #pragma endregion
 
@@ -36,6 +40,7 @@ private:
 #pragma endregion
 	std::unique_ptr<Object3D> skydome;
 	std::unique_ptr<Object3D> ground;
+	std::unique_ptr<Object3D> sphere;
 	std::unique_ptr<Player> player;
 
 public:

@@ -14,7 +14,9 @@
     <ClCompile Include="AbstractSceneFactory.cpp" />
     <ClCompile Include="AssimpLoader.cpp" />
     <ClCompile Include="AssimpModel.cpp" />
+    <ClCompile Include="Collision.cpp" />
     <ClCompile Include="CollisionInfo.cpp" />
+    <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="ConstBuff.cpp" />
     <ClCompile Include="DirectX.cpp" />
     <ClCompile Include="DrawGrid.cpp" />
@@ -64,7 +66,10 @@
     <ClInclude Include="AbstractSceneFactory.h" />
     <ClInclude Include="AssimpLoader.h" />
     <ClInclude Include="AssimpModel.h" />
+    <ClInclude Include="Collision.h" />
     <ClInclude Include="CollisionInfo.h" />
+    <ClInclude Include="CollisionManager.h" />
+    <ClInclude Include="CollisionPrimitive.h" />
     <ClInclude Include="CollisionType.h" />
     <ClInclude Include="ConstBuff.h" />
     <ClInclude Include="DirectX.h" />

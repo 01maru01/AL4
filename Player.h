@@ -15,5 +15,6 @@ public:
 	static void SetCamera(ICamera* camera_);
 	void PlayerInitialize(Model* model);
 	void Update();
+	void OnCollision(const CollisionInfo& info) override;
 };
 
