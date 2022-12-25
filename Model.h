@@ -5,39 +5,28 @@
 #include "VertIdxBuff.h"
 #include "Material.h"
 #include "Light.h"
+#include "Mesh.h"
 
-class Model :public VertIdxBuff
+class Model
 {
 private:
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 	static MyDirectX* dx;
-
-	Material mtl;
 public:
-	struct ConstBufferDataMaterial {
-		Vector3D ambient;
-		float pad1;
-		Vector3D diffuse;
-		float pad2;
-		Vector3D specular;
-		float alpha;
-	};
-	ComPtr<ID3D12Resource> material;
-
-	UINT vertexSize;
-	std::vector<Vertex> vertices;
-	//UINT indexSize;
-	//std::vector<unsigned short> indices;
-
-	int textureHandle;
+	std::vector<Mesh*> meshes;
+	std::unordered_map<std::string, Material*> materials;
+	Material* defaultMaterial = nullptr;
 
 	void Initialize(const char* filename, bool smoothing);
+	void LoadMaterial(const std::string& directoryPath, const std::string& filename);
+	void LoadModel(const std::string& modelname, bool smoothing);
 public:
 	Model() {};
+	~Model();
 	Model(const char* filename, bool smoothing = false);
 	void Draw();
 private:
-	void SetVertices() override;
+	void AddMaterial(Material* material) { materials.emplace(material->name, material); }
 };
 
