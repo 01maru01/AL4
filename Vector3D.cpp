@@ -96,6 +96,28 @@ const Vector3D operator*(float s, const Vector3D& v)
 	return v * s;
 }
 
+const Vector3D Vec3Transform(const Vector3D& v, const Matrix& m)
+{
+	Vector3D ans;
+	ans.x = v.x * m.m[0][0] + v.y * m.m[1][0] + v.z * m.m[2][0] + m.m[3][0];
+	ans.y = v.x * m.m[0][1] + v.y * m.m[1][1] + v.z * m.m[2][1] + m.m[3][1];
+	ans.z = v.x * m.m[0][2] + v.y * m.m[1][2] + v.z * m.m[2][2] + m.m[3][2];
+	//ans.w = v.x * m.m[0][3] + v.y * m.m[1][3] + v.z * m.m[2][3] + m.m[3][3];
+	
+	return ans;
+}
+
+const Vector3D Vec3TransformNormal(const Vector3D& v, const Matrix& m)
+{
+	Vector3D ans;
+	ans.x = v.x * m.m[0][0] + v.y * m.m[1][0] + v.z * m.m[2][0];
+	ans.y = v.x * m.m[0][1] + v.y * m.m[1][1] + v.z * m.m[2][1];
+	ans.z = v.x * m.m[0][2] + v.y * m.m[1][2] + v.z * m.m[2][2];
+	//ans.w = v.x * m.m[0][3] + v.y * m.m[1][3] + v.z * m.m[2][3] + m.m[3][3];
+
+	return ans;
+}
+
 Vector3D CreatePolygonNormal(Vector3D a, Vector3D b, Vector3D c)
 {
 	Vector3D AB(b - a);
