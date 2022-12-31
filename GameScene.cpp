@@ -11,6 +11,7 @@ void GameScene::MatUpdate()
 	player->MatUpdate();
 	sphere->MatUpdate();
 
+	particle->MatUpdate();
 	sprite->MatUpdate();
 }
 
@@ -27,7 +28,7 @@ void GameScene::Initialize()
 {
 	collisionMan = CollisionManager::GetInstance();
 
-	camera = new GameCamera();
+	camera = new MyDebugCamera();
 	camera->Initialize(Vector3D(0.0f, 0.0f, -10.0f), Vector3D(0.0f, 1.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
 
 	objShader.Initialize(L"Resources/shader/ObjVS.hlsl", L"Resources/shader/ObjPS.hlsl");
@@ -37,6 +38,8 @@ void GameScene::Initialize()
 	Object3D::SetPipeline(modelpipeline.get());
 	Object3D::SetCamera(camera);
 	LoadResources();
+	
+	Particle::SetCamera(camera);
 
 	sphere->SetCollider(new SphereCollider());
 	sphere->SetPosition(Vector3D(3.0f, 1.0f, 0.0f));
@@ -68,6 +71,8 @@ void GameScene::LoadResources()
 	sphere.reset(Object3D::Create(modelSphere.get()));
 #pragma region Sprite
 	sprite = std::make_unique<Sprite>();
+
+	particle = std::make_unique<Particle>();
 #pragma endregion
 
 #pragma region Texture
@@ -92,8 +97,9 @@ void GameScene::Draw()
 {
 	ground->Draw();
 	skydome->Draw();
-	sphere->Draw();
-	player->Draw();
+	//sphere->Draw();
+	//player->Draw();
 
-	sprite->Draw(reimuG);
+	particle->Draw(reimuG);
+	//sprite->Draw(reimuG);
 }

@@ -13,6 +13,8 @@ protected:
 	Vector3D rightVec;
 	Vector3D downVec;
 
+	Matrix billboard;
+	Matrix billboardY;
 	Matrix matProjection = MyMath::PerspectiveFovLH(Window::window_width, Window::window_height, MyMath::ConvertToRad(48.0f), 0.1f, 1000.0f);
 public:
 	virtual ~ICamera() = default;
@@ -29,6 +31,8 @@ public:
 	Vector3D GetDownVec() { return downVec; }
 	Matrix GetView() { return matView; }
 	Matrix GetProjection() { return matProjection; }
+	Matrix GetBillboard() { return billboard; }
+	Matrix GetBillboardY() { return billboardY; }
 	Matrix GetViewProj() { 
 		Matrix mat = matView;
 		mat *= matProjection;

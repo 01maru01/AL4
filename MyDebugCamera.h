@@ -4,8 +4,6 @@
 #include "ICamera.h"
 class MyDebugCamera :public ICamera
 {
-public:
-	Matrix billboard;
 private:
 	Input* input = nullptr;
 

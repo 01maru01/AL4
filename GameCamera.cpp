@@ -52,6 +52,18 @@ void GameCamera::Update()
 
 	rightVec.normalize();
 	downVec.normalize();
+#pragma region ビルボード
+	billboard.Identity();
+	billboard.m[0][0] = rightVec.x;
+	billboard.m[0][1] = rightVec.y;
+	billboard.m[0][2] = rightVec.z;
+	billboard.m[1][0] = -downVec.x;
+	billboard.m[1][1] = -downVec.y;
+	billboard.m[1][2] = -downVec.z;
+	billboard.m[2][0] = frontVec.x;
+	billboard.m[2][1] = frontVec.y;
+	billboard.m[2][2] = frontVec.z;
+#pragma endregion
 
 	if (cosf(angle.y) < 0.5f) {
 		cursorSpd.y = MyMath::ConvertToRad(60.0f);

@@ -7,6 +7,7 @@
 #include "SceneManager.h"
 #include "Light.h"
 #include "Object3D.h"
+#include "ParticleCommon.h"
 
 int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 {
@@ -23,6 +24,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	InputJoypad* joypad = InputJoypad::GetInstance();
 
 	SpriteCommon* spriteCommon = SpriteCommon::GetInstance();
+	ParticleCommon* particleCommon = ParticleCommon::GetInstance();
+	particleCommon->Initialize();
 
 	Light* light = nullptr;
 	light = light->Create();
@@ -53,6 +56,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	}
 	delete light;
 	SceneManager::DeleteInstance();
+	ParticleCommon::DeleteInstance();
 	SpriteCommon::DeleteInstance();
 	InputJoypad::DeleteInstance();
 	Input::DeleteInstance();

@@ -59,6 +59,7 @@ void MyDebugCamera::Update()
 	rightVec.normalize();
 	downVec.normalize();
 #pragma region ビルボード
+	billboard.Identity();
 	billboard.m[0][0] = rightVec.x;
 	billboard.m[0][1] = rightVec.y;
 	billboard.m[0][2] = rightVec.z;
