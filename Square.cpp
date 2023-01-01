@@ -56,7 +56,7 @@ void Square::Initialize(int blendMord)
 	result = material->Map(0, nullptr, (void**)&mapMaterial);	//	マッピング
 	assert(SUCCEEDED(result));
 #pragma endregion
-	vertex = {0.0f,0.0f,0.0f};
+	vertex = { 0.0f,0.0f,0.0f };
 	vertexSize = 1;
 	UINT sizePV = static_cast<UINT>(sizeof(vertex) * vertexSize);
 
@@ -91,7 +91,7 @@ void Square::MatUpdate()
 	Matrix bill;
 	constMapTransform->matBillboard = camera->GetBillboardY();
 	//constMapTransform->matBillboard = bill;
-	constMapTransform->matWorld = mat.matWorld;
+	constMapTransform->scale = 5.0f;
 	constMapTransform->mat = camera->GetViewProj();
 }
 

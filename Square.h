@@ -15,7 +15,7 @@ private:
 	struct ConstBufferDataTransform {
 		Matrix mat;
 		Matrix matBillboard;
-		Matrix matWorld;
+		float scale;
 	};
 	ComPtr<ID3D12Resource> transform;
 	ConstBufferDataTransform* constMapTransform = nullptr;
@@ -27,7 +27,6 @@ private:
 	ConstBufferDataMaterial* mapMaterial = nullptr;
 
 	GPipeline pipeline;
-	//ScreenVertex pv[4];
 	Vector3D vertex;
 	UINT vertexSize;
 public:

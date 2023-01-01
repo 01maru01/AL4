@@ -30,8 +30,9 @@ void main(
 {
 	GSOutput element;
 	for (uint i = 0; i < vnum; i++) {
-		float4 offset = mul(matBillboard, bottom_offset_array[i]);
-		offset = mul(matWorld, offset);
+		float4 offset = bottom_offset_array[i] * scale;
+		offset = mul(matBillboard, offset);
+		//offset = mul(matWorld, offset);
 		element.svpos = input[0].svpos + offset;
 		element.svpos = mul(mat, element.svpos);
 		element.uv = uv_array[i];

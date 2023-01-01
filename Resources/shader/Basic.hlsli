@@ -7,7 +7,7 @@ cbuffer ConstBufferDataTransform:register(b1)
 {
 	matrix mat;
 	matrix matBillboard;
-	matrix matWorld;
+	float scale;
 };
 
 struct VSOutput

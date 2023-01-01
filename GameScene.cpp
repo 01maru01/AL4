@@ -11,7 +11,6 @@ void GameScene::MatUpdate()
 	player->MatUpdate();
 	sphere->MatUpdate();
 
-	particle->MatUpdate();
 	sprite->MatUpdate();
 	square->MatUpdate();
 }
@@ -41,8 +40,6 @@ void GameScene::Initialize()
 	Object3D::SetPipeline(modelpipeline.get());
 	Object3D::SetCamera(camera);
 	LoadResources();
-	
-	Particle::SetCamera(camera);
 
 	sphere->SetCollider(new SphereCollider());
 	sphere->SetPosition(Vector3D(3.0f, 1.0f, 0.0f));
@@ -77,8 +74,6 @@ void GameScene::LoadResources()
 	sphere.reset(Object3D::Create(modelSphere.get()));
 #pragma region Sprite
 	sprite = std::make_unique<Sprite>();
-
-	particle = std::make_unique<Particle>();
 #pragma endregion
 
 #pragma region Texture
@@ -107,6 +102,5 @@ void GameScene::Draw()
 	//player->Draw();
 	square->Draw(reimuG);
 
-	particle->Draw(reimuG);
 	//sprite->Draw(reimuG);
 }
