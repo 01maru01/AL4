@@ -2,24 +2,20 @@
 #include "MyMath.h"
 #include "GPipeline.h"
 #include "VertIdxBuff.h"
-#include "ParticleCommon.h"
 #include "ICamera.h"
 
-class Particle :public VertIdxBuff
+class Square :public VertIdxBuff
 {
 private:
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-	static ParticleCommon* common;
 	static MyDirectX* dx;
 	static ICamera* camera;
-public:
-	Matrix matRot;
-	Vector3D rotation;
 
 	struct ConstBufferDataTransform {
 		Matrix mat;
 		Matrix matBillboard;
+		Matrix matWorld;
 	};
 	ComPtr<ID3D12Resource> transform;
 	ConstBufferDataTransform* constMapTransform = nullptr;
@@ -30,19 +26,20 @@ public:
 	ComPtr<ID3D12Resource> material;
 	ConstBufferDataMaterial* mapMaterial = nullptr;
 
-	ParticleVertex vertices[4];
-
-	//Vector3D position;
-	//float scale = 100.0f;
+	GPipeline pipeline;
+	//ScreenVertex pv[4];
+	Vector3D vertex;
+	UINT vertexSize;
+public:
+	MyMath::ObjMatrix mat;
 public:
 	static void SetCamera(ICamera* camera);
 
-	void Initialize();
-	Particle();
+	void Initialize(int blendMord = GPipeline::NONE_BLEND);
+	Square();
 	void MatUpdate();
 	void Draw(int handle);
 private:
 	void SetVertices() override;
-	void SetMatRotation();
 };
 

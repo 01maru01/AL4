@@ -69,6 +69,15 @@ void MyDebugCamera::Update()
 	billboard.m[2][0] = frontVec.x;
 	billboard.m[2][1] = frontVec.y;
 	billboard.m[2][2] = frontVec.z;
+
+	billboardY.Identity();
+	billboardY.m[0][0] = rightVec.x;
+	billboardY.m[0][1] = rightVec.y;
+	billboardY.m[0][2] = rightVec.z;
+	Vector3D billYvecZ = rightVec.cross(up);
+	billboardY.m[2][0] = billYvecZ.x;
+	billboardY.m[2][1] = billYvecZ.y;
+	billboardY.m[2][2] = billYvecZ.z;
 #pragma endregion
 
 	up.y = cosf(angle.y);

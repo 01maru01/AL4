@@ -13,6 +13,7 @@ void GameScene::MatUpdate()
 
 	particle->MatUpdate();
 	sprite->MatUpdate();
+	square->MatUpdate();
 }
 
 GameScene::GameScene()
@@ -22,6 +23,8 @@ GameScene::GameScene()
 GameScene::~GameScene()
 {
 	delete camera;
+
+	delete square;
 }
 
 void GameScene::Initialize()
@@ -47,6 +50,9 @@ void GameScene::Initialize()
 	Player::SetCamera(camera);
 	player = std::make_unique<Player>();
 	player->PlayerInitialize(modelSword.get());
+
+	Square::SetCamera(camera);
+	square = new Square();
 }
 
 void GameScene::Finalize()
@@ -99,6 +105,7 @@ void GameScene::Draw()
 	skydome->Draw();
 	//sphere->Draw();
 	//player->Draw();
+	square->Draw(reimuG);
 
 	particle->Draw(reimuG);
 	//sprite->Draw(reimuG);

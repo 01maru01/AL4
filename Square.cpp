@@ -1,21 +1,20 @@
-#include "Particle.h"
+#include "Square.h"
 
-ParticleCommon* Particle::common = ParticleCommon::GetInstance();
-MyDirectX* Particle::dx = MyDirectX::GetInstance();
-ICamera* Particle::camera = nullptr;
+MyDirectX* Square::dx = MyDirectX::GetInstance();
+ICamera* Square::camera = nullptr;
 
-void Particle::SetCamera(ICamera* camera)
+void Square::SetCamera(ICamera* camera)
 {
-	Particle::camera = camera;
+	Square::camera = camera;
 }
 
-void Particle::Initialize()
+void Square::Initialize(int blendMord)
 {
 	HRESULT result;
-
-#pragma region  ConstBuffer
 	D3D12_HEAP_PROPERTIES cbHeapProp{};
 	D3D12_RESOURCE_DESC cbResourceDesc{};
+	ID3D12Device* dev = dx->GetDev();
+#pragma region  ConstBuffer
 	//	ヒープ設定
 	cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;	//	GPU転送用
 
@@ -29,7 +28,7 @@ void Particle::Initialize()
 	cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
 	//	生成
-	result = dx->GetDev()->CreateCommittedResource(
+	result = dev->CreateCommittedResource(
 		&cbHeapProp,	//	ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
 		&cbResourceDesc,	//	リソース設定
@@ -44,7 +43,7 @@ void Particle::Initialize()
 
 	cbResourceDesc.Width = (sizeof(ConstBufferDataMaterial) + 0xFF) & ~0xFF;
 	//	生成
-	result = dx->GetDev()->CreateCommittedResource(
+	result = dev->CreateCommittedResource(
 		&cbHeapProp,	//	ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
 		&cbResourceDesc,	//	リソース設定
@@ -57,83 +56,73 @@ void Particle::Initialize()
 	result = material->Map(0, nullptr, (void**)&mapMaterial);	//	マッピング
 	assert(SUCCEEDED(result));
 #pragma endregion
-	//UINT sizePV = static_cast<UINT>(sizeof(vertices));
-	UINT sizePV = static_cast<UINT>(sizeof(vertices[0]) * 4);
-	BuffInitialize(dx->GetDev(), sizePV, 4);
+	vertex = {0.0f,0.0f,0.0f};
+	vertexSize = 1;
+	UINT sizePV = static_cast<UINT>(sizeof(vertex) * vertexSize);
+
+	BuffInitialize(dev, sizePV, vertexSize);
+
+	D3D12_INPUT_ELEMENT_DESC inputLayout[] = {
+		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,	D3D12_APPEND_ALIGNED_ELEMENT,	D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},		//	xyz座標
+	};
+	Shader shader;
+	shader.Initialize(L"Resources/shader/BasicVS.hlsl", L"Resources/shader/BasicPS.hlsl", "main", L"Resources/shader/BasicGS.hlsl");
+
+	pipeline.Init(dev, shader, inputLayout, _countof(inputLayout), D3D12_PRIMITIVE_TOPOLOGY_TYPE_POINT
+		, D3D12_FILL_MODE_SOLID, D3D12_CULL_MODE_NONE);
+	if (blendMord != GPipeline::NONE_BLEND) {
+		pipeline.SetBlend(dev, blendMord);
+	}
 #pragma region  WorldMatrix初期値
-	//vertices.scale = 10000.0f;
+	mat.Initialize();
 #pragma endregion
 }
 
-Particle::Particle()
+Square::Square()
 {
 	Initialize();
 }
 
-void Particle::MatUpdate()
+void Square::MatUpdate()
 {
 #pragma region WorldMatrix
-	//	回転
-	SetMatRotation();
+	mat.Update();
 #pragma endregion
-	Matrix m;
-	constMapTransform->matBillboard = camera->GetBillboard();
-	//constMapTransform->matBillboard = m;
+	Matrix bill;
+	constMapTransform->matBillboard = camera->GetBillboardY();
+	//constMapTransform->matBillboard = bill;
+	constMapTransform->matWorld = mat.matWorld;
 	constMapTransform->mat = camera->GetViewProj();
 }
 
-void Particle::Draw(int handle)
+void Square::Draw(int handle)
 {
 	ID3D12GraphicsCommandList* cmdList = dx->GetCmdList();
 
-	common->Draw();
-
+	pipeline.Setting(cmdList);
+	pipeline.Update(cmdList, D3D_PRIMITIVE_TOPOLOGY_POINTLIST);
 	BuffUpdate(cmdList);
 	//	テクスチャ
 	cmdList->SetGraphicsRootDescriptorTable(1, dx->GetTextureHandle(handle));
 	cmdList->SetGraphicsRootConstantBufferView(2, transform->GetGPUVirtualAddress());
 
-	cmdList->DrawInstanced(4, 1, 0, 0);
+	cmdList->DrawInstanced(1, 1, 0, 0);
 }
 
-void Particle::SetVertices()
+void Square::SetVertices()
 {
 	// 頂点1つ分のデータサイズ
-	vbView.StrideInBytes = sizeof(vertices[0]);
+	vbView.StrideInBytes = sizeof(vertex);
 
 	//	GPUメモリの値書き換えよう
 	// GPU上のバッファに対応した仮想メモリ(メインメモリ上)を取得
-	ParticleVertex* vertMap = nullptr;
+	Vector3D* vertMap = nullptr;
 	HRESULT result = vertBuff->Map(0, nullptr, (void**)&vertMap);
 	assert(SUCCEEDED(result));
 	// 全頂点に対して
-	for (int i = 0; i < 4; i++) {
-		vertMap[i] = vertices[i]; // 座標をコピー
+	for (int i = 0; i < vertexSize; i++) {
+		vertMap[i] = vertex; // 座標をコピー
 	}
 	// 繋がりを解除
 	vertBuff->Unmap(0, nullptr);
-}
-
-void Particle::SetMatRotation()
-{
-	matRot.Identity();
-	Matrix matRotX;
-	matRotX.m[1][1] = cos(rotation.x);
-	matRotX.m[1][2] = sin(rotation.x);
-	matRotX.m[2][1] = -sin(rotation.x);
-	matRotX.m[2][2] = cos(rotation.x);
-	Matrix matRotY;
-	matRotY.m[0][0] = cos(rotation.y);
-	matRotY.m[2][0] = sin(rotation.y);
-	matRotY.m[0][2] = -sin(rotation.y);
-	matRotY.m[2][2] = cos(rotation.y);
-	Matrix matRotZ;
-	matRotZ.m[0][0] = cos(rotation.z);
-	matRotZ.m[0][1] = sin(rotation.z);
-	matRotZ.m[1][0] = -sin(rotation.z);
-	matRotZ.m[1][1] = cos(rotation.z);
-
-	matRot = matRotZ;
-	matRot *= matRotX;
-	matRot *= matRotY;
 }

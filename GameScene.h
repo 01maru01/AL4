@@ -8,6 +8,7 @@
 #include "Sprite.h"
 #include "Object3D.h"
 #include "Particle.h"
+#include "Square.h"
 
 #include "Player.h"
 #include "ICamera.h"
@@ -35,6 +36,7 @@ private:
 #pragma region Sprite
 	std::unique_ptr<Sprite> sprite;
 
+	Square* square = nullptr;
 	std::unique_ptr<Particle> particle;
 #pragma endregion
 

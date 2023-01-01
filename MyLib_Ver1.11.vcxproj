@@ -57,6 +57,7 @@
     <ClCompile Include="SphereCollider.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="SpriteCommon.cpp" />
+    <ClCompile Include="Square.cpp" />
     <ClCompile Include="TextureData.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="Vector2D.cpp" />
@@ -114,6 +115,7 @@
     <ClInclude Include="SphereCollider.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="SpriteCommon.h" />
+    <ClInclude Include="Square.h" />
     <ClInclude Include="TextureData.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="Vector2D.h" />
@@ -141,6 +143,12 @@
     <None Include="Resources\shader\SpriteHeader.hlsli" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="Resources\shader\BasicGS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
+    </FxCompile>
     <FxCompile Include="Resources\shader\BasicPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
