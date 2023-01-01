@@ -9,7 +9,6 @@ private:
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 	GPipeline pipeline;
-	Shader shader;
 
 	ParticleCommon() {};
 	~ParticleCommon() {};

@@ -48,8 +48,8 @@ void GameScene::Initialize()
 	player = std::make_unique<Player>();
 	player->PlayerInitialize(modelSword.get());
 
-	Square::SetCamera(camera);
-	square = new Square();
+	Particle::SetCamera(camera);
+	square = new Particle();
 }
 
 void GameScene::Finalize()

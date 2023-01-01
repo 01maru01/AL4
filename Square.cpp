@@ -1,14 +1,15 @@
 #include "Square.h"
 
-MyDirectX* Square::dx = MyDirectX::GetInstance();
-ICamera* Square::camera = nullptr;
+MyDirectX* Particle::dx = MyDirectX::GetInstance();
+ICamera* Particle::camera = nullptr;
+ParticleCommon* Particle::common = ParticleCommon::GetInstance();
 
-void Square::SetCamera(ICamera* camera)
+void Particle::SetCamera(ICamera* camera)
 {
-	Square::camera = camera;
+	Particle::camera = camera;
 }
 
-void Square::Initialize(int blendMord)
+void Particle::Initialize()
 {
 	HRESULT result;
 	D3D12_HEAP_PROPERTIES cbHeapProp{};
@@ -57,50 +58,31 @@ void Square::Initialize(int blendMord)
 	assert(SUCCEEDED(result));
 #pragma endregion
 	vertex = { 0.0f,0.0f,0.0f };
-	vertexSize = 1;
-	UINT sizePV = static_cast<UINT>(sizeof(vertex) * vertexSize);
+	UINT sizePV = static_cast<UINT>(sizeof(vertex) * 1);
 
-	BuffInitialize(dev, sizePV, vertexSize);
-
-	D3D12_INPUT_ELEMENT_DESC inputLayout[] = {
-		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,	D3D12_APPEND_ALIGNED_ELEMENT,	D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},		//	xyz座標
-	};
-	Shader shader;
-	shader.Initialize(L"Resources/shader/BasicVS.hlsl", L"Resources/shader/BasicPS.hlsl", "main", L"Resources/shader/BasicGS.hlsl");
-
-	pipeline.Init(dev, shader, inputLayout, _countof(inputLayout), D3D12_PRIMITIVE_TOPOLOGY_TYPE_POINT
-		, D3D12_FILL_MODE_SOLID, D3D12_CULL_MODE_NONE);
-	if (blendMord != GPipeline::NONE_BLEND) {
-		pipeline.SetBlend(dev, blendMord);
-	}
-#pragma region  WorldMatrix初期値
-	mat.Initialize();
-#pragma endregion
+	BuffInitialize(dev, sizePV, 1);
 }
 
-Square::Square()
+Particle::Particle()
 {
 	Initialize();
 }
 
-void Square::MatUpdate()
+void Particle::MatUpdate()
 {
-#pragma region WorldMatrix
-	mat.Update();
-#pragma endregion
 	Matrix bill;
 	constMapTransform->matBillboard = camera->GetBillboardY();
 	//constMapTransform->matBillboard = bill;
-	constMapTransform->scale = 5.0f;
+	constMapTransform->scale = scale;
 	constMapTransform->mat = camera->GetViewProj();
 }
 
-void Square::Draw(int handle)
+void Particle::Draw(int handle)
 {
 	ID3D12GraphicsCommandList* cmdList = dx->GetCmdList();
 
-	pipeline.Setting(cmdList);
-	pipeline.Update(cmdList, D3D_PRIMITIVE_TOPOLOGY_POINTLIST);
+	common->Draw();
+
 	BuffUpdate(cmdList);
 	//	テクスチャ
 	cmdList->SetGraphicsRootDescriptorTable(1, dx->GetTextureHandle(handle));
@@ -109,7 +91,7 @@ void Square::Draw(int handle)
 	cmdList->DrawInstanced(1, 1, 0, 0);
 }
 
-void Square::SetVertices()
+void Particle::SetVertices()
 {
 	// 頂点1つ分のデータサイズ
 	vbView.StrideInBytes = sizeof(vertex);
@@ -120,7 +102,7 @@ void Square::SetVertices()
 	HRESULT result = vertBuff->Map(0, nullptr, (void**)&vertMap);
 	assert(SUCCEEDED(result));
 	// 全頂点に対して
-	for (int i = 0; i < vertexSize; i++) {
+	for (int i = 0; i < 1; i++) {
 		vertMap[i] = vertex; // 座標をコピー
 	}
 	// 繋がりを解除

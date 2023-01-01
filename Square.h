@@ -3,14 +3,16 @@
 #include "GPipeline.h"
 #include "VertIdxBuff.h"
 #include "ICamera.h"
+#include "ParticleCommon.h"
 
-class Square :public VertIdxBuff
+class Particle :public VertIdxBuff
 {
 private:
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 	static MyDirectX* dx;
 	static ICamera* camera;
+	static ParticleCommon* common;
 
 	struct ConstBufferDataTransform {
 		Matrix mat;
@@ -26,16 +28,14 @@ private:
 	ComPtr<ID3D12Resource> material;
 	ConstBufferDataMaterial* mapMaterial = nullptr;
 
-	GPipeline pipeline;
 	Vector3D vertex;
-	UINT vertexSize;
-public:
-	MyMath::ObjMatrix mat;
+
+	float scale = 1.0f;
 public:
 	static void SetCamera(ICamera* camera);
 
-	void Initialize(int blendMord = GPipeline::NONE_BLEND);
-	Square();
+	void Initialize();
+	Particle();
 	void MatUpdate();
 	void Draw(int handle);
 private:

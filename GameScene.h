@@ -35,7 +35,7 @@ private:
 #pragma region Sprite
 	std::unique_ptr<Sprite> sprite;
 
-	Square* square = nullptr;
+	Particle* square = nullptr;
 #pragma endregion
 
 #pragma region Texture
