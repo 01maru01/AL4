@@ -1,4 +1,4 @@
-#include "Square.h"
+#include "Particle.h"
 
 MyDirectX* Particle::dx = MyDirectX::GetInstance();
 ICamera* Particle::camera = nullptr;

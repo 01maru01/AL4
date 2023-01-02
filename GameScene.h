@@ -7,7 +7,7 @@
 #include "AssimpModel.h"
 #include "Sprite.h"
 #include "Object3D.h"
-#include "Square.h"
+#include "Particle.h"
 
 #include "Player.h"
 #include "ICamera.h"

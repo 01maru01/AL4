@@ -30,7 +30,7 @@ void GameScene::Initialize()
 {
 	collisionMan = CollisionManager::GetInstance();
 
-	camera = new MyDebugCamera();
+	camera = new GameCamera();
 	camera->Initialize(Vector3D(0.0f, 0.0f, -10.0f), Vector3D(0.0f, 1.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
 
 	objShader.Initialize(L"Resources/shader/ObjVS.hlsl", L"Resources/shader/ObjPS.hlsl");
@@ -98,9 +98,9 @@ void GameScene::Draw()
 {
 	ground->Draw();
 	skydome->Draw();
-	//sphere->Draw();
-	//player->Draw();
+	sphere->Draw();
+	player->Draw();
 	square->Draw(reimuG);
 
-	//sprite->Draw(reimuG);
+	sprite->Draw(reimuG);
 }
