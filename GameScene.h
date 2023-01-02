@@ -29,7 +29,7 @@ private:
 	std::unique_ptr<Model> modelGround;
 	std::unique_ptr<Model> modelSword;
 	std::unique_ptr<Model> modelSphere;
-	std::unique_ptr<AssimpModel> fbxModel;
+	std::unique_ptr<Model> fbxModel;
 #pragma endregion
 
 #pragma region Sprite

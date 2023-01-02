@@ -52,7 +52,26 @@ void Material::Update()
 	}
 }
 
-void Material::LoadTexture()
+std::wstring ReplaceExtension(const std::wstring& origin, const wchar_t* ext)
 {
-	textureHandle = dx->LoadTextureGraph(wfilepath);
+	int idx = origin.length();
+	int last = origin.find_last_of('.');
+	std::wstring ret = origin.substr(0, last + 1);
+	wchar_t buf[5];
+	std::swprintf(buf, 5, L"%s", ext);
+	ret.append(ext);
+	return ret;
+}
+
+void Material::LoadTexture(bool tga)
+{
+	if (tga) {
+		auto texPath = ReplaceExtension(wfilepath, L"tga");
+		const wchar_t* wc = texPath.data();
+
+		textureHandle = dx->LoadTextureGraph(wc, tga);
+	}
+	else {
+		textureHandle = dx->LoadTextureGraph(wfilepath, tga);
+	}
 }

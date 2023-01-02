@@ -3,6 +3,9 @@
 #include <string>
 #include <sstream>
 #include <fstream>
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
 using namespace std;
 
 MyDirectX* Model::dx = MyDirectX::GetInstance();
@@ -180,6 +183,114 @@ void Model::LoadModel(const std::string& modelname, bool smoothing)
 	}
 }
 
+std::string GetDirectoryPath(const std::string& origin)
+{
+    int ind = origin.find_last_of('/');
+    ind++;
+    return origin.substr(0, ind);
+}
+
+std::wstring ToWideString(const std::string& str)
+{
+    auto num1 = MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED | MB_ERR_INVALID_CHARS, str.c_str(), -1, nullptr, 0);
+
+    std::wstring wstr;
+    wstr.resize(num1);
+
+    auto num2 = MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED | MB_ERR_INVALID_CHARS, str.c_str(), -1, &wstr[0], num1);
+
+    assert(num1 == num2);
+    return wstr;
+}
+
+void Model::LoadFBXMesh(Mesh& dst, const aiMesh* src)
+{
+	aiVector3D zero3D(0.0f, 0.0f, 0.0f);
+	aiColor4D zeroColor(0.0f, 0.0f, 0.0f, 0.0f);
+
+	for (auto i = 0u; i < src->mNumVertices; ++i)
+	{
+		auto position = &(src->mVertices[i]);
+		auto normal = &(src->mNormals[i]);
+		auto uv = (src->HasTextureCoords(0)) ? &(src->mTextureCoords[0][i]) : &zero3D;
+		auto tangent = (src->HasTangentsAndBitangents()) ? &(src->mTangents[i]) : &zero3D;
+		auto color = (src->HasVertexColors(0)) ? &(src->mColors[0][i]) : &zeroColor;
+
+		uv->y = 1 - uv->y;
+
+		Vertex vertex = {};
+		vertex.pos = Vector3D(position->x, position->y, position->z);
+		vertex.normal = Vector3D(normal->x, normal->y, normal->z);
+		vertex.uv = Vector2D(uv->x, uv->y);
+		//vertex.Tangent = DirectX::XMFLOAT3(tangent->x, tangent->y, tangent->z);
+		//vertex.Color = DirectX::XMFLOAT4(color->r, color->g, color->b, color->a);
+
+		dst.AddVertex(vertex);
+	}
+
+	for (auto i = 0u; i < src->mNumFaces; ++i)
+	{
+		const auto& face = src->mFaces[i];
+
+		dst.AddIndex(face.mIndices[0]);
+		dst.AddIndex(face.mIndices[1]);
+		dst.AddIndex(face.mIndices[2]);
+	}
+}
+
+void Model::LoadFBXTexture(const std::string& filename, Mesh& dst, const aiMaterial* src)
+{
+	aiString path;
+	if (src->Get(AI_MATKEY_TEXTURE_DIFFUSE(0), path) == AI_SUCCESS)
+	{
+		auto dir = GetDirectoryPath(filename);
+		auto file = std::string(path.C_Str());
+		dst.SetTextureFilePath(dir + file);
+		dst.GetMaterial()->name = file;
+	}
+}
+
+void Model::LoadFBXModel(const std::string& filename)
+{
+	const string directoryPath = "Resources/Model/";
+
+	Assimp::Importer importer;
+	int flag = 0;
+	flag |= aiProcess_Triangulate;
+	flag |= aiProcess_PreTransformVertices;
+	flag |= aiProcess_CalcTangentSpace;
+	flag |= aiProcess_GenSmoothNormals;
+	flag |= aiProcess_GenUVCoords;
+	flag |= aiProcess_RemoveRedundantMaterials;
+	flag |= aiProcess_OptimizeMeshes;
+
+	auto result = importer.ReadFile(directoryPath + filename, flag);
+
+	if (result == nullptr)
+	{
+		return;
+	}
+
+	for (size_t i = 0; i < result->mNumMeshes; ++i)
+	{
+		meshes.emplace_back(new Mesh);
+		Mesh* mesh = meshes.back();
+
+		const auto pMesh = result->mMeshes[i];
+		LoadFBXMesh(*mesh, pMesh);
+		const auto pMaterial = result->mMaterials[i];
+		mesh->SetMaterial(Material::Create());
+		LoadFBXTexture(directoryPath + filename, *mesh, pMaterial);
+		mesh->GetMaterial()->name += to_string(i);
+		if (mesh->GetMaterial()) {
+			// マテリアルを登録
+			AddMaterial(mesh->GetMaterial());
+		}
+	}
+
+	result = nullptr;
+}
+
 Model::~Model()
 {
 	for (auto m : meshes) {
@@ -193,9 +304,14 @@ Model::~Model()
 	materials.clear();
 }
 
-void Model::Initialize(const char* filename, bool smoothing)
+void Model::Initialize(const char* filename, bool isFBX, bool smoothing)
 {
-	LoadModel(filename, smoothing);
+	if (isFBX) {
+		LoadFBXModel(filename);
+	}
+	else {
+		LoadModel(filename, smoothing);
+	}
 
 	//// メッシュのマテリアルチェック
 	//for (auto& m : meshes) {
@@ -221,13 +337,13 @@ void Model::Initialize(const char* filename, bool smoothing)
 	}
 
 	for (auto& m : materials) {
-		m.second->LoadTexture();
+		m.second->LoadTexture(isFBX);
 	}
 }
 
-Model::Model(const char* filename, bool smoothing)
+Model::Model(const char* filename, bool isFBX, bool smoothing)
 {
-	Initialize(filename, smoothing);
+	Initialize(filename, isFBX, smoothing);
 }
 
 void Model::Draw()

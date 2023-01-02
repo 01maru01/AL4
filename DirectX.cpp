@@ -479,7 +479,7 @@ int MyDirectX::LoadTextureGraph(const wchar_t* textureName, bool tga)
 			WIC_FLAGS_NONE,
 			&metadata, scratchImg);
 	}
-
+	
 	//	ミニマップ生成
 	ScratchImage mipChain{};
 	result = GenerateMipMaps(

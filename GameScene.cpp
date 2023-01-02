@@ -30,7 +30,7 @@ void GameScene::Initialize()
 {
 	collisionMan = CollisionManager::GetInstance();
 
-	camera = new GameCamera();
+	camera = new MyDebugCamera();
 	camera->Initialize(Vector3D(0.0f, 0.0f, -10.0f), Vector3D(0.0f, 1.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
 
 	objShader.Initialize(L"Resources/shader/ObjVS.hlsl", L"Resources/shader/ObjPS.hlsl");
@@ -66,12 +66,12 @@ void GameScene::LoadResources()
 #pragma endregion
 
 #pragma region AssimpModel
-	//fbxModel = std::make_unique<AssimpModel>(modelpipeline.get());
+	fbxModel = std::make_unique<Model>("Alicia/FBX/Alicia_solid_Unity.FBX", true);
 	//fbxModel->Initialize(L"Assets/Alicia/FBX/Alicia_solid_Unity.FBX");
 #pragma endregion
 	skydome.reset(Object3D::Create(modelSkydome.get()));
 	ground.reset(Object3D::Create(modelGround.get()));
-	sphere.reset(Object3D::Create(modelSphere.get()));
+	sphere.reset(Object3D::Create(fbxModel.get()));
 #pragma region Sprite
 	sprite = std::make_unique<Sprite>();
 #pragma endregion

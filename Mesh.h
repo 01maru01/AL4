@@ -13,7 +13,7 @@ private:
     std::vector<uint16_t> indices; // インデックスの配列
     Material* mtl = nullptr;
     std::unordered_map<unsigned short, std::vector<unsigned short>> smoothData;
-    std::wstring DiffuseMap; // テクスチャのファイルパス
+    std::string diffuseMap; // テクスチャのファイルパス
 
 public:
     void CreateBuff();
@@ -31,6 +31,9 @@ public:
     void AddIndex(unsigned short index) { indices.emplace_back(index); }
     void AddVertex(const Vertex& vertex) { vertices.emplace_back(vertex); }
     void AddSmoothData(unsigned short indexPosition, unsigned short indexVertex) { smoothData[indexPosition].emplace_back(indexVertex); }
+    void SetTextureFilePath(const std::string& filePath) {
+        int iBufferSize = MultiByteToWideChar(CP_ACP, 0, filePath.c_str(), -1, mtl->wfilepath, _countof(mtl->wfilepath));
+    }
 private:
     void SetVertices() override;
 };
