@@ -60,6 +60,11 @@ void CollisionManager::CheckAllCollisions()
 
 bool CollisionManager::Raycast(const Ray& ray, RayCast* hitinfo, float maxDistance)
 {
+    return Raycast(ray, 0xFFFF, hitinfo, maxDistance);
+}
+
+bool CollisionManager::Raycast(const Ray& ray, unsigned short attribute, RayCast* hitinfo, float maxDistance)
+{
     bool ans = false;
     std::forward_list<BaseCollider*>::iterator itr;
     std::forward_list<BaseCollider*>::iterator itr_hit;
@@ -69,6 +74,9 @@ bool CollisionManager::Raycast(const Ray& ray, RayCast* hitinfo, float maxDistan
     itr = colliders.begin();
     for (; itr != colliders.end(); ++itr) {
         BaseCollider* colA = *itr;
+
+        if (!(colA->attribute & attribute)) continue;
+
         if (colA->GetShapeType() == COLLISIONSHAPE_SPHERE) {
             Sphere* sphere = dynamic_cast<Sphere*>(colA);
             float tempDis;

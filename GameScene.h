@@ -58,6 +58,7 @@ private:
 	MyDirectX* dx = MyDirectX::GetInstance();
 	Input* input = Input::GetInstance();
 
+	void CollisionUpdate();
 	void MatUpdate() override;
 };
 

@@ -45,6 +45,7 @@ public:
 	void SetModel(Model* model);
 	void SetCollider(BaseCollider* collider);
 	void SetPosition(const Vector3D& vec) { mat.trans = vec; }
+	void SetAttribute(unsigned short attribute);
 
 	virtual void Initialize();
 	virtual void ColliderUpdate();

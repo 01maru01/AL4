@@ -35,6 +35,11 @@ void Object3D::SetCollider(BaseCollider* collider)
 	collider->Update();
 }
 
+void Object3D::SetAttribute(unsigned short attribute)
+{
+	collider->SetAttribute(attribute);
+}
+
 Object3D::~Object3D()
 {
 	if (collider) {

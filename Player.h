@@ -8,6 +8,9 @@ private:
 	Vector2D frontVec;
 	float spd;
 
+	bool onGround = true;
+	Vector3D fallVec;
+
 	static ICamera* camera;
 	static const float MAX_SPD;
 	static const int INVINCIBLE_TIME;
@@ -15,6 +18,7 @@ public:
 	static void SetCamera(ICamera* camera_);
 	void PlayerInitialize(Model* model);
 	void Update();
+	void CollisionUpdate();
 	void OnCollision(const CollisionInfo& info) override;
 };
 

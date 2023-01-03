@@ -1,5 +1,11 @@
 #include "SphereCollider.h"
 
+SphereCollider::SphereCollider(Vector3D offset, float radius) :offset(offset)
+{
+	this->radius = radius;
+	shapeType = COLLISIONSHAPE_SPHERE;
+}
+
 void SphereCollider::Update()
 {
 	const Matrix matWorld = object3d->GetMatWorld();

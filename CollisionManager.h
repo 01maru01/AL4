@@ -23,5 +23,6 @@ public:
 	void RemoveCollider(BaseCollider* collider) { colliders.remove(collider); }
 
 	bool Raycast(const Ray& ray, RayCast* hitinfo = nullptr, float maxDistance = D3D12_FLOAT32_MAX);
+	bool Raycast(const Ray& ray, unsigned short attribute, RayCast* hitinfo = nullptr, float maxDistance = D3D12_FLOAT32_MAX);
 };
 

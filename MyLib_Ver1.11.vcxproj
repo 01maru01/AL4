@@ -15,6 +15,7 @@
     <ClCompile Include="AssimpLoader.cpp" />
     <ClCompile Include="AssimpModel.cpp" />
     <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="CollisionAttribute.cpp" />
     <ClCompile Include="CollisionInfo.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="CollisionPrimitive.cpp" />
@@ -71,6 +72,7 @@
     <ClInclude Include="AssimpLoader.h" />
     <ClInclude Include="AssimpModel.h" />
     <ClInclude Include="Collision.h" />
+    <ClInclude Include="CollisionAttribute.h" />
     <ClInclude Include="CollisionInfo.h" />
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="CollisionPrimitive.h" />

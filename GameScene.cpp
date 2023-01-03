@@ -3,6 +3,14 @@
 #include "GameCamera.h"
 #include "CollisionManager.h"
 #include "SphereCollider.h"
+#include "CollisionAttribute.h"
+#include "MeshCollider.h"
+
+void GameScene::CollisionUpdate()
+{
+	player->CollisionUpdate();
+	collisionMan->CheckAllCollisions();
+}
 
 void GameScene::MatUpdate()
 {
@@ -41,7 +49,16 @@ void GameScene::Initialize()
 	Object3D::SetCamera(camera);
 	LoadResources();
 
-	sphere->SetCollider(new SphereCollider());
+	MeshCollider* collider = new MeshCollider;
+	collider->ConstructTriangles(ground->GetModel());
+	collider->SetAttribute(COLLISION_ATTR_LANDSHAPE);
+	ground->SetCollider(collider);
+
+	MeshCollider* spherecollider = new MeshCollider;
+	spherecollider->ConstructTriangles(sphere->GetModel());
+	spherecollider->SetAttribute(COLLISION_ATTR_LANDSHAPE);
+	sphere->SetCollider(spherecollider);
+	//sphere->SetAttribute(COLLISION_ATTR_LANDSHAPE);
 	sphere->SetPosition(Vector3D(3.0f, 1.0f, 0.0f));
 	
 	Player::SetCamera(camera);
@@ -67,11 +84,10 @@ void GameScene::LoadResources()
 
 #pragma region AssimpModel
 	fbxModel = std::make_unique<Model>("Alicia/FBX/Alicia_solid_Unity.FBX", true);
-	//fbxModel->Initialize(L"Assets/Alicia/FBX/Alicia_solid_Unity.FBX");
 #pragma endregion
 	skydome.reset(Object3D::Create(modelSkydome.get()));
 	ground.reset(Object3D::Create(modelGround.get()));
-	sphere.reset(Object3D::Create(fbxModel.get()));
+	sphere.reset(Object3D::Create(modelSphere.get()));
 #pragma region Sprite
 	sprite = std::make_unique<Sprite>();
 #pragma endregion
@@ -87,11 +103,12 @@ void GameScene::Update()
 	camera->Update();
 
 	player->Update();
+	ground->ColliderUpdate();
 	sphere->ColliderUpdate();
 #pragma endregion
-	collisionMan->CheckAllCollisions();
-
 	MatUpdate();
+
+	CollisionUpdate();
 }
 
 void GameScene::Draw()
