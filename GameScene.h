@@ -8,6 +8,7 @@
 #include "Sprite.h"
 #include "Object3D.h"
 #include "Particle.h"
+#include "TouchableObject.h"
 
 #include "Player.h"
 #include "ICamera.h"
@@ -42,7 +43,7 @@ private:
 	int reimuG = -1;
 #pragma endregion
 	std::unique_ptr<Object3D> skydome;
-	std::unique_ptr<Object3D> ground;
+	std::unique_ptr<TouchableObject> ground;
 	std::unique_ptr<Object3D> sphere;
 	std::unique_ptr<Player> player;
 

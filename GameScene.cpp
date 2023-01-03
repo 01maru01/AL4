@@ -49,11 +49,6 @@ void GameScene::Initialize()
 	Object3D::SetCamera(camera);
 	LoadResources();
 
-	MeshCollider* collider = new MeshCollider;
-	collider->ConstructTriangles(ground->GetModel());
-	collider->SetAttribute(COLLISION_ATTR_LANDSHAPE);
-	ground->SetCollider(collider);
-
 	sphere->SetCollider(new SphereCollider());
 	sphere->SetAttribute(COLLISION_ATTR_LANDSHAPE);
 	sphere->SetPosition(Vector3D(3.0f, 1.0f, 0.0f));
@@ -83,7 +78,7 @@ void GameScene::LoadResources()
 	fbxModel = std::make_unique<Model>("Alicia/FBX/Alicia_solid_Unity.FBX", true);
 #pragma endregion
 	skydome.reset(Object3D::Create(modelSkydome.get()));
-	ground.reset(Object3D::Create(modelGround.get()));
+	ground.reset(TouchableObject::Create(modelGround.get()));
 	sphere.reset(Object3D::Create(modelSphere.get()));
 #pragma region Sprite
 	sprite = std::make_unique<Sprite>();

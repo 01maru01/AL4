@@ -17,9 +17,7 @@ void Player::PlayerInitialize(Model* model)
 {
 	Initialize();
 	SetModel(model);
-	//mat.rotAngle.y = MyMath::PI;
-	//mat.scale = { 2.0f,2.0f,2.0f 
-	float radius = 0.5f;
+	float radius = 0.6f;
 	SetCollider(new SphereCollider(Vector3D(0, radius, 0), radius));
 	collider->SetAttribute(COLLISION_ATTR_ALLIES);
 }
