@@ -54,11 +54,8 @@ void GameScene::Initialize()
 	collider->SetAttribute(COLLISION_ATTR_LANDSHAPE);
 	ground->SetCollider(collider);
 
-	MeshCollider* spherecollider = new MeshCollider;
-	spherecollider->ConstructTriangles(sphere->GetModel());
-	spherecollider->SetAttribute(COLLISION_ATTR_LANDSHAPE);
-	sphere->SetCollider(spherecollider);
-	//sphere->SetAttribute(COLLISION_ATTR_LANDSHAPE);
+	sphere->SetCollider(new SphereCollider());
+	sphere->SetAttribute(COLLISION_ATTR_LANDSHAPE);
 	sphere->SetPosition(Vector3D(3.0f, 1.0f, 0.0f));
 	
 	Player::SetCamera(camera);
