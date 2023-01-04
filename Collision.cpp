@@ -164,7 +164,7 @@ bool Collision::CheckRay2Triangle(const Ray& ray, const Triangle& triangle, floa
 	plane.normal = triangle.normal;
 	plane.distance = triangle.normal.dot(triangle.p0);
 
-	if (CheckRay2Plane(ray, plane, distance, &interPlane)) return false;
+	if (!CheckRay2Plane(ray, plane, distance, &interPlane)) return false;
 	const float epslion = 1.0e-5f;
 	Vector3D pt_p0 = triangle.p0 - interPlane;
 	Vector3D p0_p1 = triangle.p1 - triangle.p0;
