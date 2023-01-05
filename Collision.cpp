@@ -1,4 +1,5 @@
 #include "Collision.h"
+#include "Easing.h"
 
 void Collision::ClosestPtPoint2Triangle(const Vector3D& point, const Triangle& triangle, Vector3D* closest)
 {
@@ -79,15 +80,37 @@ void Collision::ClosestPtPoint2Triangle(const Vector3D& point, const Triangle& t
 	*closest += p0_p2 * w;
 }
 
-bool Collision::CheclSphere2Sphere(const Sphere& sphereA, const Sphere& sphereB, Vector3D* inter)
+bool Collision::CheckSphere2Sphere(const Sphere& sphereA, const Sphere& sphereB, Vector3D* inter, Vector3D* reject)
 {
     float dis = sphereA.radius + sphereB.radius;
+	dis *= dis;
+
     Vector3D disV = sphereA.center;
     disV -= sphereB.center;
-    
-    if (disV.length() > dis) return false;
+	float vecDis = disV.length();
+	vecDis *= vecDis;
 
-    return true;
+	if (vecDis <= dis) {
+		if (inter) {
+			// Aの半径が0の時座標はBの中心　Bの半径が0の時座標はAの中心　となるよう補完
+			float t = sphereB.radius / (sphereA.radius + sphereB.radius);
+			Vector3D intVec;
+			intVec.x = Easing::lerp(sphereA.center.x, sphereB.center.x, t);
+			intVec.y = Easing::lerp(sphereA.center.y, sphereB.center.y, t);
+			intVec.z = Easing::lerp(sphereA.center.z, sphereB.center.z, t);
+			*inter = intVec;
+		}
+		// 押し出すベクトルを計算
+		if (reject) {
+			float rejectLen = sphereA.radius + sphereB.radius - sqrtf(vecDis);
+			
+			*reject = disV.normalize();
+			*reject *= rejectLen;
+		}
+		return true;
+	}
+
+	return false;
 }
 
 bool Collision::CheckSphere2Plane(const Sphere& sphere, const Plane& plane, Vector3D* inter)
@@ -105,7 +128,7 @@ bool Collision::CheckSphere2Plane(const Sphere& sphere, const Plane& plane, Vect
     return true;
 }
 
-bool Collision::CheckSphere2Triangle(const Sphere& sphere, const Triangle& triangle, Vector3D* inter)
+bool Collision::CheckSphere2Triangle(const Sphere& sphere, const Triangle& triangle, Vector3D* inter, Vector3D* reject)
 {
     Vector3D p;
     ClosestPtPoint2Triangle(sphere.center, triangle, &p);
@@ -113,6 +136,13 @@ bool Collision::CheckSphere2Triangle(const Sphere& sphere, const Triangle& trian
     if (v.dot(v) > sphere.radius * sphere.radius) return false;
 
     if (inter) *inter = p;
+
+	if (reject) {
+		float ds = sphere.center.dot(triangle.normal);
+		float dt = triangle.p0.dot(triangle.normal);
+		float rejectLen = dt - ds + sphere.radius;
+		*reject = triangle.normal * rejectLen;
+	}
     return true;
 }
 

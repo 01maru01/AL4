@@ -49,6 +49,7 @@
     <ClCompile Include="ParticleCommon.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Quaternion.cpp" />
+    <ClCompile Include="QueryCallBack.cpp" />
     <ClCompile Include="RayCast.cpp" />
     <ClCompile Include="SceneFactory.cpp" />
     <ClCompile Include="SceneManager.cpp" />
@@ -107,6 +108,7 @@
     <ClInclude Include="ParticleCommon.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Quaternion.h" />
+    <ClInclude Include="QueryCallBack.h" />
     <ClInclude Include="RayCast.h" />
     <ClInclude Include="SceneFactory.h" />
     <ClInclude Include="SceneManager.h" />

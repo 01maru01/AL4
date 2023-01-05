@@ -32,6 +32,7 @@ void Object3D::SetCollider(BaseCollider* collider)
 	collider->SetObject3D(this);
 	this->collider = collider;
 	CollisionManager::GetInstance()->AddCollider(collider);
+	MatUpdate();
 	collider->Update();
 }
 

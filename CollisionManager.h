@@ -3,6 +3,7 @@
 #include "CollisionPrimitive.h"
 #include "RayCast.h"
 #include <d3d12.h>
+#include "QueryCallBack.h"
 
 class BaseCollider;
 
@@ -24,5 +25,7 @@ public:
 
 	bool Raycast(const Ray& ray, RayCast* hitinfo = nullptr, float maxDistance = D3D12_FLOAT32_MAX);
 	bool Raycast(const Ray& ray, unsigned short attribute, RayCast* hitinfo = nullptr, float maxDistance = D3D12_FLOAT32_MAX);
+
+	void QuerySphere(const Sphere& sphere, QueryCallBack* callback, unsigned short attribute = (unsigned short)0xFFFFFFFF);
 };
 

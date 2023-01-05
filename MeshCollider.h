@@ -11,7 +11,7 @@ public:
 	MeshCollider() { shapeType = COLLISIONSHAPE_MESH; }
 	void ConstructTriangles(Model* model);
 	void Update() override;
-	bool CheckCollisionSphere(const Sphere& sphere, Vector3D* inter = nullptr);
+	bool CheckCollisionSphere(const Sphere& sphere, Vector3D* inter = nullptr, Vector3D* reject = nullptr);
 	bool CheckCollisionRay(const Ray& ray, float* dis = nullptr, Vector3D* inter = nullptr);
 };
 

@@ -3,6 +3,7 @@
 #include "SphereCollider.h"
 #include "CollisionManager.h"
 #include "CollisionAttribute.h"
+#include "QueryCallBack.h"
 
 ICamera* Player::camera = nullptr;
 const float Player::MAX_SPD = 0.1f;
@@ -65,8 +66,46 @@ void Player::Update()
 
 void Player::CollisionUpdate()
 {
+	// クエリーコールバッククラス
+	class PlayerQueryCallback : public QueryCallBack
+	{
+	public:
+		Sphere* sphere = nullptr;
+		Vector3D move;
+
+		PlayerQueryCallback(Sphere* sphere) : sphere(sphere) {};
+
+		// 衝突時コールバック関数
+		bool OnQueryHit(const QueryHit& info) {
+
+			const Vector3D up = { 0,1,0 };
+
+			Vector3D rejectDir = info.reject;
+			rejectDir.normalize();
+			float cos = rejectDir.dot(up);
+
+			const float threshold = cosf(MyMath::ConvertToRad(30.0f));
+
+			if (-threshold < cos && cos < threshold) {
+				sphere->center += info.reject;
+				move += info.reject;
+			}
+
+			return true;
+		}
+	};
+
 	SphereCollider* sphereCollider = dynamic_cast<SphereCollider*>(collider);
 	assert(sphereCollider);
+	PlayerQueryCallback callback(sphereCollider);
+
+	// 球と地形の交差を全検索
+	CollisionManager::GetInstance()->QuerySphere(*sphereCollider, &callback, COLLISION_ATTR_LANDSHAPE);
+	// 交差による排斥分動かす
+	mat.trans += callback.move;
+
+	MatUpdate();
+	collider->Update();
 
 	Ray ray;
 	ray.start = sphereCollider->center;

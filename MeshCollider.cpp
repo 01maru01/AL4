@@ -49,7 +49,7 @@ void MeshCollider::Update()
 	InverseMatrix(GetObject3D()->GetMatWorld(), invMatWorld);
 }
 
-bool MeshCollider::CheckCollisionSphere(const Sphere& sphere, Vector3D* inter)
+bool MeshCollider::CheckCollisionSphere(const Sphere& sphere, Vector3D* inter, Vector3D* reject)
 {
 	Sphere localSphere;
 	localSphere.center = Vec3Transform(sphere.center, invMatWorld);
@@ -61,11 +61,16 @@ bool MeshCollider::CheckCollisionSphere(const Sphere& sphere, Vector3D* inter)
 	for (; it != triangles.cend(); ++it) {
 		const Triangle& triangle = *it;
 
-		if (Collision::CheckSphere2Triangle(localSphere, triangle, inter)) {
+		if (Collision::CheckSphere2Triangle(localSphere, triangle, inter, reject)) {
 			if (inter) {
 				const Matrix& matWorld = GetObject3D()->GetMatWorld();
 
 				*inter = Vec3Transform(*inter, matWorld);
+			}
+
+			if (reject) {
+				const Matrix& matWorld = GetObject3D()->GetMatWorld();
+				*reject = Vec3TransformNormal(*reject, matWorld);
 			}
 			return true;
 		}

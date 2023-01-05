@@ -29,7 +29,7 @@ void CollisionManager::CheckAllCollisions()
                 Sphere* sphereA = dynamic_cast<Sphere*>(colA);
                 Sphere* sphereB = dynamic_cast<Sphere*>(colB);
                 Vector3D inter;
-                if (Collision::CheclSphere2Sphere(*sphereA, *sphereB, &inter)) {
+                if (Collision::CheckSphere2Sphere(*sphereA, *sphereB, &inter)) {
                     colA->OnCollision(CollisionInfo(colB->GetObject3D(), colB, inter));
                     colB->OnCollision(CollisionInfo(colA->GetObject3D(), colA, inter));
                 }
@@ -113,4 +113,51 @@ bool CollisionManager::Raycast(const Ray& ray, unsigned short attribute, RayCast
     }
 
     return ans;
+}
+
+void CollisionManager::QuerySphere(const Sphere& sphere, QueryCallBack* callback, unsigned short attribute)
+{
+    assert(callback);
+
+    std::forward_list<BaseCollider*>::iterator it;
+
+    it = colliders.begin();
+    for (; it != colliders.end(); ++it) {
+        BaseCollider* col = *it;
+
+        if (!(col->attribute & attribute)) continue;
+
+        // ‹…
+        if (col->GetShapeType() == COLLISIONSHAPE_SPHERE) {
+            Sphere* sphereB = dynamic_cast<Sphere*>(col);
+
+            Vector3D tempInter;
+            Vector3D tempReject;
+            if (!Collision::CheckSphere2Sphere(sphere, *sphereB, &tempInter, &tempReject)) continue;
+
+            QueryHit info;
+            info.collider = col;
+            info.object = col->GetObject3D();
+            info.inter = tempInter;
+            info.reject = tempReject;
+
+            if (!callback->OnQueryHit(info)) return;
+        }
+        // ƒƒbƒVƒ…
+        else if (col->GetShapeType() == COLLISIONSHAPE_MESH) {
+            MeshCollider* meshCollider = dynamic_cast<MeshCollider*>(col);
+
+            Vector3D tempInter;
+            Vector3D tempReject;
+            if (!meshCollider->CheckCollisionSphere(sphere, &tempInter, &tempReject)) continue;
+
+            QueryHit info;
+            info.collider = col;
+            info.object = col->GetObject3D();
+            info.inter = tempInter;
+            info.reject = tempReject;
+
+            if (!callback->OnQueryHit(info)) return;
+        }
+    }
 }
