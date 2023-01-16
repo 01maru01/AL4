@@ -93,6 +93,7 @@ public:
 	int LoadTextureGraph(const wchar_t* textureName, bool tga = false);
 
 	//	Getter
+	ID3D12Resource* GetTextureBuffer(uint32_t index) const { return texBuff[index - 1].Get(); }
 	D3D12_GPU_DESCRIPTOR_HANDLE GetTextureHandle(int handle);
 	ID3D12Device* GetDev() { return device.Get(); }
 	ID3D12GraphicsCommandList* GetCmdList() { return cmdList.Get(); }

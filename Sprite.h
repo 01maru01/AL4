@@ -1,5 +1,6 @@
 #pragma once
 #include "SpriteCommon.h"
+#include "VertIdxBuff.h"
 
 class Sprite :public VertIdxBuff
 {
@@ -19,7 +20,9 @@ private:
 	Vector2D anchorPoint;
 
 	Vector2D textureLeftTop;
-	Vector2D textureSize;
+	Vector2D textureSize = { 100.0f,100.0f };
+
+	int handle = -1;
 
 	bool isFlipX = false;
 	bool isFlipY = false;
@@ -50,21 +53,31 @@ private:
 	ComPtr<ID3D12Resource> material;
 	ConstBufferDataMaterial* mapMaterial = nullptr;
 public:
-	Sprite();
-	void Initialize();
+	Sprite(uint32_t handle_ = UINT32_MAX);
+	void Initialize(uint32_t handle_ = UINT32_MAX);
+	void Update();
 	void MatUpdate();
-	void Draw(int handle);
+	void Draw(int handle = -1);
 
 	void SetPosition(const Vector2D& position) { trans = position; }
+	void SetSize(const Vector2D& size) { this->size = size; }
+	void SetAnchorPoint(const Vector2D& anchor) { anchorPoint = anchor; }
+	void SetTextureLeftTop(const Vector2D& leftTop) { textureLeftTop = leftTop; }
+	const Vector2D& GetTextureLeftTop() const { return textureLeftTop; }
+	void SetTextureSize(const Vector2D& size) { textureSize = size; }
+	const Vector2D& GetTextureSize() const { return textureSize; }
 	const Vector2D& GetPosition() const { return trans; }
+	const Vector2D& GetSize() const { return size; }
 	void SetRotation(float rotation) { rotAngle = rotation; }
 	float GetRotation() const { return rotAngle; }
 	void SetColor(const Vector4D& color) { this->color = color; }
 	const Vector4D& GetColor() const { return color; }
-
+	void SetHandle(int handle_) { handle = handle_; }
+	void TransferVertex();
 private:
 	void SetVertices() override;
 	void SetMatRotation();
 	void SetMatTransform();
+	void AdjustTextureSize();
 };
 

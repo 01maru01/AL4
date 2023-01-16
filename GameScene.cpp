@@ -19,7 +19,6 @@ void GameScene::MatUpdate()
 	player->MatUpdate();
 	sphere->MatUpdate();
 
-	sprite->MatUpdate();
 	square->MatUpdate();
 }
 
@@ -80,12 +79,15 @@ void GameScene::LoadResources()
 	skydome.reset(Object3D::Create(modelSkydome.get()));
 	ground.reset(TouchableObject::Create(modelGround.get()));
 	sphere.reset(Object3D::Create(modelSphere.get()));
-#pragma region Sprite
-	sprite = std::make_unique<Sprite>();
-#pragma endregion
-
 #pragma region Texture
 	reimuG = dx->LoadTextureGraph(L"Resources/reimu.png");
+#pragma endregion
+
+#pragma region Sprite
+	sprite = std::make_unique<Sprite>(reimuG);
+	sprite->SetSize(Vector2D(200.0f, 200.0f));
+	//sprite->SetTextureLeftTop(Vector2D(sprite->GetSize().x / 2.0f, sprite->GetSize().y / 2.0f));
+	sprite->SetTextureSize(Vector2D(sprite->GetSize().x / 2.0f, sprite->GetSize().y / 2.0f));
 #pragma endregion
 }
 
@@ -97,6 +99,8 @@ void GameScene::Update()
 	player->Update();
 	ground->ColliderUpdate();
 	sphere->ColliderUpdate();
+
+	sprite->Update();
 #pragma endregion
 	MatUpdate();
 
@@ -111,5 +115,5 @@ void GameScene::Draw()
 	player->Draw();
 	square->Draw(reimuG);
 
-	sprite->Draw(reimuG);
+	sprite->Draw();
 }

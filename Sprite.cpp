@@ -1,11 +1,17 @@
 #include "Sprite.h"
 #include "DirectX.h"
 
-void Sprite::Initialize()
+void Sprite::Initialize(uint32_t handle_)
 {
 	common = SpriteCommon::GetInstance();
 
 	HRESULT result;
+
+	if (handle_ != UINT32_MAX) {
+		handle = handle_;
+		AdjustTextureSize();
+		size = textureSize;
+	}
 
 	float left = (0.0f - anchorPoint.x) * size.x;
 	float right = (1.0f - anchorPoint.x) * size.x;
@@ -89,9 +95,31 @@ void Sprite::Initialize()
 	color = { 1.0f,1.0f,1.0f,1.0f };
 }
 
-Sprite::Sprite()
+void Sprite::Update()
 {
-	Initialize();
+	ID3D12Resource* texBuff = MyDirectX::GetInstance()->GetTextureBuffer(handle);
+
+	if (texBuff) {
+		D3D12_RESOURCE_DESC resDesc = texBuff->GetDesc();
+
+		float tex_left = textureLeftTop.x / resDesc.Width;
+		float tex_right = (textureLeftTop.x + textureSize.x) / resDesc.Width;
+		float tex_top = textureLeftTop.y / resDesc.Height;
+		float tex_bottom = (textureLeftTop.y + textureSize.y) / resDesc.Height;
+
+		vertices[LB].uv = { tex_left,tex_bottom };
+		vertices[LT].uv = { tex_left,tex_top };
+		vertices[RB].uv = { tex_right,tex_bottom };
+		vertices[RT].uv = { tex_right,tex_top };
+		TransferVertex();
+	}
+
+	MatUpdate();
+}
+
+Sprite::Sprite(uint32_t handle_)
+{
+	Initialize(handle_);
 }
 
 void Sprite::MatUpdate()
@@ -123,10 +151,44 @@ void Sprite::Draw(int handle)
 	BuffUpdate(MyDirectX::GetInstance()->GetCmdList());
 	//	テクスチャ
 	MyDirectX::GetInstance()->GetCmdList()->SetGraphicsRootConstantBufferView(0, material->GetGPUVirtualAddress());
-	MyDirectX::GetInstance()->GetCmdList()->SetGraphicsRootDescriptorTable(1, MyDirectX::GetInstance()->GetTextureHandle(handle));
+	MyDirectX::GetInstance()->GetCmdList()->SetGraphicsRootDescriptorTable(1, MyDirectX::GetInstance()->GetTextureHandle(this->handle));
 	MyDirectX::GetInstance()->GetCmdList()->SetGraphicsRootConstantBufferView(2, transform->GetGPUVirtualAddress());
 
 	MyDirectX::GetInstance()->GetCmdList()->DrawInstanced(4, 1, 0, 0);
+}
+
+void Sprite::TransferVertex()
+{
+	float left = (0.0f - anchorPoint.x) * size.x;
+	float right = (1.0f - anchorPoint.x) * size.x;
+	float top = (0.0f - anchorPoint.y) * size.y;
+	float bottom = (1.0f - anchorPoint.y) * size.y;
+
+	if (isFlipX) {
+		left = -left;
+		right = -right;
+	}
+	if (isFlipY) {
+		top = -top;
+		bottom = -bottom;
+	}
+
+	vertices[LB].pos = { left,bottom,0.0f };
+	vertices[LT].pos = { left,top,0.0f };
+	vertices[RB].pos = { right,bottom,0.0f };
+	vertices[RT].pos = { right,top,0.0f };
+
+	//	GPUメモリの値書き換えよう
+	// GPU上のバッファに対応した仮想メモリ(メインメモリ上)を取得
+	ScreenVertex* vertMap = nullptr;
+	HRESULT result = vertBuff->Map(0, nullptr, (void**)&vertMap);
+	assert(SUCCEEDED(result));
+	// 全頂点に対して
+	for (int i = 0; i < vertexSize; i++) {
+		vertMap[i] = vertices[i]; // 座標をコピー
+	}
+	// 繋がりを解除
+	vertBuff->Unmap(0, nullptr);
 }
 
 void Sprite::SetVertices()
@@ -164,4 +226,14 @@ void Sprite::SetMatTransform()
 	matTrans.m[3][0] = trans.x;
 	matTrans.m[3][1] = trans.y;
 	matTrans.m[3][2] = 0.0f;
+}
+
+void Sprite::AdjustTextureSize()
+{
+	ID3D12Resource* texBuff = MyDirectX::GetInstance()->GetTextureBuffer(handle);
+	assert(texBuff);
+
+	D3D12_RESOURCE_DESC resDesc = texBuff->GetDesc();
+	textureSize.x = static_cast<float>(resDesc.Width);
+	textureSize.y = static_cast<float>(resDesc.Height);
 }
