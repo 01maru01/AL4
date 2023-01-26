@@ -288,11 +288,11 @@
     <ClCompile Include="CollisionAttribute.cpp">
       <Filter>ソース ファイル\lib\Collider</Filter>
     </ClCompile>
-    <ClCompile Include="TouchableObject.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="QueryCallBack.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\lib\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="TouchableObject.cpp">
+      <Filter>ソース ファイル\lib\Obj</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -464,11 +464,11 @@
     <ClInclude Include="CollisionAttribute.h">
       <Filter>ヘッダー ファイル\lib\Collider</Filter>
     </ClInclude>
-    <ClInclude Include="TouchableObject.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="QueryCallBack.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\lib\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="TouchableObject.h">
+      <Filter>ヘッダー ファイル\lib\Obj</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
