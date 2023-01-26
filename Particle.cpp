@@ -70,11 +70,11 @@ Particle::Particle()
 
 void Particle::MatUpdate()
 {
-	Matrix bill;
-	constMapTransform->matBillboard = camera->GetBillboardY();
-	//constMapTransform->matBillboard = bill;
+	constMapTransform->matBillboard = camera->GetBillboard();
 	constMapTransform->scale = scale;
 	constMapTransform->mat = camera->GetViewProj();
+
+	mapMaterial->color = color;
 }
 
 void Particle::Draw(int handle)
@@ -85,10 +85,28 @@ void Particle::Draw(int handle)
 
 	BuffUpdate(cmdList);
 	//	テクスチャ
-	cmdList->SetGraphicsRootDescriptorTable(1, dx->GetTextureHandle(handle));
+	cmdList->SetGraphicsRootDescriptorTable(0, dx->GetTextureHandle(handle));
+	cmdList->SetGraphicsRootConstantBufferView(1, material->GetGPUVirtualAddress());
 	cmdList->SetGraphicsRootConstantBufferView(2, transform->GetGPUVirtualAddress());
 
 	cmdList->DrawInstanced(1, 1, 0, 0);
+}
+
+void Particle::SetScale(float scale_)
+{
+	scale = scale_;
+}
+
+void Particle::SetPosition(const Vector3D& pos)
+{
+	vertex = pos;
+	SetVertices();
+}
+
+void Particle::Move(const Vector3D& spd)
+{
+	vertex += spd;
+	SetVertices();
 }
 
 void Particle::SetVertices()

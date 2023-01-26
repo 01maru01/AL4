@@ -1,3 +1,8 @@
+cbuffer ConstBufferDataMaterial:register(b0)
+{
+	float4 color;	//	RGBA
+};
+
 struct VSOutput
 {
 	//	セマンティック(SV_はSystem Value)

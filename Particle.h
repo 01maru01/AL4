@@ -29,6 +29,7 @@ private:
 	ConstBufferDataMaterial* mapMaterial = nullptr;
 
 	Vector3D vertex;
+	Vector4D color = { 1.0f,1.0f,1.0f,1.0f };
 
 	float scale = 1.0f;
 public:
@@ -38,6 +39,13 @@ public:
 	Particle();
 	void MatUpdate();
 	void Draw(int handle);
+
+	void SetColor(const Vector4D& color_) { color = color_; }
+	const Vector4D& SetColor() { return color; }
+	void SetScale(float scale_);
+	void SetPosition(const Vector3D& pos);
+	const Vector3D& GetPosition() { return vertex; }
+	void Move(const Vector3D& spd);
 private:
 	void SetVertices() override;
 };

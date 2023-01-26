@@ -19,16 +19,15 @@ void SpriteCommon::DeleteInstance()
 
 void SpriteCommon::Initialize()
 {
-	ID3D12Device* dev = MyDirectX::GetInstance()->GetDev();
 	D3D12_INPUT_ELEMENT_DESC inputLayout[] = {
 		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,	D3D12_APPEND_ALIGNED_ELEMENT,	D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},		//	xyzÀ•W
 		{"TEXCOORD",0,DXGI_FORMAT_R32G32_FLOAT,0,D3D12_APPEND_ALIGNED_ELEMENT,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0},				//	uvÀ•W
 	};
 
+	Shader shader;
 	shader.Initialize(L"Resources/shader/SpriteVS.hlsl", L"Resources/shader/SpritePS.hlsl");
-	pipeline.Init(dev, shader, inputLayout, _countof(inputLayout), D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE, D3D12_FILL_MODE_SOLID, D3D12_CULL_MODE_NONE, false);
-	pipeline.SetBlend(dev, GPipeline::ALPHA_BLEND);
-
+	pipeline.Init(shader, inputLayout, _countof(inputLayout), 2, D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE, D3D12_FILL_MODE_SOLID, D3D12_CULL_MODE_NONE, D3D12_DEPTH_WRITE_MASK_ALL, false);
+	pipeline.SetBlend(GPipeline::ALPHA_BLEND);
 
 	mat2D.Identity();
 	mat2D.m[0][0] = 2.0f / Window::window_width;
@@ -39,6 +38,6 @@ void SpriteCommon::Initialize()
 
 void SpriteCommon::Draw()
 {
-	pipeline.Setting(MyDirectX::GetInstance()->GetCmdList());
-	pipeline.Update(MyDirectX::GetInstance()->GetCmdList(), D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+	pipeline.Setting();
+	pipeline.Update(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 }

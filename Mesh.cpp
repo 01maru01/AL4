@@ -13,10 +13,10 @@ void Mesh::Draw()
 {
 	ID3D12GraphicsCommandList* cmdList = dx->GetCmdList();
 	BuffUpdate(dx->GetCmdList());
-	dx->GetCmdList()->SetGraphicsRootDescriptorTable(1, dx->GetTextureHandle(mtl->GetTextureHandle()));
+	dx->GetCmdList()->SetGraphicsRootDescriptorTable(0, dx->GetTextureHandle(mtl->GetTextureHandle()));
 
 	ID3D12Resource* constBuff = mtl->GetMaterialConstBuff();
-	dx->GetCmdList()->SetGraphicsRootConstantBufferView(0, constBuff->GetGPUVirtualAddress());
+	dx->GetCmdList()->SetGraphicsRootConstantBufferView(1, constBuff->GetGPUVirtualAddress());
 
 	dx->GetCmdList()->DrawIndexedInstanced((UINT)indices.size(), 1, 0, 0, 0);
 }

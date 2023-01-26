@@ -5,6 +5,7 @@
 #include "SphereCollider.h"
 #include "CollisionAttribute.h"
 #include "MeshCollider.h"
+#include "SceneManager.h"
 
 void GameScene::CollisionUpdate()
 {
@@ -42,7 +43,7 @@ void GameScene::Initialize()
 
 	objShader.Initialize(L"Resources/shader/ObjVS.hlsl", L"Resources/shader/ObjPS.hlsl");
 
-	modelpipeline = std::make_unique<GPipeline>(dx->GetDev(), objShader);
+	modelpipeline = std::make_unique<GPipeline>(objShader, GPipeline::ALPHA_BLEND, 4);
 
 	Object3D::SetPipeline(modelpipeline.get());
 	Object3D::SetCamera(camera);
@@ -94,6 +95,9 @@ void GameScene::LoadResources()
 void GameScene::Update()
 {
 #pragma region XVˆ—
+	if (input->GetTrigger(DIK_1)) {
+		SceneManager::GetInstance()->SetNextScene("GAMESCENE");
+	}
 	camera->Update();
 
 	player->Update();

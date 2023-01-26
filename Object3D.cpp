@@ -139,8 +139,8 @@ void Object3D::MatUpdate()
 
 void Object3D::Draw()
 {
-	pipeline->Setting(dx->GetCmdList());
-	pipeline->Update(dx->GetCmdList(), D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	pipeline->Setting();
+	pipeline->Update(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	dx->GetCmdList()->SetGraphicsRootConstantBufferView(2, transform->GetGPUVirtualAddress());
 	light->Draw();
