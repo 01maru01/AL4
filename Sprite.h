@@ -28,8 +28,7 @@ private:
 	bool isFlipY = false;
 	bool isInvisible = false;
 
-	ScreenVertex vertices[4];
-	UINT vertexSize;
+	std::vector<ScreenVertex> vertices;
 
 	enum VertexNumber {
 		LB,

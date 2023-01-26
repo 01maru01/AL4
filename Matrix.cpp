@@ -81,7 +81,7 @@ bool InverseMatrix(const Matrix& mat, Matrix& invMat)
             for (int x = 0; x < 8; x++) {
                 double tmp = sweep[max_i][x];
                 sweep[max_i][x] = sweep[k][x];
-                sweep[k][x] = tmp;
+                sweep[k][x] = (float)tmp;
             }
         }
 

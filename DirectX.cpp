@@ -438,6 +438,7 @@ void MyDirectX::PostDraw()
 
 void MyDirectX::DeleteInstance()
 {
+	delete MyDirectX::GetInstance();
 }
 
 void MyDirectX::PrevDrawScreen(FLOAT* clearColor)

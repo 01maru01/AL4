@@ -4,7 +4,7 @@
 void Sprite::Initialize(uint32_t handle_)
 {
 	common = SpriteCommon::GetInstance();
-
+	
 	HRESULT result;
 
 	if (handle_ != UINT32_MAX) {
@@ -26,7 +26,7 @@ void Sprite::Initialize(uint32_t handle_)
 		top = -top;
 		bottom = -bottom;
 	}
-
+	vertices.resize(4);
 	vertices[LB].pos = { left,bottom,0.0f };
 	vertices[LT].pos = { left,top,0.0f };
 	vertices[RB].pos = { right,bottom,0.0f };
@@ -35,9 +35,8 @@ void Sprite::Initialize(uint32_t handle_)
 	vertices[LT].uv = { 0.0f,0.0f };
 	vertices[RB].uv = { 1.0f,1.0f };
 	vertices[RT].uv = { 1.0f,0.0f };
-	vertexSize = 4;
-	UINT sizePV = static_cast<UINT>(sizeof(vertices[0]) * vertexSize);
-	BuffInitialize(MyDirectX::GetInstance()->GetDev(), sizePV, vertexSize);
+	UINT sizePV = static_cast<UINT>(sizeof(vertices[0]) * vertices.size());
+	BuffInitialize(MyDirectX::GetInstance()->GetDev(), sizePV, (int)vertices.size());
 
 #pragma region  ConstBuffer
 	//	ヒープ設定
@@ -184,7 +183,7 @@ void Sprite::TransferVertex()
 	HRESULT result = vertBuff->Map(0, nullptr, (void**)&vertMap);
 	assert(SUCCEEDED(result));
 	// 全頂点に対して
-	for (int i = 0; i < vertexSize; i++) {
+	for (int i = 0; i < vertices.size(); i++) {
 		vertMap[i] = vertices[i]; // 座標をコピー
 	}
 	// 繋がりを解除
@@ -199,7 +198,7 @@ void Sprite::SetVertices()
 	HRESULT result = vertBuff->Map(0, nullptr, (void**)&vertMap);
 	assert(SUCCEEDED(result));
 	// 全頂点に対して
-	for (int i = 0; i < vertexSize; i++) {
+	for (int i = 0; i < vertices.size(); i++) {
 		vertMap[i] = vertices[i]; // 座標をコピー
 	}
 	// 繋がりを解除

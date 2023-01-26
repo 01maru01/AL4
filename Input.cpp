@@ -75,21 +75,21 @@ void Input::Update()
 	POINT cursor_;
 	GetCursorPos(&cursor_);
 
-	cursor.x = cursor_.x;
-	cursor.y = cursor_.y;
+	cursor.x = (float)cursor_.x;
+	cursor.y = (float)cursor_.y;
 
 	RECT* rec = new RECT();
 	if (rockCursor) {
 		GetWindowRect(Window::GetInstance()->GetHwnd(), rec);
-		Vector2D center((rec->right + rec->left) / 2, (rec->bottom + rec->top) / 2);
+		Vector2D center((float)(rec->right + rec->left) / 2, (float)(rec->bottom + rec->top) / 2);
 		float width = Window::window_width / 2.0f;
 		float height = Window::window_height / 2.0f;
-		rec->left = center.x - width;
-		rec->right = center.x + width;
-		rec->top = center.y - height;
-		rec->bottom = center.y + height;
+		rec->left = (LONG)(center.x - width);
+		rec->right = (LONG)(center.x + width);
+		rec->top = (LONG)(center.y - height);
+		rec->bottom = (LONG)(center.y + height);
 		prevCursor = center;
-		SetCursorPos(center.x, center.y);
+		SetCursorPos((int)center.x, (int)center.y);
 		//	カーソル表示しない
 		ShowCursor(false);
 		//	範囲指定

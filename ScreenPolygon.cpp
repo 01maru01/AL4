@@ -19,7 +19,7 @@ ScreenPolygon::ScreenPolygon()
 	indices[4] = 1;
 	indices[5] = 3;
 	UINT sizeIB = static_cast<UINT>(sizeof(uint16_t) * indexSize);
-	BuffInitialize(MyDirectX::GetInstance()->GetDev(), sizePV, vertices.size(), sizeIB, indices, indexSize);
+	BuffInitialize(MyDirectX::GetInstance()->GetDev(), sizePV, (int)vertices.size(), sizeIB, indices, indexSize);
 
 	D3D12_INPUT_ELEMENT_DESC inputLayout[] = {
 		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,	D3D12_APPEND_ALIGNED_ELEMENT,	D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},		//	xyzç¿ïW

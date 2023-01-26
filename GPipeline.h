@@ -12,7 +12,7 @@
 class GPipeline
 {
 public:
-	static enum BlendMord
+	enum BlendMord
 	{
 		NONE_BLEND = 0,
 		ADD_BLEND,

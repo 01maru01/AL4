@@ -12,7 +12,7 @@ void VertIdxBuff::BuffUpdate(ID3D12GraphicsCommandList* cmdList)
 	}
 }
 
-void VertIdxBuff::BuffInitialize(ID3D12Device* dev, UINT sizeVB, UINT vertSize, UINT sizeIB, uint16_t* indices, UINT indicesSize)
+void VertIdxBuff::BuffInitialize(ID3D12Device* dev, UINT sizeVB, int vertSize, UINT sizeIB, uint16_t* indices, int indicesSize)
 {
 	D3D12_HEAP_PROPERTIES heapProp{};
 

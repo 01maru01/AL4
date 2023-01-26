@@ -135,18 +135,6 @@
     <ClCompile Include="Input.cpp">
       <Filter>ソース ファイル\lib\Input</Filter>
     </ClCompile>
-    <ClCompile Include="Object2D.cpp">
-      <Filter>ソース ファイル\lib\Obj</Filter>
-    </ClCompile>
-    <ClCompile Include="Box.cpp">
-      <Filter>ソース ファイル\lib\Obj</Filter>
-    </ClCompile>
-    <ClCompile Include="DrawSphere.cpp">
-      <Filter>ソース ファイル\lib\Obj</Filter>
-    </ClCompile>
-    <ClCompile Include="DrawGrid.cpp">
-      <Filter>ソース ファイル\lib\Obj</Filter>
-    </ClCompile>
     <ClCompile Include="MyDebugCamera.cpp">
       <Filter>ソース ファイル\lib\Camera</Filter>
     </ClCompile>
@@ -307,18 +295,6 @@
     </ClInclude>
     <ClInclude Include="MyMath.h">
       <Filter>ヘッダー ファイル\lib\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Object2D.h">
-      <Filter>ヘッダー ファイル\lib\Obj</Filter>
-    </ClInclude>
-    <ClInclude Include="Box.h">
-      <Filter>ヘッダー ファイル\lib\Obj</Filter>
-    </ClInclude>
-    <ClInclude Include="DrawSphere.h">
-      <Filter>ヘッダー ファイル\lib\Obj</Filter>
-    </ClInclude>
-    <ClInclude Include="DrawGrid.h">
-      <Filter>ヘッダー ファイル\lib\Obj</Filter>
     </ClInclude>
     <ClInclude Include="MyDebugCamera.h">
       <Filter>ヘッダー ファイル\lib\Camera</Filter>

@@ -6,10 +6,10 @@ ViewPort::ViewPort()
 
 void ViewPort::Init(const int width, const int height, const int topLftX, const int topLftY, const float MinDepth, const float MaxDepth)
 {
-	viewport.Width = width;
-	viewport.Height = height;
-	viewport.TopLeftX = topLftX;
-	viewport.TopLeftY = topLftY;
+	viewport.Width = (FLOAT)width;
+	viewport.Height = (FLOAT)height;
+	viewport.TopLeftX = (FLOAT)topLftX;
+	viewport.TopLeftY = (FLOAT)topLftY;
 	viewport.MinDepth = MinDepth;
 	viewport.MaxDepth = MaxDepth;
 

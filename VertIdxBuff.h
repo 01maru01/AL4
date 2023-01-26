@@ -23,7 +23,7 @@ protected:
 private:
 	void SetResDesc(UINT size);
 protected:
-	void BuffInitialize(ID3D12Device* dev, UINT sizeVB, UINT vertSize, UINT sizeIB = NULL, uint16_t* indices = nullptr, UINT indicesSize = NULL);
+	void BuffInitialize(ID3D12Device* dev, UINT sizeVB, int vertSize, UINT sizeIB = NULL, uint16_t* indices = nullptr, int indicesSize = NULL);
 	void BuffUpdate(ID3D12GraphicsCommandList* cmdList);
 public:
 	VertIdxBuff() {};

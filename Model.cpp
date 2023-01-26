@@ -185,7 +185,7 @@ void Model::LoadModel(const std::string& modelname, bool smoothing)
 
 std::string GetDirectoryPath(const std::string& origin)
 {
-    int ind = origin.find_last_of('/');
+    int ind = (int)origin.find_last_of('/');
     ind++;
     return origin.substr(0, ind);
 }

@@ -11,8 +11,6 @@
 class Shader
 {
 private:
-	HRESULT result;
-
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 	ComPtr<ID3DBlob> vsBlob;		// 頂点シェーダオブジェクト
@@ -23,7 +21,7 @@ private:
 	ComPtr<ID3DBlob> errorBlob;		// エラーオブジェクト
 
 private:
-	void Error();
+	void Error(HRESULT result);
 public:
 	Shader() {};
 	Shader(LPCWSTR VSFileName, LPCWSTR PSFileName, LPCSTR pEntryPoint = "main", LPCWSTR GSFileName = nullptr, LPCWSTR DSFileName = nullptr, LPCWSTR HSFileName = nullptr);

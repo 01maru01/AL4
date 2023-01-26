@@ -11,7 +11,7 @@ void Shader::Initialize(LPCWSTR VSFileName, LPCWSTR PSFileName, LPCSTR pEntryPoi
 {
 #pragma region VertexShader
 	//	頂点シェーダファイル読み込み＆コンパイル
-	result = D3DCompileFromFile(
+	HRESULT result = D3DCompileFromFile(
 		VSFileName,									// シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE,					// インクルード可能にする
@@ -21,7 +21,7 @@ void Shader::Initialize(LPCWSTR VSFileName, LPCWSTR PSFileName, LPCSTR pEntryPoi
 		&vsBlob, &errorBlob);
 
 	// エラーなら
-	Error();
+	Error(result);
 #pragma endregion
 
 #pragma region HS
@@ -37,7 +37,7 @@ void Shader::Initialize(LPCWSTR VSFileName, LPCWSTR PSFileName, LPCSTR pEntryPoi
 			&hsBlob, &errorBlob);
 
 		// エラーなら
-		Error();
+		Error(result);
 	}
 #pragma endregion
 
@@ -54,7 +54,7 @@ void Shader::Initialize(LPCWSTR VSFileName, LPCWSTR PSFileName, LPCSTR pEntryPoi
 			&dsBlob, &errorBlob);
 
 		// エラーなら
-		Error();
+		Error(result);
 	}
 #pragma endregion
 
@@ -71,7 +71,7 @@ void Shader::Initialize(LPCWSTR VSFileName, LPCWSTR PSFileName, LPCSTR pEntryPoi
 			&gsBlob, &errorBlob);
 
 		// エラーなら
-		Error();
+		Error(result);
 	}
 #pragma endregion
 
@@ -87,11 +87,11 @@ void Shader::Initialize(LPCWSTR VSFileName, LPCWSTR PSFileName, LPCSTR pEntryPoi
 		&psBlob, &errorBlob);
 
 	// エラーなら
-	Error();
+	Error(result);
 #pragma endregion
 }
 
-void Shader::Error()
+void Shader::Error(HRESULT result)
 {
 	if (FAILED(result)) {
 		// errorBlobからエラー内容をstring型にコピー
