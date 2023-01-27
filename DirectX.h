@@ -19,8 +19,6 @@ class MyDirectX
 private:
 	Window* win = nullptr;
 
-	HRESULT result;
-
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 	ComPtr<ID3D12Device> device;
@@ -74,20 +72,20 @@ private:
 	void InitializeFPS();
 	void UpdateFPS();
 
-	void ScreenClear(FLOAT* clearColor, D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle);
-	void ScreenClear(D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle);
+	void ScreenClear(FLOAT* clearColor_, D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle_);
+	void ScreenClear(D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle_);
 	
 	void SetResourceBarrier(D3D12_RESOURCE_BARRIER& desc, D3D12_RESOURCE_STATES StateBefore, D3D12_RESOURCE_STATES StateAfter, ID3D12Resource* pResource = nullptr);
 	void CmdListDrawAble(D3D12_RESOURCE_BARRIER& barrierDesc, ID3D12Resource* pResource, D3D12_RESOURCE_STATES StateBefore, D3D12_RESOURCE_STATES StateAfter,
-		D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle, D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle, FLOAT* clearColor = nullptr);
+		D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle_, D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle_, FLOAT* clearColor_ = nullptr);
 public:
 	MyDirectX();
 	static MyDirectX* GetInstance();
 	void Initialize();
 	static void DeleteInstance();
-	void PrevDrawScreen(FLOAT* clearColor = nullptr);
+	void PrevDrawScreen();
 	void PostDrawScreen();
-	void PrevDraw(FLOAT* clearColor = nullptr);
+	void PrevDraw(FLOAT* clearColor_ = nullptr);
 	void PostDraw();
 
 	int LoadTextureGraph(const wchar_t* textureName, bool tga = false);

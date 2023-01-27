@@ -6,7 +6,7 @@ void Mesh::CreateBuff()
 {
 	UINT sizeVB = static_cast<UINT>(sizeof(vertices[0]) * vertices.size());
 	UINT sizeIB = static_cast<UINT>(sizeof(uint16_t) * indices.size());
-	BuffInitialize(dx->GetDev(), sizeVB, (int)vertices.size(), sizeIB, &indices.front(), (int)indices.size());
+	BuffInitialize(dx->GetDev(), sizeVB, sizeIB, &indices.front(), (int)indices.size());
 }
 
 void Mesh::Draw()

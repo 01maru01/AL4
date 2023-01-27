@@ -54,7 +54,6 @@ void Material::Update()
 
 std::wstring ReplaceExtension(const std::wstring& origin, const wchar_t* ext)
 {
-	int idx = (int)origin.length();
 	int last = (int)origin.find_last_of('.');
 	std::wstring ret = origin.substr(0, last + 1);
 	wchar_t buf[5];

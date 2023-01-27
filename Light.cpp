@@ -49,16 +49,16 @@ Light* Light::Create()
 	return instance;
 }
 
-void Light::SetLightDir(const Vector3D& lightdir)
+void Light::SetLightDir(const Vector3D& lightdir_)
 {
-	this->lightdir = lightdir;
+	this->lightdir = lightdir_;
 	this->lightdir.normalize();
 	dirty = true;
 }
 
-void Light::SetLightColor(const Vector3D& lightcolor)
+void Light::SetLightColor(const Vector3D& lightcolor_)
 {
-	this->lightcolor = lightcolor;
+	this->lightcolor = lightcolor_;
 	dirty = true;
 }
 

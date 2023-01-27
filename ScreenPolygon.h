@@ -21,7 +21,7 @@ private:
 public:
 	ScreenPolygon();
 	void Draw();
-	void SetColor(const Vector4D& color);
+	void SetColor(const Vector4D& color_);
 private:
 	void SetVertices() override;
 };

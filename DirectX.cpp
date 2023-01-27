@@ -68,7 +68,7 @@ void MyDirectX::Initialize()
 #pragma region Adapter
 	ComPtr<IDXGIFactory7> dxgiFactory;
 	// DXGIファクトリーの生成
-	result = CreateDXGIFactory(IID_PPV_ARGS(&dxgiFactory));
+	HRESULT result = CreateDXGIFactory(IID_PPV_ARGS(&dxgiFactory));
 	assert(SUCCEEDED(result));
 	// アダプターの列挙用
 	std::vector<ComPtr<IDXGIAdapter4>> adapters;
@@ -354,7 +354,7 @@ void MyDirectX::SetResourceBarrier(D3D12_RESOURCE_BARRIER& desc, D3D12_RESOURCE_
 	cmdList->ResourceBarrier(1, &desc);
 }
 
-void MyDirectX::PrevDraw(FLOAT* clearColor)
+void MyDirectX::PrevDraw(FLOAT* clearColor_)
 {
 	// 1.リソースバリアで書き込み可能に変更
 #pragma region ReleaseBarrier
@@ -371,10 +371,10 @@ void MyDirectX::PrevDraw(FLOAT* clearColor)
 #pragma endregion Change
 
 	CmdListDrawAble(barrierDesc, backBuffers[bbIndex].Get(),
-		D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET, rtvHandle, dsvHandle, clearColor);
+		D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET, rtvHandle, dsvHandle, clearColor_);
 }
 
-void MyDirectX::CmdListDrawAble(D3D12_RESOURCE_BARRIER& desc, ID3D12Resource* pResource, D3D12_RESOURCE_STATES StateBefore, D3D12_RESOURCE_STATES StateAfter, D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle, D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle, FLOAT* clearColor)
+void MyDirectX::CmdListDrawAble(D3D12_RESOURCE_BARRIER& desc, ID3D12Resource* pResource, D3D12_RESOURCE_STATES StateBefore, D3D12_RESOURCE_STATES StateAfter, D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle_, D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle_, FLOAT* clearColor_)
 {
 	// 1.リソースバリアで書き込み可能に変更
 #pragma region ReleaseBarrier
@@ -382,17 +382,17 @@ void MyDirectX::CmdListDrawAble(D3D12_RESOURCE_BARRIER& desc, ID3D12Resource* pR
 #pragma endregion ReleaseBarrier
 	// 2.描画先の変更
 #pragma region Change
-	cmdList->OMSetRenderTargets(1, &rtvHandle, false, &dsvHandle);
+	cmdList->OMSetRenderTargets(1, &rtvHandle_, false, &dsvHandle_);
 #pragma endregion Change
 	// 3.画面クリア
 #pragma region ScreenClear
-	if (clearColor == nullptr) {
-		ScreenClear(rtvHandle);
+	if (clearColor_ == nullptr) {
+		ScreenClear(rtvHandle_);
 	}
 	else {
-		ScreenClear(clearColor, rtvHandle);
+		ScreenClear(clearColor_, rtvHandle_);
 	}
-	cmdList->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
+	cmdList->ClearDepthStencilView(dsvHandle_, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 #pragma endregion
 }
 
@@ -405,7 +405,7 @@ void MyDirectX::PostDraw()
 
 	// 命令のクローズ
 #pragma region CmdClose
-	result = cmdList->Close();
+	HRESULT result = cmdList->Close();
 	assert(SUCCEEDED(result));
 	// 溜めていたコマンドリストの実行(close必須)
 	ID3D12CommandList* commandLists[] = { cmdList.Get()};
@@ -441,7 +441,7 @@ void MyDirectX::DeleteInstance()
 	delete MyDirectX::GetInstance();
 }
 
-void MyDirectX::PrevDrawScreen(FLOAT* clearColor)
+void MyDirectX::PrevDrawScreen()
 {
 	rtvHandle = screenRTVHeap->GetCPUDescriptorHandleForHeapStart();
 	dsvHandle = dsvHeap->GetCPUDescriptorHandleForHeapStart();
@@ -557,13 +557,13 @@ D3D12_GPU_DESCRIPTOR_HANDLE MyDirectX::GetTextureHandle(int handle)
 	return srvGpuHandle;
 }
 
-void MyDirectX::ScreenClear(FLOAT* clearColor, D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle)
+void MyDirectX::ScreenClear(FLOAT* clearColor_, D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle_)
 {
-	cmdList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
+	cmdList->ClearRenderTargetView(rtvHandle_, clearColor_, 0, nullptr);
 }
-void MyDirectX::ScreenClear(D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle)
+void MyDirectX::ScreenClear(D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle_)
 {
-	FLOAT clearColor[] = { 0.1f,0.25f, 0.5f,0.0f };
-	cmdList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
+	FLOAT clearColor_[] = { 0.1f,0.25f, 0.5f,0.0f };
+	cmdList->ClearRenderTargetView(rtvHandle_, clearColor_, 0, nullptr);
 }
 

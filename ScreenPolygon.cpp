@@ -47,7 +47,7 @@ ScreenPolygon::ScreenPolygon()
 	indices[4] = 1;
 	indices[5] = 3;
 	UINT sizeIB = static_cast<UINT>(sizeof(uint16_t) * indexSize);
-	BuffInitialize(MyDirectX::GetInstance()->GetDev(), sizePV, (int)vertices.size(), sizeIB, indices, indexSize);
+	BuffInitialize(MyDirectX::GetInstance()->GetDev(), sizePV, sizeIB, indices, indexSize);
 
 	D3D12_INPUT_ELEMENT_DESC inputLayout[] = {
 		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,	D3D12_APPEND_ALIGNED_ELEMENT,	D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},		//	xyz座標
@@ -72,11 +72,11 @@ void ScreenPolygon::Draw()
 	cmdList->DrawIndexedInstanced(indexSize, 1, 0, 0, 0);
 }
 
-void ScreenPolygon::SetColor(const Vector4D& color)
+void ScreenPolygon::SetColor(const Vector4D& color_)
 {
 	ConstBufferDataMaterial* mapMaterial = nullptr;
 	HRESULT result = material->Map(0, nullptr, (void**)&mapMaterial);	//	マッピング
-	mapMaterial->color = color;
+	mapMaterial->color = color_;
 	assert(SUCCEEDED(result));
 	material->Unmap(0, nullptr);
 }

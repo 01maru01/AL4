@@ -33,7 +33,7 @@ private:
 
 	float scale = 1.0f;
 public:
-	static void SetCamera(ICamera* camera);
+	static void SetCamera(ICamera* camera_);
 
 	void Initialize();
 	Particle();

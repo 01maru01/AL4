@@ -22,8 +22,8 @@ public:
 
 	void Initialize();
 	void TransferConstBuffer();
-	void SetLightDir(const Vector3D& lightdir);
-	void SetLightColor(const Vector3D& lightcolor);
+	void SetLightDir(const Vector3D& lightdir_);
+	void SetLightColor(const Vector3D& lightcolor_);
 	void Update();
 	void Draw();
 };

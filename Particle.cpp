@@ -4,9 +4,9 @@ MyDirectX* Particle::dx = MyDirectX::GetInstance();
 ICamera* Particle::camera = nullptr;
 ParticleCommon* Particle::common = ParticleCommon::GetInstance();
 
-void Particle::SetCamera(ICamera* camera)
+void Particle::SetCamera(ICamera* camera_)
 {
-	Particle::camera = camera;
+	Particle::camera = camera_;
 }
 
 void Particle::Initialize()
