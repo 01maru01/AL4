@@ -99,12 +99,12 @@ void Sprite::Update()
 	ID3D12Resource* texBuff = MyDirectX::GetInstance()->GetTextureBuffer(handle);
 
 	if (texBuff) {
-		D3D12_RESOURCE_DESC resDesc = texBuff->GetDesc();
+		D3D12_RESOURCE_DESC resDesc_ = texBuff->GetDesc();
 
-		float tex_left = textureLeftTop.x / resDesc.Width;
-		float tex_right = (textureLeftTop.x + textureSize.x) / resDesc.Width;
-		float tex_top = textureLeftTop.y / resDesc.Height;
-		float tex_bottom = (textureLeftTop.y + textureSize.y) / resDesc.Height;
+		float tex_left = textureLeftTop.x / resDesc_.Width;
+		float tex_right = (textureLeftTop.x + textureSize.x) / resDesc_.Width;
+		float tex_top = textureLeftTop.y / resDesc_.Height;
+		float tex_bottom = (textureLeftTop.y + textureSize.y) / resDesc_.Height;
 
 		vertices[LB].uv = { tex_left,tex_bottom };
 		vertices[LT].uv = { tex_left,tex_top };
@@ -141,7 +141,7 @@ void Sprite::MatUpdate()
 	mapMaterial->color = color;
 }
 
-void Sprite::Draw(int handle)
+void Sprite::Draw()
 {
 	if (isInvisible) {
 		return;
@@ -149,7 +149,7 @@ void Sprite::Draw(int handle)
 	common->Draw();
 	BuffUpdate(MyDirectX::GetInstance()->GetCmdList());
 	//	テクスチャ
-	MyDirectX::GetInstance()->GetCmdList()->SetGraphicsRootDescriptorTable(0, MyDirectX::GetInstance()->GetTextureHandle(this->handle));
+	MyDirectX::GetInstance()->GetCmdList()->SetGraphicsRootDescriptorTable(0, MyDirectX::GetInstance()->GetTextureHandle(handle));
 	MyDirectX::GetInstance()->GetCmdList()->SetGraphicsRootConstantBufferView(1, material->GetGPUVirtualAddress());
 	MyDirectX::GetInstance()->GetCmdList()->SetGraphicsRootConstantBufferView(2, transform->GetGPUVirtualAddress());
 
@@ -232,7 +232,7 @@ void Sprite::AdjustTextureSize()
 	ID3D12Resource* texBuff = MyDirectX::GetInstance()->GetTextureBuffer(handle);
 	assert(texBuff);
 
-	D3D12_RESOURCE_DESC resDesc = texBuff->GetDesc();
-	textureSize.x = static_cast<float>(resDesc.Width);
-	textureSize.y = static_cast<float>(resDesc.Height);
+	D3D12_RESOURCE_DESC resDesc_ = texBuff->GetDesc();
+	textureSize.x = static_cast<float>(resDesc_.Width);
+	textureSize.y = static_cast<float>(resDesc_.Height);
 }

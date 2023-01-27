@@ -31,9 +31,7 @@ public:
     void AddIndex(unsigned short index) { indices.emplace_back(index); }
     void AddVertex(const Vertex& vertex) { vertices.emplace_back(vertex); }
     void AddSmoothData(unsigned short indexPosition, unsigned short indexVertex) { smoothData[indexPosition].emplace_back(indexVertex); }
-    void SetTextureFilePath(const std::string& filePath) {
-        int iBufferSize = MultiByteToWideChar(CP_ACP, 0, filePath.c_str(), -1, mtl->wfilepath, _countof(mtl->wfilepath));
-    }
+    void SetTextureFilePath(const std::string& filePath);
 private:
     void SetVertices() override;
 };

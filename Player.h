@@ -16,7 +16,7 @@ private:
 	static const int INVINCIBLE_TIME;
 public:
 	static void SetCamera(ICamera* camera_);
-	void PlayerInitialize(Model* model);
+	void PlayerInitialize(Model* model_);
 	void Update();
 	void CollisionUpdate();
 	void OnCollision(const CollisionInfo& info) override;

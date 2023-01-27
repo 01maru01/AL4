@@ -64,7 +64,7 @@ void Model::LoadMaterial(const std::string& directoryPath, const std::string& fi
 			line_stream >> material->textureFilename;
 
 			string filepath = directoryPath + material->textureFilename;
-			int iBufferSize = MultiByteToWideChar(CP_ACP, 0, filepath.c_str(), -1, material->wfilepath, _countof(material->wfilepath));
+			MultiByteToWideChar(CP_ACP, 0, filepath.c_str(), -1, material->wfilepath, _countof(material->wfilepath));
 		}
 	}
 	file.close();
@@ -100,9 +100,9 @@ void Model::LoadModel(const std::string& modelname, bool smoothing)
 		getline(line_stream, key, ' ');
 
 		if (key == "mtllib") {
-			string filename;
-			line_stream >> filename;
-			LoadMaterial(directoryPath, filename);
+			string filename_;
+			line_stream >> filename_;
+			LoadMaterial(directoryPath, filename_);
 		}
 
 		if (key == "usemtl")
@@ -170,7 +170,7 @@ void Model::LoadModel(const std::string& modelname, bool smoothing)
 					mesh->AddSmoothData(indexPos, (unsigned short)mesh->GetVertexCount() - 1);
 				}
 
-				mesh->AddIndex(indexCount);
+				mesh->AddIndex((unsigned short)indexCount);
 				indexCount++;
 			}
 		}
@@ -213,8 +213,8 @@ void Model::LoadFBXMesh(Mesh& dst, const aiMesh* src)
 		auto position = &(src->mVertices[i]);
 		auto normal = &(src->mNormals[i]);
 		auto uv = (src->HasTextureCoords(0)) ? &(src->mTextureCoords[0][i]) : &zero3D;
-		auto tangent = (src->HasTangentsAndBitangents()) ? &(src->mTangents[i]) : &zero3D;
-		auto color = (src->HasVertexColors(0)) ? &(src->mColors[0][i]) : &zeroColor;
+		//auto tangent = (src->HasTangentsAndBitangents()) ? &(src->mTangents[i]) : &zero3D;
+		//auto color = (src->HasVertexColors(0)) ? &(src->mColors[0][i]) : &zeroColor;
 
 		uv->y = 1 - uv->y;
 
@@ -232,9 +232,9 @@ void Model::LoadFBXMesh(Mesh& dst, const aiMesh* src)
 	{
 		const auto& face = src->mFaces[i];
 
-		dst.AddIndex(face.mIndices[0]);
-		dst.AddIndex(face.mIndices[1]);
-		dst.AddIndex(face.mIndices[2]);
+		dst.AddIndex((unsigned short)face.mIndices[0]);
+		dst.AddIndex((unsigned short)face.mIndices[1]);
+		dst.AddIndex((unsigned short)face.mIndices[2]);
 	}
 }
 

@@ -56,20 +56,20 @@ public:
 	void Initialize(uint32_t handle_ = UINT32_MAX);
 	void Update();
 	void MatUpdate();
-	void Draw(int handle = -1);
+	void Draw();
 
 	void SetPosition(const Vector2D& position) { trans = position; }
-	void SetSize(const Vector2D& size) { this->size = size; }
+	void SetSize(const Vector2D& size_) { size = size_; }
 	void SetAnchorPoint(const Vector2D& anchor) { anchorPoint = anchor; }
 	void SetTextureLeftTop(const Vector2D& leftTop) { textureLeftTop = leftTop; }
 	const Vector2D& GetTextureLeftTop() const { return textureLeftTop; }
-	void SetTextureSize(const Vector2D& size) { textureSize = size; }
+	void SetTextureSize(const Vector2D& size_) { textureSize = size_; }
 	const Vector2D& GetTextureSize() const { return textureSize; }
 	const Vector2D& GetPosition() const { return trans; }
 	const Vector2D& GetSize() const { return size; }
 	void SetRotation(float rotation) { rotAngle = rotation; }
 	float GetRotation() const { return rotAngle; }
-	void SetColor(const Vector4D& color) { this->color = color; }
+	void SetColor(const Vector4D& color_) { color = color_; }
 	const Vector4D& GetColor() const { return color; }
 	void SetHandle(int handle_) { handle = handle_; }
 	void TransferVertex();

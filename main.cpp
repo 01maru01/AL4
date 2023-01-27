@@ -18,12 +18,12 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	MyDirectX* dx = MyDirectX::GetInstance();
 	dx->Initialize();
 
-	MyXAudio* xAudio = MyXAudio::GetInstance();
+	//MyXAudio* xAudio = MyXAudio::GetInstance();
 
 	Input* input = Input::GetInstance();
 	InputJoypad* joypad = InputJoypad::GetInstance();
 
-	SpriteCommon* spriteCommon = SpriteCommon::GetInstance();
+	//SpriteCommon* spriteCommon = SpriteCommon::GetInstance();
 	ParticleCommon* particleCommon = ParticleCommon::GetInstance();
 	particleCommon->Initialize();
 

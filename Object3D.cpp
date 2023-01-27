@@ -7,9 +7,9 @@ GPipeline* Object3D::pipeline = nullptr;
 ICamera* Object3D::camera = nullptr;
 MyDirectX* Object3D::dx = MyDirectX::GetInstance();
 
-void Object3D::SetLight(Light* light)
+void Object3D::SetLight(Light* light_)
 {
-	Object3D::light = light;
+	Object3D::light = light_;
 }
 
 void Object3D::SetPipeline(GPipeline* pipeline_)
@@ -17,23 +17,23 @@ void Object3D::SetPipeline(GPipeline* pipeline_)
 	Object3D::pipeline = pipeline_;
 }
 
-void Object3D::SetCamera(ICamera* camera)
+void Object3D::SetCamera(ICamera* camera_)
 {
-	Object3D::camera = camera;
+	Object3D::camera = camera_;
 }
 
-void Object3D::SetModel(Model* model)
+void Object3D::SetModel(Model* model_)
 {
-	this->model = model;
+	model = model_;
 }
 
-void Object3D::SetCollider(BaseCollider* collider)
+void Object3D::SetCollider(BaseCollider* collider_)
 {
-	collider->SetObject3D(this);
-	this->collider = collider;
-	CollisionManager::GetInstance()->AddCollider(collider);
+	collider_->SetObject3D(this);
+	this->collider = collider_;
+	CollisionManager::GetInstance()->AddCollider(collider_);
 	MatUpdate();
-	collider->Update();
+	collider_->Update();
 }
 
 void Object3D::SetAttribute(unsigned short attribute)

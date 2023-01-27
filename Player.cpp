@@ -14,10 +14,10 @@ void Player::SetCamera(ICamera* camera_)
 	camera = camera_;
 }
 
-void Player::PlayerInitialize(Model* model)
+void Player::PlayerInitialize(Model* model_)
 {
 	Initialize();
-	SetModel(model);
+	SetModel(model_);
 	float radius = 0.6f;
 	SetCollider(new SphereCollider(Vector3D(0, radius, 0), radius));
 	collider->SetAttribute(COLLISION_ATTR_ALLIES);
@@ -141,6 +141,7 @@ void Player::CollisionUpdate()
 
 void Player::OnCollision(const CollisionInfo& info)
 {
+	(void)info;
 	//mat.trans.x -= camera->GetFrontVec().x;
 	//mat.trans.z -= camera->GetFrontVec().z;
 	MatUpdate();

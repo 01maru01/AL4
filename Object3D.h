@@ -39,11 +39,11 @@ public:
 
 	static Object3D* Create(Model* model = nullptr);
 
-	static void SetLight(Light* light);
+	static void SetLight(Light* light_);
 	static void SetPipeline(GPipeline* pipeline_);
-	static void SetCamera(ICamera* camera);
-	void SetModel(Model* model);
-	void SetCollider(BaseCollider* collider);
+	static void SetCamera(ICamera* camera_);
+	void SetModel(Model* model_);
+	void SetCollider(BaseCollider* collider_);
 	void SetPosition(const Vector3D& vec) { mat.trans = vec; }
 	void SetAttribute(unsigned short attribute);
 
@@ -55,6 +55,6 @@ public:
 	inline Model* GetModel() { return model; }
 	const Matrix& GetMatWorld() { return mat.matWorld; }
 
-	virtual void OnCollision(const CollisionInfo& info) {};
+	virtual void OnCollision(const CollisionInfo& info) { (void)info; };
 };
 

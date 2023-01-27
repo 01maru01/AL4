@@ -23,8 +23,8 @@ public:
 	inline CollisionShapeType GetShapeType() { return shapeType; }
 	inline void OnCollision(const CollisionInfo& info) { object3d->OnCollision(info); }
 
-	inline void SetAttribute(unsigned short attribute) { this->attribute = attribute; }
-	inline void AddAttribute(unsigned short attribute) { this->attribute |= attribute; }
-	inline void RemoveAttribute(unsigned short attribute) { this->attribute &= !attribute; }
+	inline void SetAttribute(unsigned short attribute_) { attribute = attribute_; }
+	inline void AddAttribute(unsigned short attribute_) { attribute |= attribute_; }
+	inline void RemoveAttribute(unsigned short attribute_) { attribute &= !attribute_; }
 };
 

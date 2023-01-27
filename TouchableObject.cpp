@@ -17,17 +17,17 @@ TouchableObject* TouchableObject::Create(Model* model)
 	return instance;
 }
 
-bool TouchableObject::Initialize(Model* model)
+bool TouchableObject::Initialize(Model* model_)
 {
 	Object3D::Initialize();
 
-	SetModel(model);
+	SetModel(model_);
 
 	// コライダーの追加
-	MeshCollider* collider = new MeshCollider;
-	collider->ConstructTriangles(this->GetModel());
-	collider->SetAttribute(COLLISION_ATTR_LANDSHAPE);
-	SetCollider(collider);
+	MeshCollider* collider_ = new MeshCollider;
+	collider_->ConstructTriangles(this->GetModel());
+	collider_->SetAttribute(COLLISION_ATTR_LANDSHAPE);
+	SetCollider(collider_);
 
 	return true;
 }
