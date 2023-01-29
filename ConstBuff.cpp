@@ -2,7 +2,7 @@
 #include "Vector3D.h"
 #include <cassert>
 
-ConstBuff::ConstBuff(ID3D12Device* dev, const int winwidth, const int winheight)
+ConstBuff::ConstBuff(ID3D12Device* dev)
 {
 	//	ÉqÅ[Évê›íË
 	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD;	//	GPUì]ëóóp

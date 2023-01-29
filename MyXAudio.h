@@ -29,7 +29,7 @@ private:
 	IXAudio2MasteringVoice* masterVoice;
 	std::vector<SoundData> soundData;
 	int handle;
-	void SoundUnload(SoundData* soundData);
+	void SoundUnload(SoundData* soundData_);
 
 	MyXAudio();
 	~MyXAudio();
@@ -42,7 +42,7 @@ public:
 	MyXAudio& operator=(const MyXAudio& obj) = delete;
 
 	int SoundLoadWave(const char* filename);
-	void SoundPlayWave(IXAudio2* xAudio2, const SoundData& soundData);
-	void SoundPlayWave(int handle);
+	void SoundPlayWave(IXAudio2* xAudio2_, const SoundData& soundData_);
+	void SoundPlayWave(int handle_);
 };
 
