@@ -7,8 +7,27 @@ void Light::TransferConstBuffer()
 	ConstBufferLightData* constMap = nullptr;
 	result = constBuff->Map(0, nullptr, (void**)&constMap);
 	if (SUCCEEDED(result)) {
-		constMap->lightv = -lightdir;
-		constMap->lightcolor = lightcolor;
+		constMap->ambientColor = ambientColor;
+
+		for (int i = 0; i < DirLightNum; i++)
+		{
+			constMap->dirLights[i].lightv = -lightdir;
+			constMap->dirLights[i].lightcolor = lightcolor;
+		}
+
+		for (int i = 0; i < PointLightNum; i++)
+		{
+			if (pointLights[i].IsActive()) {
+				constMap->pointLights[i].active = 1;
+				constMap->pointLights[i].pos = pointLights[i].GetLightPos();
+				constMap->pointLights[i].color = pointLights[i].GetLightColor();
+				constMap->pointLights[i].lightatten = pointLights[i].GetLightAtten();
+			}
+			else {
+				constMap->pointLights[i].active = 0;
+			}
+		}
+
 		constBuff->Unmap(0, nullptr);
 	}
 }
@@ -73,4 +92,31 @@ void Light::Update()
 void Light::Draw()
 {
 	MyDirectX::GetInstance()->GetCmdList()->SetGraphicsRootConstantBufferView(3, constBuff->GetGPUVirtualAddress());
+}
+
+void  Light::SetPointLightActive(int index, bool active)
+{
+	assert(0 <= index && index < PointLightNum);
+	pointLights[index].SetActive(active);
+}
+
+void  Light::SetPointLightPos(int index, const Vector3D& lightpos)
+{
+	assert(0 <= index && index < PointLightNum);
+	pointLights[index].SetLightPos(lightpos);
+	dirty = true;
+}
+
+void  Light::SetPointLightColor(int index, const Vector3D& lightcolor_)
+{
+	assert(0 <= index && index < PointLightNum);
+	pointLights[index].SetLightColor(lightcolor_);
+	dirty = true;
+}
+
+void  Light::SetPointLightAtten(int index, const Vector3D& lightAtten)
+{
+	assert(0 <= index && index < PointLightNum);
+	pointLights[index].SetLightAtten(lightAtten);
+	dirty = true;
 }

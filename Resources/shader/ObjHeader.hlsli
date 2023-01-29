@@ -1,8 +1,19 @@
-cbuffer ConstBufferDataTransform:register(b1)
+static const int POINTLIGHT_NUM = 3;
+static const int DIRLIGHT_NUM = 1;
+
+struct PointLight
 {
-	matrix matview;
-	matrix matworld;
-	float3 cameraPos;
+	float3 lightpos;
+	float3 lightcolor;
+	float3 lightatten;
+	uint active;
+};
+
+struct DirLight
+{
+	float3 lightv;
+	float3 lightcolor;
+	uint active;
 };
 
 cbuffer ConstBufferDataMaterial:register(b0)
@@ -13,10 +24,18 @@ cbuffer ConstBufferDataMaterial:register(b0)
 	float m_alpha : packoffset(c2.w);
 };
 
+cbuffer ConstBufferDataTransform:register(b1)
+{
+	matrix matview;
+	matrix matworld;
+	float3 cameraPos;
+};
+
 cbuffer ConstBufferLightData:register(b2)
 {
-	float3 lightv;
-	float3 lightcolor;
+	float3 ambientColor;
+	DirLight dirLights[DIRLIGHT_NUM];
+	PointLight pointLights[POINTLIGHT_NUM];
 };
 
 struct VSOutput
