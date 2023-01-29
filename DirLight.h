@@ -4,9 +4,10 @@
 class DirLight
 {
 public:
-	struct ConstBufferData
+	struct ConstBuffData
 	{
 		Vector3D lightv;
+		float pad1;
 		Vector3D lightcolor;
 		unsigned int active;
 	};
@@ -17,7 +18,10 @@ private:
 	bool active = false;
 
 public:
-	void SetLightDir(const Vector3D& lightdir_) { lightdir = lightdir_; }
+	void SetLightDir(const Vector3D& lightdir_) {
+		lightdir = lightdir_;
+		lightdir.normalize();
+	}
 	const Vector3D& GetLightDir() { return lightdir; }
 	void SetLightColor(const Vector3D& lightcolor_) { lightcolor = lightcolor_; }
 	const Vector3D& GetLightColor() { return lightcolor; }

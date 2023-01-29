@@ -11,8 +11,14 @@ void Light::TransferConstBuffer()
 
 		for (int i = 0; i < DirLightNum; i++)
 		{
-			constMap->dirLights[i].lightv = -lightdir;
-			constMap->dirLights[i].lightcolor = lightcolor;
+			if (dirLights[i].IsActive()) {
+				constMap->dirLights[i].active = 1;
+				constMap->dirLights[i].lightv = dirLights[i].GetLightDir();
+				constMap->dirLights[i].lightcolor = dirLights[i].GetLightColor();
+			}
+			else {
+				constMap->dirLights[i].active = 0;
+			}
 		}
 
 		for (int i = 0; i < PointLightNum; i++)
@@ -68,16 +74,22 @@ Light* Light::Create()
 	return instance;
 }
 
-void Light::SetLightDir(const Vector3D& lightdir_)
+void Light::SetDirLightActive(int index, bool active)
 {
-	this->lightdir = lightdir_;
-	this->lightdir.normalize();
+	assert(0 <= index && index < PointLightNum);
+	dirLights[index].SetActive(active);
+}
+
+void Light::SetDirLightDir(int index, const Vector3D& lightdir_)
+{
+	dirLights[index].SetLightDir(lightdir_);
 	dirty = true;
 }
 
-void Light::SetLightColor(const Vector3D& lightcolor_)
+void Light::SetDirLightColor(int index, const Vector3D& lightcolor_)
 {
-	this->lightcolor = lightcolor_;
+	assert(0 <= index && index < PointLightNum);
+	dirLights[index].SetLightColor(lightcolor_);
 	dirty = true;
 }
 

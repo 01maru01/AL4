@@ -12,19 +12,19 @@ float4 main(VSOutput input) : SV_TARGET
 	float3 eyedir = normalize(cameraPos - input.worldpos.xyz);
 	const float shininess = 4.0f;
 	float4 shadercolor;
+	shadercolor.a = m_alpha;
 
 	for (int i = 0; i < DIRLIGHT_NUM; i++) {
-		float3 lightcolor = float3(1, 1, 1);
+		if (dirLights[i].active) {
+			float3 dolightnormal = dot(dirLights[i].lightv, input.normal);
+			float3 reflect = normalize(-dirLights[i].lightv + 2 * dolightnormal * input.normal);
 
-		float3 dolightnormal = dot(dirLights[i].lightv, input.normal);
-		float3 reflect = normalize(-dirLights[i].lightv + 2 * dolightnormal * input.normal);
+			float3 ambient = m_ambient;
+			float3 diffuse = dolightnormal * m_diffuse;
+			float3 specular = pow(saturate(dot(reflect, eyedir)), shininess) * m_specular;
 
-		float3 ambient = m_ambient;
-		float3 diffuse = dolightnormal * m_diffuse;
-		float3 specular = pow(saturate(dot(reflect, eyedir)), shininess) * m_specular;
-
-		shadercolor.rgb = (ambient + diffuse + specular) * dirLights[i].lightcolor;
-		shadercolor.a = m_alpha;
+			shadercolor.rgb += (ambient + diffuse + specular) * dirLights[i].lightcolor;
+		}
 	}
 
 	for (i = 0; i < POINTLIGHT_NUM; i++) {

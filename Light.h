@@ -10,27 +10,21 @@ class Light
 private:
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-	static const int DirLightNum = 1;
+	static const int DirLightNum = 3;
 	static const int PointLightNum = 3;
 
 	ComPtr<ID3D12Resource> constBuff;
-	PointLight pointLights[PointLightNum];
+
 	Vector3D ambientColor = { 1,1,1 };
-	Vector3D lightdir = { 1,0,0 };
-	Vector3D lightcolor = { 1,1,1 };
+	PointLight pointLights[PointLightNum];
+	DirLight dirLights[DirLightNum];
 	bool dirty = false;
 public:
-	struct DirLightData
-	{
-		Vector3D lightv;
-		float pad1;
-		Vector3D lightcolor;
-	};
 	struct ConstBufferLightData
 	{
 		Vector3D ambientColor;
 		float pad1;
-		DirLightData dirLights[DirLightNum];
+		DirLight::ConstBuffData dirLights[DirLightNum];
 		PointLight::ConstBuffData pointLights[PointLightNum];
 	};
 
@@ -38,11 +32,12 @@ public:
 
 	void Initialize();
 	void TransferConstBuffer();
-	void SetLightDir(const Vector3D& lightdir_);
-	void SetLightColor(const Vector3D& lightcolor_);
 	void Update();
 	void Draw();
 
+	void SetDirLightActive(int index, bool active);
+	void SetDirLightDir(int index, const Vector3D& lightdir_);
+	void SetDirLightColor(int index, const Vector3D& lightcolor_);
 	void SetPointLightActive(int index, bool active);
 	void SetPointLightPos(int index, const Vector3D& lightpos);
 	void SetPointLightColor(int index, const Vector3D& lightcolor_);

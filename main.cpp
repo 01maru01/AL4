@@ -29,11 +29,12 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 	Light* light = nullptr;
 	light = Light::Create();
-	//light->SetLightDir({ 0,0,1 });
-	//light->SetLightColor({ 1,1,1 });
+	light->SetDirLightActive(0, true);
+	light->SetDirLightDir(0, { 0,0,1 });
+	light->SetDirLightColor(0, { 1,1,1 });
 	Object3D::SetLight(light);
-	light->SetPointLightActive(0, true);
-	light->SetPointLightColor(0, { 1.0f,0.0f,0.0f });
+	//light->SetPointLightActive(0, true);
+	//light->SetPointLightColor(0, { 1.0f,0.0f,0.0f });
 
 	SceneManager* sceneMan = SceneManager::GetInstance();
 	sceneMan->Initialize();
