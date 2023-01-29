@@ -29,9 +29,12 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 	Light* light = nullptr;
 	light = Light::Create();
-	light->SetDirLightActive(0, false);
-	light->SetDirLightDir(0, { 0,0,1 });
-	light->SetDirLightColor(0, { 1,1,1 });
+	light->SetDirLightActive(0, true);
+	light->SetDirLightActive(1, true);
+	light->SetDirLightActive(2, true);
+	//light->SetDirLightDir(0, { 0,0,1 });
+	//light->SetDirLightColor(0, { 1,1,1 });
+	light->SetCircleShadowActive(0, true);
 	Object3D::SetLight(light);
 	light->SetSpotLightActive(0, true);
 	light->SetSpotLightPos(0, { 0.0f,5.0f,0.0f });

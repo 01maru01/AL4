@@ -5,6 +5,7 @@
 #include "PointLight.h"
 #include "DirLight.h"
 #include "SpotLight.h"
+#include "CircleShadow.h"
 
 class Light
 {
@@ -14,6 +15,7 @@ private:
 	static const int DirLightNum = 3;
 	static const int PointLightNum = 3;
 	static const int SpotLightNum = 3;
+	static const int CircleShadowNum = 1;
 
 	ComPtr<ID3D12Resource> constBuff;
 
@@ -21,6 +23,7 @@ private:
 	PointLight pointLights[PointLightNum];
 	DirLight dirLights[DirLightNum];
 	SpotLight spotLights[SpotLightNum];
+	CircleShadow circleShadows[CircleShadowNum];
 	bool dirty = false;
 public:
 	struct ConstBufferLightData
@@ -30,6 +33,7 @@ public:
 		DirLight::ConstBuffData dirLights[DirLightNum];
 		PointLight::ConstBuffData pointLights[PointLightNum];
 		SpotLight::ConstBuffData spotLights[SpotLightNum];
+		CircleShadow::ConstBuffData circleShadows[CircleShadowNum];
 	};
 
 	static Light* Create();
@@ -54,5 +58,12 @@ public:
 	void SetSpotLightColor(int index, const Vector3D& lightcolor_);
 	void SetSpotLightAtten(int index, const Vector3D& lightAtten);
 	void SetSpotLightFactorAngle(int index, const Vector2D& lightFactorAngle);
+
+	void SetCircleShadowActive(int index, bool active);
+	void SetCircleShadowCasterPos(int index, const Vector3D& casterPos_);
+	void SetCircleShadowDir(int index, const Vector3D& dir_);
+	void SetCircleShadowDistanceCasterLight(int index, float distanceCasterLight);
+	void SetCircleShadowAtten(int index, const Vector3D& atten);
+	void SetCircleShadowFactorAngle(int index, const Vector2D& factorAngle);
 };
 

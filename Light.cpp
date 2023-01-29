@@ -33,7 +33,6 @@ void Light::TransferConstBuffer()
 				constMap->pointLights[i].active = 0;
 			}
 		}
-		
 
 		for (int i = 0; i < SpotLightNum; i++)
 		{
@@ -47,6 +46,21 @@ void Light::TransferConstBuffer()
 			}
 			else {
 				constMap->spotLights[i].active = 0;
+			}
+		}
+
+		for (int i = 0; i < CircleShadowNum; i++)
+		{
+			if (circleShadows[i].IsActive()) {
+				constMap->circleShadows[i].active = 1;
+				constMap->circleShadows[i].dir = circleShadows[i].GetDir();
+				constMap->circleShadows[i].casterPos= circleShadows[i].GetCasterPos();
+				constMap->circleShadows[i].distanceCasterLight= circleShadows[i].GetDistanceCasterLight();
+				constMap->circleShadows[i].atten = circleShadows[i].GetAtten();
+				constMap->circleShadows[i].factorAngleCos= circleShadows[i].GetFactorAngleCos();
+			}
+			else {
+				constMap->circleShadows[i].active = 0;
 			}
 		}
 
@@ -188,5 +202,45 @@ void Light::SetSpotLightFactorAngle(int index, const Vector2D& lightFactorAngle)
 {
 	assert(0 <= index && index < SpotLightNum);
 	spotLights[index].SetLightFactorAngle(lightFactorAngle);
+	dirty = true;
+}
+
+void Light::SetCircleShadowActive(int index, bool active)
+{
+	assert(0 <= index && index < CircleShadowNum);
+	circleShadows[index].SetActive(active);
+}
+
+void Light::SetCircleShadowCasterPos(int index, const Vector3D& casterPos_)
+{
+	assert(0 <= index && index < CircleShadowNum);
+	circleShadows[index].SetCasterPos(casterPos_);
+	dirty = true;
+}
+
+void Light::SetCircleShadowDir(int index, const Vector3D& dir_)
+{
+	assert(0 <= index && index < CircleShadowNum);
+	circleShadows[index].SetDir(dir_);
+	dirty = true;
+}
+
+void Light::SetCircleShadowDistanceCasterLight(int index, float distanceCasterLight)
+{
+	assert(0 <= index && index < CircleShadowNum);
+	circleShadows[index].SetDistanceCasterLight(distanceCasterLight);
+	dirty = true;
+}
+
+void Light::SetCircleShadowAtten(int index, const Vector3D& atten)
+{
+	assert(0 <= index && index < CircleShadowNum);
+	circleShadows[index].SetAtten(atten);
+	dirty = true;
+}
+void Light::SetCircleShadowFactorAngle(int index, const Vector2D& factorAngle)
+{
+	assert(0 <= index && index < CircleShadowNum);
+	circleShadows[index].SetFactorAngle(factorAngle);
 	dirty = true;
 }

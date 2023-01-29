@@ -63,6 +63,25 @@ float4 main(VSOutput input) : SV_TARGET
 		}
 	}
 
+	for (i = 0; i < CIRCLESHADOW_NUM; i++) {
+		if (circleShadows[i].active) {
+			float3 casterv = circleShadows[i].casterPos - input.worldpos.xyz;
+			float d = dot(casterv, circleShadows[i].dir);
+
+			float atten = saturate(1.0f / (circleShadows[i].atten.x + circleShadows[i].atten.y * d + circleShadows[i].atten.z * d * d));
+			atten *= step(0, d);
+
+			float3 lightpos = circleShadows[i].casterPos + circleShadows[i].dir * circleShadows[i].distanceCasterLight;
+			float3 lightv = normalize(lightpos - input.worldpos.xyz);
+
+			float cos = dot(lightv, circleShadows[i].dir);
+			float angleatten = smoothstep(circleShadows[i].factorAngleCos.y, circleShadows[i].factorAngleCos.x, cos);
+			atten *= angleatten;
+
+			shadercolor.rgb -= atten;
+		}
+	}
+
 	float4 texcolor = float4(tex.Sample(smp,input.uv));
 	return shadercolor * texcolor;
 	//return float4(texcolor.rgb * shader_color, texcolor.a*m_alpha);
