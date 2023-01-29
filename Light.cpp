@@ -1,5 +1,16 @@
 #include "Light.h"
 
+Light* Light::GetInstance()
+{
+	static Light* instance = new Light;
+	return instance;
+}
+
+void Light::DeleteInstance()
+{
+	delete Light::GetInstance();
+}
+
 void Light::TransferConstBuffer()
 {
 	HRESULT result;
@@ -95,13 +106,6 @@ void Light::Initialize()
 	assert(SUCCEEDED(result));
 
 	TransferConstBuffer();
-}
-
-Light* Light::Create()
-{
-	Light* instance = new Light();
-	instance->Initialize();
-	return instance;
 }
 
 void Light::SetDirLightActive(int index, bool active)

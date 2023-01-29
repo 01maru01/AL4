@@ -35,8 +35,14 @@ public:
 		SpotLight::ConstBuffData spotLights[SpotLightNum];
 		CircleShadow::ConstBuffData circleShadows[CircleShadowNum];
 	};
-
-	static Light* Create();
+private:
+	Light() {};
+	~Light() {};
+public:
+	static Light* GetInstance();
+	static void DeleteInstance();
+	Light(const Light& obj) = delete;
+	Light& operator=(const Light& obj) = delete;
 
 	void Initialize();
 	void TransferConstBuffer();

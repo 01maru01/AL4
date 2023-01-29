@@ -27,8 +27,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	ParticleCommon* particleCommon = ParticleCommon::GetInstance();
 	particleCommon->Initialize();
 
-	Light* light = nullptr;
-	light = Light::Create();
+	Light* light = Light::GetInstance();
+	light->Initialize();
 	light->SetDirLightActive(0, true);
 	light->SetDirLightActive(1, true);
 	light->SetDirLightActive(2, true);
@@ -62,7 +62,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		sceneMan->Draw();
 #pragma endregion Draw
 	}
-	delete light;
+	Light::DeleteInstance();
 	SceneManager::DeleteInstance();
 	ParticleCommon::DeleteInstance();
 	SpriteCommon::DeleteInstance();
