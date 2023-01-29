@@ -20,5 +20,7 @@ public:
 	void Update();
 	void CollisionUpdate();
 	void OnCollision(const CollisionInfo& info) override;
+
+	const Vector3D& GetPosition() { return mat.trans; }
 };
 

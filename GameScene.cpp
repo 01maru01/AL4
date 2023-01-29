@@ -109,6 +109,11 @@ void GameScene::Update()
 	MatUpdate();
 
 	CollisionUpdate();
+
+	Light::GetInstance()->SetCircleShadowCasterPos(0, player->GetPosition());
+	Light::GetInstance()->SetCircleShadowDir(0, { 0.0f,-1.0f,0.0f });
+	Light::GetInstance()->SetCircleShadowFactorAngle(0, { 0.0f,0.5f });
+	Light::GetInstance()->SetCircleShadowAtten(0, { 0.5f,0.5f,0.0f });
 }
 
 void GameScene::Draw()
