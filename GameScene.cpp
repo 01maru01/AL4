@@ -117,7 +117,7 @@ void GameScene::Draw()
 	skydome->Draw();
 	sphere->Draw();
 	player->Draw();
-	square->Draw(reimuG);
+	//square->Draw(reimuG);
 
-	sprite->Draw();
+	//sprite->Draw();
 }

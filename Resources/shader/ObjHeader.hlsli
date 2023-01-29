@@ -1,5 +1,6 @@
 static const int POINTLIGHT_NUM = 3;
 static const int DIRLIGHT_NUM = 3;
+static const int SPOTLIGHT_NUM = 3;
 
 struct PointLight
 {
@@ -13,6 +14,16 @@ struct DirLight
 {
 	float3 lightv;
 	float3 lightcolor;
+	uint active;
+};
+
+struct SpotLight
+{
+	float3 lightv;
+	float3 lightpos;
+	float3 lightcolor;
+	float3 lightatten;
+	float2 lightfactoranglecos;
 	uint active;
 };
 
@@ -36,6 +47,7 @@ cbuffer ConstBufferLightData:register(b2)
 	float3 ambientColor;
 	DirLight dirLights[DIRLIGHT_NUM];
 	PointLight pointLights[POINTLIGHT_NUM];
+	SpotLight spotLights[SPOTLIGHT_NUM];
 };
 
 struct VSOutput

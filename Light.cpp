@@ -33,6 +33,22 @@ void Light::TransferConstBuffer()
 				constMap->pointLights[i].active = 0;
 			}
 		}
+		
+
+		for (int i = 0; i < SpotLightNum; i++)
+		{
+			if (spotLights[i].IsActive()) {
+				constMap->spotLights[i].active = 1;
+				constMap->spotLights[i].lightpos= spotLights[i].GetLightPos();
+				constMap->spotLights[i].lightcolor = spotLights[i].GetLightColor();
+				constMap->spotLights[i].lightatten = spotLights[i].GetLightAtten();
+				constMap->spotLights[i].lightv = spotLights[i].GetLightDir();
+				constMap->spotLights[i].lightfactoranglecos = spotLights[i].GetLightFactorAngleCos();
+			}
+			else {
+				constMap->spotLights[i].active = 0;
+			}
+		}
 
 		constBuff->Unmap(0, nullptr);
 	}
@@ -76,19 +92,20 @@ Light* Light::Create()
 
 void Light::SetDirLightActive(int index, bool active)
 {
-	assert(0 <= index && index < PointLightNum);
+	assert(0 <= index && index < DirLightNum);
 	dirLights[index].SetActive(active);
 }
 
 void Light::SetDirLightDir(int index, const Vector3D& lightdir_)
 {
+	assert(0 <= index && index < DirLightNum);
 	dirLights[index].SetLightDir(lightdir_);
 	dirty = true;
 }
 
 void Light::SetDirLightColor(int index, const Vector3D& lightcolor_)
 {
-	assert(0 <= index && index < PointLightNum);
+	assert(0 <= index && index < DirLightNum);
 	dirLights[index].SetLightColor(lightcolor_);
 	dirty = true;
 }
@@ -130,5 +147,46 @@ void  Light::SetPointLightAtten(int index, const Vector3D& lightAtten)
 {
 	assert(0 <= index && index < PointLightNum);
 	pointLights[index].SetLightAtten(lightAtten);
+	dirty = true;
+}
+
+void Light::SetSpotLightActive(int index, bool active)
+{
+	assert(0 <= index && index < SpotLightNum);
+	spotLights[index].SetActive(active);
+}
+
+void Light::SetSpotLightDir(int index, const Vector3D& lightdir_)
+{
+	assert(0 <= index && index < SpotLightNum);
+	spotLights[index].SetLightDir(lightdir_);
+	dirty = true;
+}
+
+void Light::SetSpotLightPos(int index, const Vector3D& lightpos)
+{
+	assert(0 <= index && index < SpotLightNum);
+	spotLights[index].SetLightPos(lightpos);
+	dirty = true;
+}
+
+void Light::SetSpotLightColor(int index, const Vector3D& lightcolor_)
+{
+	assert(0 <= index && index < SpotLightNum);
+	spotLights[index].SetLightColor(lightcolor_);
+	dirty = true;
+}
+
+void Light::SetSpotLightAtten(int index, const Vector3D& lightAtten)
+{
+	assert(0 <= index && index < SpotLightNum);
+	spotLights[index].SetLightAtten(lightAtten);
+	dirty = true;
+}
+
+void Light::SetSpotLightFactorAngle(int index, const Vector2D& lightFactorAngle)
+{
+	assert(0 <= index && index < SpotLightNum);
+	spotLights[index].SetLightFactorAngle(lightFactorAngle);
 	dirty = true;
 }

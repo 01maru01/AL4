@@ -4,6 +4,7 @@
 
 #include "PointLight.h"
 #include "DirLight.h"
+#include "SpotLight.h"
 
 class Light
 {
@@ -12,12 +13,14 @@ private:
 
 	static const int DirLightNum = 3;
 	static const int PointLightNum = 3;
+	static const int SpotLightNum = 3;
 
 	ComPtr<ID3D12Resource> constBuff;
 
 	Vector3D ambientColor = { 1,1,1 };
 	PointLight pointLights[PointLightNum];
 	DirLight dirLights[DirLightNum];
+	SpotLight spotLights[SpotLightNum];
 	bool dirty = false;
 public:
 	struct ConstBufferLightData
@@ -26,6 +29,7 @@ public:
 		float pad1;
 		DirLight::ConstBuffData dirLights[DirLightNum];
 		PointLight::ConstBuffData pointLights[PointLightNum];
+		SpotLight::ConstBuffData spotLights[SpotLightNum];
 	};
 
 	static Light* Create();
@@ -38,9 +42,17 @@ public:
 	void SetDirLightActive(int index, bool active);
 	void SetDirLightDir(int index, const Vector3D& lightdir_);
 	void SetDirLightColor(int index, const Vector3D& lightcolor_);
+
 	void SetPointLightActive(int index, bool active);
 	void SetPointLightPos(int index, const Vector3D& lightpos);
 	void SetPointLightColor(int index, const Vector3D& lightcolor_);
 	void SetPointLightAtten(int index, const Vector3D& lightAtten);
+
+	void SetSpotLightActive(int index, bool active);
+	void SetSpotLightDir(int index, const Vector3D& lightdir_);
+	void SetSpotLightPos(int index, const Vector3D& lightpos);
+	void SetSpotLightColor(int index, const Vector3D& lightcolor_);
+	void SetSpotLightAtten(int index, const Vector3D& lightAtten);
+	void SetSpotLightFactorAngle(int index, const Vector2D& lightFactorAngle);
 };
 
