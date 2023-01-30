@@ -30,10 +30,10 @@ private:
 	Object3D* parent = nullptr;
 	Model* model = nullptr;
 protected:
-	MyMath::ObjMatrix mat;
 
 	BaseCollider* collider = nullptr;
 public:
+	MyMath::ObjMatrix mat;
 	Object3D() = default;
 	virtual ~Object3D();
 

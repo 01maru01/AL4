@@ -110,7 +110,15 @@ void GameScene::Update()
 
 	player->Update();
 	ground->ColliderUpdate();
+
+	float left = (float)input->GetKey(DIK_RIGHT) - input->GetKey(DIK_LEFT);
+	float front = (float)input->GetKey(DIK_N) - input->GetKey(DIK_M);
+	float up = (float)input->GetKey(DIK_DOWN) - input->GetKey(DIK_UP);
+	if (left == 0 && front == 0 && up == 0) left = 1.0f;
+	Light::GetInstance()->SetDirLightDir(0, { left, up, front });
+	sphere->mat.rotAngle.y += 0.02f;
 	sphere->ColliderUpdate();
+	sphere2->mat.rotAngle.y += 0.02f;
 	sphere2->ColliderUpdate();
 
 	sprite->Update();
