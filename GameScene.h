@@ -30,6 +30,7 @@ private:
 	std::unique_ptr<Model> modelGround;
 	std::unique_ptr<Model> modelSword;
 	std::unique_ptr<Model> modelSphere;
+	std::unique_ptr<Model> modelSmoothSphere;
 	std::unique_ptr<Model> fbxModel;
 #pragma endregion
 
@@ -45,9 +46,20 @@ private:
 	std::unique_ptr<Object3D> skydome;
 	std::unique_ptr<TouchableObject> ground;
 	std::unique_ptr<Object3D> sphere;
+	std::unique_ptr<Object3D> sphere2;
 	std::unique_ptr<Player> player;
 
+	int mord = 0;
+
 public:
+	enum TaskMord
+	{
+		Phong,
+		PointLight,
+		SpotLight,
+		CircleShadow,
+	};
+	
 	GameScene();
 	~GameScene() override;
 	void Initialize() override;

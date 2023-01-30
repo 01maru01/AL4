@@ -19,6 +19,7 @@ void GameScene::MatUpdate()
 	skydome->MatUpdate();
 	player->MatUpdate();
 	sphere->MatUpdate();
+	sphere2->MatUpdate();
 
 	square->MatUpdate();
 }
@@ -52,6 +53,9 @@ void GameScene::Initialize()
 	sphere->SetCollider(new SphereCollider());
 	sphere->SetAttribute(COLLISION_ATTR_LANDSHAPE);
 	sphere->SetPosition(Vector3D(3.0f, 1.0f, 0.0f));
+	sphere2->SetCollider(new SphereCollider());
+	sphere2->SetAttribute(COLLISION_ATTR_LANDSHAPE);
+	sphere2->SetPosition(Vector3D(-3.0f, 1.0f, 0.0f));
 	
 	Player::SetCamera(camera);
 	player = std::make_unique<Player>();
@@ -59,6 +63,8 @@ void GameScene::Initialize()
 
 	Particle::SetCamera(camera);
 	square = new Particle();
+
+	mord = Phong;
 }
 
 void GameScene::Finalize()
@@ -72,6 +78,7 @@ void GameScene::LoadResources()
 	modelSkydome = std::make_unique<Model>("skydome");
 	modelGround = std::make_unique<Model>("ground");
 	modelSphere = std::make_unique<Model>("sphere");
+	modelSmoothSphere = std::make_unique<Model>("sphere", false, true);
 #pragma endregion
 
 #pragma region AssimpModel
@@ -80,6 +87,7 @@ void GameScene::LoadResources()
 	skydome.reset(Object3D::Create(modelSkydome.get()));
 	ground.reset(TouchableObject::Create(modelGround.get()));
 	sphere.reset(Object3D::Create(modelSphere.get()));
+	sphere2.reset(Object3D::Create(modelSmoothSphere.get()));
 #pragma region Texture
 	reimuG = dx->LoadTextureGraph(L"Resources/reimu.png");
 #pragma endregion
@@ -95,14 +103,15 @@ void GameScene::LoadResources()
 void GameScene::Update()
 {
 #pragma region XVˆ—
-	if (input->GetTrigger(DIK_1)) {
-		SceneManager::GetInstance()->SetNextScene("GAMESCENE");
-	}
+	//if (input->GetTrigger(DIK_1)) {
+	//	SceneManager::GetInstance()->SetNextScene("GAMESCENE");
+	//}
 	camera->Update();
 
 	player->Update();
 	ground->ColliderUpdate();
 	sphere->ColliderUpdate();
+	sphere2->ColliderUpdate();
 
 	sprite->Update();
 #pragma endregion
@@ -110,10 +119,53 @@ void GameScene::Update()
 
 	CollisionUpdate();
 
-	Light::GetInstance()->SetCircleShadowCasterPos(0, player->GetPosition());
-	Light::GetInstance()->SetCircleShadowDir(0, { 0.0f,-1.0f,0.0f });
+	if (input->GetTrigger(DIK_1)) {
+		mord = Phong;
+
+		Light::GetInstance()->SetCircleShadowActive(0, false);
+		Light::GetInstance()->SetSpotLightActive(0, false);
+		Light::GetInstance()->SetDirLightActive(0, true);
+		Light::GetInstance()->SetPointLightActive(0, false);
+		Light::GetInstance()->SetPointLightActive(1, false);
+		Light::GetInstance()->SetPointLightActive(2, false);
+	}
+	else if (input->GetTrigger(DIK_2)) {
+		mord = PointLight;
+
+		Light::GetInstance()->SetCircleShadowActive(0, false);
+		Light::GetInstance()->SetSpotLightActive(0, false);
+		Light::GetInstance()->SetDirLightActive(0, false);
+		Light::GetInstance()->SetPointLightActive(0, true);
+		Light::GetInstance()->SetPointLightActive(1, true);
+		Light::GetInstance()->SetPointLightActive(2, true);
+	}
+	else if (input->GetTrigger(DIK_3)) {
+		mord = SpotLight;
+
+		Light::GetInstance()->SetCircleShadowActive(0, false);
+		Light::GetInstance()->SetSpotLightActive(0, true);
+		Light::GetInstance()->SetDirLightActive(0, false);
+		Light::GetInstance()->SetPointLightActive(0, false);
+		Light::GetInstance()->SetPointLightActive(1, false);
+		Light::GetInstance()->SetPointLightActive(2, false);
+	}
+	else if (input->GetTrigger(DIK_4)) {
+		mord = CircleShadow;
+
+		Light::GetInstance()->SetSpotLightActive(0, false);
+		Light::GetInstance()->SetCircleShadowActive(0, true);
+		Light::GetInstance()->SetDirLightActive(0, true);
+		Light::GetInstance()->SetPointLightActive(0, false);
+		Light::GetInstance()->SetPointLightActive(1, false);
+		Light::GetInstance()->SetPointLightActive(2, false);
+	}
+
+	Vector3D playerGroundPos = player->GetPosition();
+	playerGroundPos.y += 0.1f;
+	Light::GetInstance()->SetCircleShadowCasterPos(0, playerGroundPos);
+	Light::GetInstance()->SetCircleShadowDir(0, { 0.0f,1.0f,0.0f });
 	Light::GetInstance()->SetCircleShadowFactorAngle(0, { 0.0f,0.5f });
-	Light::GetInstance()->SetCircleShadowAtten(0, { 0.5f,0.5f,0.0f });
+	Light::GetInstance()->SetCircleShadowAtten(0, { 0.2f,0.2f,0.0f });
 }
 
 void GameScene::Draw()
@@ -121,6 +173,7 @@ void GameScene::Draw()
 	ground->Draw();
 	skydome->Draw();
 	sphere->Draw();
+	sphere2->Draw();
 	player->Draw();
 	//square->Draw(reimuG);
 
