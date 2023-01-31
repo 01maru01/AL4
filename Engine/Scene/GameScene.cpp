@@ -7,6 +7,7 @@
 #include "MeshCollider.h"
 #include "SceneManager.h"
 #include "MyXAudio.h"
+#include "NormalCamera.h"
 
 void GameScene::CollisionUpdate()
 {
@@ -106,6 +107,28 @@ void GameScene::LoadResources()
 void GameScene::Update()
 {
 #pragma region XVˆ—
+
+	//	ƒJƒƒ‰Ø‚è‘Ö‚¦
+	if (input->GetTrigger(DIK_V)) {
+		isDebug = !isDebug;
+		if (isDebug) {
+			delete camera;
+			camera = new MyDebugCamera();
+			camera->Initialize(Vector3D(0.0f, 0.0f, -10.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
+			Player::SetCamera(camera);
+			Particle::SetCamera(camera);
+			Object3D::SetCamera(camera);
+		}
+		else {
+			delete camera;
+			camera = new NormalCamera();
+			camera->Initialize(Vector3D(0.0f, 0.0f, -10.0f), Vector3D(0.0f, 1.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
+			Player::SetCamera(camera);
+			Particle::SetCamera(camera);
+			Object3D::SetCamera(camera);
+		}
+	}
+
 	if (input->GetTrigger(DIK_B)) {
 		SceneManager::GetInstance()->SetNextScene("TITLESCENE");
 	}
