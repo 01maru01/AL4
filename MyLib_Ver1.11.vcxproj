@@ -24,6 +24,7 @@
     <ClCompile Include="DirectX.cpp" />
     <ClCompile Include="DirLight.cpp" />
     <ClCompile Include="Easing.cpp" />
+    <ClCompile Include="Framework.cpp" />
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="ICamera.cpp" />
@@ -41,6 +42,7 @@
     <ClCompile Include="InputJoypad.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Matrix.cpp" />
+    <ClCompile Include="MyGame.cpp" />
     <ClCompile Include="MyMath.cpp" />
     <ClCompile Include="MyXAudio.cpp" />
     <ClCompile Include="Object3D.cpp" />
@@ -84,6 +86,7 @@
     <ClInclude Include="DirectX.h" />
     <ClInclude Include="DirLight.h" />
     <ClInclude Include="Easing.h" />
+    <ClInclude Include="Framework.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="ICamera.h" />
@@ -100,6 +103,7 @@
     <ClInclude Include="Input.h" />
     <ClInclude Include="InputJoypad.h" />
     <ClInclude Include="Matrix.h" />
+    <ClInclude Include="MyGame.h" />
     <ClInclude Include="MyMath.h" />
     <ClInclude Include="MyXAudio.h" />
     <ClInclude Include="Object3D.h" />
