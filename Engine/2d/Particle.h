@@ -32,6 +32,9 @@ private:
 	Vector4D color = { 1.0f,1.0f,1.0f,1.0f };
 
 	float scale = 1.0f;
+
+	bool isBillboard = false;
+	bool isBillboardY = false;
 public:
 	static void SetCamera(ICamera* camera_);
 
@@ -46,6 +49,11 @@ public:
 	void SetPosition(const Vector3D& pos);
 	const Vector3D& GetPosition() { return vertex; }
 	void Move(const Vector3D& spd);
+
+	bool IsBillboard() { return isBillboard; }
+	void SetIsBillboard(bool flag) { isBillboard = flag; }
+	bool IsBillboardY() { return isBillboardY; }
+	void SetIsBillboardY(bool flag) { isBillboardY = flag; }
 private:
 	void SetVertices() override;
 };

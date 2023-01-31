@@ -70,7 +70,13 @@ Particle::Particle()
 
 void Particle::MatUpdate()
 {
-	constMapTransform->matBillboard = camera->GetBillboard();
+	constMapTransform->matBillboard = Matrix();
+	if (isBillboardY) {
+		constMapTransform->matBillboard = camera->GetBillboardY();
+	}
+	if (isBillboard) {
+		constMapTransform->matBillboard = camera->GetBillboard();
+	}
 	constMapTransform->scale = scale;
 	constMapTransform->mat = camera->GetViewProj();
 

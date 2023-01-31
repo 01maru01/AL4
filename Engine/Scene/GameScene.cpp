@@ -94,6 +94,7 @@ void GameScene::LoadResources()
 	sphere2.reset(Object3D::Create(modelSmoothSphere.get()));
 #pragma region Texture
 	reimuG = dx->LoadTextureGraph(L"Resources/reimu.png");
+	grassG = dx->LoadTextureGraph(L"Resources/grass.png");
 #pragma endregion
 
 #pragma region Sprite
@@ -132,6 +133,10 @@ void GameScene::Update()
 	if (input->GetTrigger(DIK_B)) {
 		SceneManager::GetInstance()->SetNextScene("TITLESCENE");
 	}
+
+	square->SetIsBillboard(input->GetKey(DIK_R));
+	square->SetIsBillboardY(input->GetKey(DIK_T));
+
 	camera->Update();
 
 	player->Update();
@@ -209,7 +214,7 @@ void GameScene::Draw()
 	sphere->Draw();
 	sphere2->Draw();
 	player->Draw();
-	square->Draw(reimuG);
+	square->Draw(grassG);
 
 	sprite->Draw();
 }

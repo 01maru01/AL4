@@ -31,7 +31,6 @@ private:
 	std::unique_ptr<Model> modelSword;
 	std::unique_ptr<Model> modelSphere;
 	std::unique_ptr<Model> modelSmoothSphere;
-	std::unique_ptr<Model> fbxModel;
 #pragma endregion
 
 #pragma region Sprite
@@ -42,6 +41,7 @@ private:
 	int bgmSound = -1;
 #pragma region Texture
 	int reimuG = -1;
+	int grassG = -1;
 #pragma endregion
 	std::unique_ptr<Object3D> skydome;
 	std::unique_ptr<TouchableObject> ground;
