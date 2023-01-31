@@ -306,6 +306,12 @@
     <ClCompile Include="Engine\base\Framework.cpp">
       <Filter>ソース ファイル\lib\Engine\Framework</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\3d\camera\NormalCamera.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Scene\TitleScene.cpp">
+      <Filter>ソース ファイル\lib\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\base\input\InputJoypad.h">
@@ -481,6 +487,12 @@
     </ClInclude>
     <ClInclude Include="Engine\base\Framework.h">
       <Filter>ヘッダー ファイル\lib\Engine\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\3d\camera\NormalCamera.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Scene\TitleScene.h">
+      <Filter>ヘッダー ファイル\lib\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

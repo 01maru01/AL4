@@ -68,6 +68,8 @@
     <ClCompile Include="Engine\base\Shader.cpp" />
     <ClCompile Include="Engine\base\ViewPort.cpp" />
     <ClCompile Include="Engine\base\Window.cpp" />
+    <ClCompile Include="Engine\3d\camera\NormalCamera.cpp" />
+    <ClCompile Include="Engine\Scene\TitleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Scene\AbstractSceneFactory.h" />
@@ -128,6 +130,8 @@
     <ClInclude Include="Engine\base\VertexStruct.h" />
     <ClInclude Include="Engine\base\ViewPort.h" />
     <ClInclude Include="Engine\base\Window.h" />
+    <ClInclude Include="Engine\3d\camera\NormalCamera.h" />
+    <ClInclude Include="Engine\Scene\TitleScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="External\DirectXTex\DirectXTex_Desktop_2022_Win10.vcxproj">
@@ -232,11 +236,15 @@
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(ProjectDir)lib\assimp\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)External\DirectXTex;$(SolutionDir)External\imgui</IncludePath>
     <LibraryPath>$(ProjectDir)lib\assimp\lib;$(LibraryPath);</LibraryPath>
+    <OutDir>$(SolutionDir)..\Generated\Outputs\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)..\Generated\Obj\$(ProjectName)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(ProjectDir)lib\assimp\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)External\DirectXTex;$(SolutionDir)External\imgui</IncludePath>
     <LibraryPath>$(ProjectDir)lib\assimp\lib;$(LibraryPath);</LibraryPath>
+    <OutDir>$(SolutionDir)..\Generated\Outputs\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)..\Generated\Obj\$(ProjectName)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>

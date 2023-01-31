@@ -28,6 +28,7 @@ private:
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	IXAudio2MasteringVoice* masterVoice;
 	std::vector<SoundData> soundData;
+	std::vector<IXAudio2SourceVoice*> soundPtr;
 	int handle;
 	void SoundUnload(SoundData* soundData_);
 
@@ -42,7 +43,13 @@ public:
 	MyXAudio& operator=(const MyXAudio& obj) = delete;
 
 	int SoundLoadWave(const char* filename);
-	void SoundPlayWave(IXAudio2* xAudio2_, const SoundData& soundData_);
-	void SoundPlayWave(int handle_);
+	//	volumeÇÕ0.0fÅ`1.0f
+	void SoundPlayWave(int handle_, float volume = 1.0f, bool stop = false);
+	//	volumeÇÕ0.0fÅ`1.0f
+	void SoundPlayLoopWave(int handle_, float volume = 1.0f);
+	//	volumeÇÕ0.0fÅ`1.0f
+	void SoundPlayLoopWave(std::vector<IXAudio2SourceVoice*>& ptr, int handle_, float volume = 1.0f);
+	void StopAllLoopSound();
+	void StopSound(std::vector<IXAudio2SourceVoice*>& ptr);
 };
 

@@ -4,6 +4,8 @@
 #include "CollisionManager.h"
 #include "CollisionAttribute.h"
 #include "QueryCallBack.h"
+#include "InputJoypad.h"
+#include "MyXAudio.h"
 
 ICamera* Player::camera = nullptr;
 const float Player::MAX_SPD = 0.1f;
@@ -21,12 +23,15 @@ void Player::PlayerInitialize(Model* model_)
 	float radius = 0.6f;
 	SetCollider(new SphereCollider(Vector3D(0, radius, 0), radius));
 	collider->SetAttribute(COLLISION_ATTR_ALLIES);
+
+	jumpSound = MyXAudio::GetInstance()->SoundLoadWave("jump.wav");
 }
 
 void Player::Update()
 {
-	int front = Input::GetInstance()->GetKey(DIK_W) - Input::GetInstance()->GetKey(DIK_S);
-	int side = Input::GetInstance()->GetKey(DIK_D) - Input::GetInstance()->GetKey(DIK_A);
+	InputJoypad* pad = InputJoypad::GetInstance();
+	int front = (Input::GetInstance()->GetKey(DIK_W) || pad->GetButton(XINPUT_GAMEPAD_DPAD_UP)) - (Input::GetInstance()->GetKey(DIK_S) || pad->GetButton(XINPUT_GAMEPAD_DPAD_DOWN));
+	int side = (Input::GetInstance()->GetKey(DIK_D) || pad->GetButton(XINPUT_GAMEPAD_DPAD_RIGHT)) - (Input::GetInstance()->GetKey(DIK_A) || pad->GetButton(XINPUT_GAMEPAD_DPAD_LEFT));
 
 	Vector3D moveVec;
 	moveVec.x = front * camera->GetFrontVec().x + side * camera->GetRightVec().x;
@@ -48,6 +53,7 @@ void Player::Update()
 		onGround = false;
 		const float jumpVYFist = 0.2f;
 		fallVec = { 0,jumpVYFist,0 };
+		MyXAudio::GetInstance()->SoundPlayWave(jumpSound, 0.1f);
 	}
 
 	moveVec *= spd;

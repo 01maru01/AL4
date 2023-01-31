@@ -14,6 +14,8 @@ MyXAudio::MyXAudio()
 
 MyXAudio::~MyXAudio()
 {
+	StopAllLoopSound();
+
 	xAudio2.Reset();
 	for (size_t i = 0; i < soundData.size(); i++)
 	{
@@ -35,7 +37,8 @@ void MyXAudio::DeleteInstance()
 int MyXAudio::SoundLoadWave(const char* filename)
 {
 	std::ifstream file;
-	file.open(filename, std::ios_base::binary);
+	const std::string filePath = "Resources/Sound/" + (std::string)filename;
+	file.open(filePath, std::ios_base::binary);
 	assert(file.is_open());
 
 	RiffHeader riff;
@@ -86,24 +89,7 @@ void MyXAudio::SoundUnload(SoundData* soundData_)
 	soundData_->wfex = {};
 }
 
-void MyXAudio::SoundPlayWave(IXAudio2* xAudio2_, const SoundData& soundData_)
-{
-	HRESULT result;
-
-	IXAudio2SourceVoice* pSourceVoice = nullptr;
-	result = xAudio2_->CreateSourceVoice(&pSourceVoice, &soundData_.wfex);
-	assert(SUCCEEDED(result));
-
-	XAUDIO2_BUFFER buf{};
-	buf.pAudioData = soundData_.pBuffer;
-	buf.AudioBytes = soundData_.bufferSize;
-	buf.Flags = XAUDIO2_END_OF_STREAM;
-
-	result = pSourceVoice->SubmitSourceBuffer(&buf);
-	result = pSourceVoice->Start();
-}
-
-void MyXAudio::SoundPlayWave(int handle_)
+void MyXAudio::SoundPlayWave(int handle_, float volume, bool stop)
 {
 	HRESULT result;
 
@@ -111,11 +97,78 @@ void MyXAudio::SoundPlayWave(int handle_)
 	result = xAudio2->CreateSourceVoice(&pSourceVoice, &soundData[handle_].wfex);
 	assert(SUCCEEDED(result));
 
+	pSourceVoice->SetVolume(volume);
+
+	if (stop) soundPtr.push_back(pSourceVoice);
+
 	XAUDIO2_BUFFER buf{};
 	buf.pAudioData = soundData[handle_].pBuffer;
 	buf.AudioBytes = soundData[handle_].bufferSize;
 	buf.Flags = XAUDIO2_END_OF_STREAM;
 
+
 	result = pSourceVoice->SubmitSourceBuffer(&buf);
 	result = pSourceVoice->Start();
+}
+
+void MyXAudio::SoundPlayLoopWave(int handle_, float volume)
+{
+	HRESULT result;
+
+	IXAudio2SourceVoice* pSourceVoice = nullptr;
+	result = xAudio2->CreateSourceVoice(&pSourceVoice, &soundData[handle_].wfex);
+	assert(SUCCEEDED(result));
+
+	pSourceVoice->SetVolume(volume);
+
+	soundPtr.push_back(pSourceVoice);
+
+	XAUDIO2_BUFFER buf{};
+	buf.pAudioData = soundData[handle_].pBuffer;
+	buf.AudioBytes = soundData[handle_].bufferSize;
+	buf.Flags = XAUDIO2_END_OF_STREAM;
+	buf.LoopCount = XAUDIO2_LOOP_INFINITE;
+
+	result = pSourceVoice->SubmitSourceBuffer(&buf);
+	result = pSourceVoice->Start();
+}
+
+void MyXAudio::SoundPlayLoopWave(std::vector<IXAudio2SourceVoice*>& ptr, int handle_, float volume)
+{
+	HRESULT result;
+
+	IXAudio2SourceVoice* pSourceVoice = nullptr;
+	result = xAudio2->CreateSourceVoice(&pSourceVoice, &soundData[handle_].wfex);
+	assert(SUCCEEDED(result));
+
+	pSourceVoice->SetVolume(volume);
+
+	ptr.push_back(pSourceVoice);
+
+	XAUDIO2_BUFFER buf{};
+	buf.pAudioData = soundData[handle_].pBuffer;
+	buf.AudioBytes = soundData[handle_].bufferSize;
+	buf.Flags = XAUDIO2_END_OF_STREAM;
+	buf.LoopCount = XAUDIO2_LOOP_INFINITE;
+
+	result = pSourceVoice->SubmitSourceBuffer(&buf);
+	result = pSourceVoice->Start();
+}
+
+void MyXAudio::StopAllLoopSound()
+{
+	for (int i = 0; i < soundPtr.size(); i++)
+	{
+		soundPtr[i]->Stop();
+	}
+	soundPtr.resize(0);
+}
+
+void MyXAudio::StopSound(std::vector<IXAudio2SourceVoice*>& ptr)
+{
+	for (int i = 0; i < ptr.size(); i++)
+	{
+		ptr[i]->Stop();
+	}
+	ptr.resize(0);
 }

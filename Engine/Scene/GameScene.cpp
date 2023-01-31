@@ -6,6 +6,7 @@
 #include "CollisionAttribute.h"
 #include "MeshCollider.h"
 #include "SceneManager.h"
+#include "MyXAudio.h"
 
 void GameScene::CollisionUpdate()
 {
@@ -65,10 +66,15 @@ void GameScene::Initialize()
 	square = new Particle();
 
 	mord = Phong;
+
+	bgmSound = MyXAudio::GetInstance()->SoundLoadWave("gameBGM.wav");
+
+	MyXAudio::GetInstance()->SoundPlayLoopWave(bgmSound, 0.05f);
 }
 
 void GameScene::Finalize()
 {
+	MyXAudio::GetInstance()->StopAllLoopSound();
 }
 
 void GameScene::LoadResources()
@@ -81,9 +87,6 @@ void GameScene::LoadResources()
 	modelSmoothSphere = std::make_unique<Model>("sphere", false, true);
 #pragma endregion
 
-#pragma region AssimpModel
-	fbxModel = std::make_unique<Model>("Alicia/FBX/Alicia_solid_Unity.FBX", true);
-#pragma endregion
 	skydome.reset(Object3D::Create(modelSkydome.get()));
 	ground.reset(TouchableObject::Create(modelGround.get()));
 	sphere.reset(Object3D::Create(modelSphere.get()));
@@ -96,16 +99,16 @@ void GameScene::LoadResources()
 	sprite = std::make_unique<Sprite>(reimuG);
 	sprite->SetSize(Vector2D(200.0f, 200.0f));
 	//sprite->SetTextureLeftTop(Vector2D(sprite->GetSize().x / 2.0f, sprite->GetSize().y / 2.0f));
-	sprite->SetTextureSize(Vector2D(sprite->GetSize().x / 2.0f, sprite->GetSize().y / 2.0f));
+	//sprite->SetTextureSize(Vector2D(sprite->GetSize().x / 2.0f, sprite->GetSize().y / 2.0f));
 #pragma endregion
 }
 
 void GameScene::Update()
 {
 #pragma region XVˆ—
-	//if (input->GetTrigger(DIK_1)) {
-	//	SceneManager::GetInstance()->SetNextScene("GAMESCENE");
-	//}
+	if (input->GetTrigger(DIK_B)) {
+		SceneManager::GetInstance()->SetNextScene("TITLESCENE");
+	}
 	camera->Update();
 
 	player->Update();
@@ -183,7 +186,7 @@ void GameScene::Draw()
 	sphere->Draw();
 	sphere2->Draw();
 	player->Draw();
-	//square->Draw(reimuG);
+	square->Draw(reimuG);
 
-	//sprite->Draw();
+	sprite->Draw();
 }

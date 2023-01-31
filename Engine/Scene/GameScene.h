@@ -38,7 +38,7 @@ private:
 
 	Particle* square = nullptr;
 #pragma endregion
-
+	int bgmSound = -1;
 #pragma region Texture
 	int reimuG = -1;
 #pragma endregion

@@ -25,9 +25,14 @@ void InputJoypad::DeleteInstance()
 
 void InputJoypad::Update()
 {
-	prevState = state;
+    prevState = state;
 
-    XInputGetState(0, &state);
+    if (ERROR_SUCCESS == XInputGetState(0, &state)) {
+        active = true;
+    }
+    else {
+        active = false;
+    }
 
     SetDeadZone(state.Gamepad.sThumbLX, XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE);
     SetDeadZone(state.Gamepad.sThumbLY, XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE);
@@ -37,15 +42,20 @@ void InputJoypad::Update()
 
 bool InputJoypad::GetButton(WORD button)
 {
-    return (state.Gamepad.wButtons & button);
+    return (state.Gamepad.wButtons & button) && active;
+}
+
+bool InputJoypad::GetTriggerButton(WORD button)
+{
+    return (state.Gamepad.wButtons & button) && !(prevState.Gamepad.wButtons & button) && active;
 }
 
 bool InputJoypad::GetLTrigger()
 {
-    return state.Gamepad.bLeftTrigger != 0;
+    return state.Gamepad.bLeftTrigger != 0 && active;
 }
 
 bool InputJoypad::GetRTrigger()
 {
-    return state.Gamepad.bRightTrigger != 0;
+    return state.Gamepad.bRightTrigger != 0 && active;
 }

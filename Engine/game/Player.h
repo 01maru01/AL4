@@ -14,6 +14,8 @@ private:
 	static ICamera* camera;
 	static const float MAX_SPD;
 	static const int INVINCIBLE_TIME;
+
+	int jumpSound = -1;
 public:
 	static void SetCamera(ICamera* camera_);
 	void PlayerInitialize(Model* model_);
