@@ -11,133 +11,129 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AbstractSceneFactory.cpp" />
-    <ClCompile Include="AssimpLoader.cpp" />
-    <ClCompile Include="AssimpModel.cpp" />
-    <ClCompile Include="CircleShadow.cpp" />
-    <ClCompile Include="Collision.cpp" />
-    <ClCompile Include="CollisionAttribute.cpp" />
-    <ClCompile Include="CollisionInfo.cpp" />
-    <ClCompile Include="CollisionManager.cpp" />
-    <ClCompile Include="CollisionPrimitive.cpp" />
-    <ClCompile Include="ConstBuff.cpp" />
-    <ClCompile Include="DirectX.cpp" />
-    <ClCompile Include="DirLight.cpp" />
-    <ClCompile Include="Easing.cpp" />
-    <ClCompile Include="Framework.cpp" />
-    <ClCompile Include="GameCamera.cpp" />
-    <ClCompile Include="GameScene.cpp" />
-    <ClCompile Include="ICamera.cpp" />
-    <ClCompile Include="BaseCollider.cpp" />
-    <ClCompile Include="ImGuiManager.cpp" />
-    <ClCompile Include="IScene.cpp" />
-    <ClCompile Include="Light.cpp" />
-    <ClCompile Include="Material.cpp" />
-    <ClCompile Include="Mesh.cpp" />
-    <ClCompile Include="MeshCollider.cpp" />
-    <ClCompile Include="Model.cpp" />
-    <ClCompile Include="MyDebugCamera.cpp" />
-    <ClCompile Include="GPipeline.cpp" />
-    <ClCompile Include="Input.cpp" />
-    <ClCompile Include="InputJoypad.cpp" />
+    <ClCompile Include="Engine\Scene\AbstractSceneFactory.cpp" />
+    <ClCompile Include="Engine\3d\Light\CircleShadow.cpp" />
+    <ClCompile Include="Engine\Collider\Collision.cpp" />
+    <ClCompile Include="Engine\Collider\CollisionAttribute.cpp" />
+    <ClCompile Include="Engine\Collider\CollisionInfo.cpp" />
+    <ClCompile Include="Engine\Collider\CollisionManager.cpp" />
+    <ClCompile Include="Engine\Collider\CollisionPrimitive.cpp" />
+    <ClCompile Include="Engine\base\ConstBuff.cpp" />
+    <ClCompile Include="Engine\base\DirectX.cpp" />
+    <ClCompile Include="Engine\3d\Light\DirLight.cpp" />
+    <ClCompile Include="Engine\math\Easing.cpp" />
+    <ClCompile Include="Engine\base\Framework.cpp" />
+    <ClCompile Include="Engine\3d\camera\GameCamera.cpp" />
+    <ClCompile Include="Engine\Scene\GameScene.cpp" />
+    <ClCompile Include="Engine\3d\camera\ICamera.cpp" />
+    <ClCompile Include="Engine\Collider\BaseCollider.cpp" />
+    <ClCompile Include="Engine\base\ImGuiManager.cpp" />
+    <ClCompile Include="Engine\Scene\IScene.cpp" />
+    <ClCompile Include="Engine\3d\Light\Light.cpp" />
+    <ClCompile Include="Engine\3d\obj\Material.cpp" />
+    <ClCompile Include="Engine\3d\obj\Mesh.cpp" />
+    <ClCompile Include="Engine\Collider\MeshCollider.cpp" />
+    <ClCompile Include="Engine\3d\obj\Model.cpp" />
+    <ClCompile Include="Engine\3d\camera\MyDebugCamera.cpp" />
+    <ClCompile Include="Engine\base\GPipeline.cpp" />
+    <ClCompile Include="Engine\base\input\Input.cpp" />
+    <ClCompile Include="Engine\base\input\InputJoypad.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Matrix.cpp" />
-    <ClCompile Include="MyGame.cpp" />
-    <ClCompile Include="MyMath.cpp" />
-    <ClCompile Include="MyXAudio.cpp" />
-    <ClCompile Include="Object3D.cpp" />
-    <ClCompile Include="ParticleCommon.cpp" />
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="PointLight.cpp" />
-    <ClCompile Include="Quaternion.cpp" />
-    <ClCompile Include="QueryCallBack.cpp" />
-    <ClCompile Include="RayCast.cpp" />
-    <ClCompile Include="SceneFactory.cpp" />
-    <ClCompile Include="SceneManager.cpp" />
-    <ClCompile Include="ScissorRect.cpp" />
-    <ClCompile Include="ScreenPolygon.cpp" />
-    <ClCompile Include="SphereCollider.cpp" />
-    <ClCompile Include="SpotLight.cpp" />
-    <ClCompile Include="Sprite.cpp" />
-    <ClCompile Include="SpriteCommon.cpp" />
-    <ClCompile Include="Particle.cpp" />
-    <ClCompile Include="TextureData.cpp" />
-    <ClCompile Include="TouchableObject.cpp" />
-    <ClCompile Include="Vector2D.cpp" />
-    <ClCompile Include="Vector3D.cpp" />
-    <ClCompile Include="Vector4D.cpp" />
-    <ClCompile Include="VertIdxBuff.cpp" />
-    <ClCompile Include="Shader.cpp" />
-    <ClCompile Include="ViewPort.cpp" />
-    <ClCompile Include="Window.cpp" />
+    <ClCompile Include="Engine\math\Matrix.cpp" />
+    <ClCompile Include="Engine\base\MyGame.cpp" />
+    <ClCompile Include="Engine\math\MyMath.cpp" />
+    <ClCompile Include="Engine\Audio\MyXAudio.cpp" />
+    <ClCompile Include="Engine\3d\obj\Object3D.cpp" />
+    <ClCompile Include="Engine\2d\ParticleCommon.cpp" />
+    <ClCompile Include="Engine\game\Player.cpp" />
+    <ClCompile Include="Engine\3d\Light\PointLight.cpp" />
+    <ClCompile Include="Engine\math\Quaternion.cpp" />
+    <ClCompile Include="Engine\Collider\QueryCallBack.cpp" />
+    <ClCompile Include="Engine\Collider\RayCast.cpp" />
+    <ClCompile Include="Engine\Scene\SceneFactory.cpp" />
+    <ClCompile Include="Engine\Scene\SceneManager.cpp" />
+    <ClCompile Include="Engine\base\ScissorRect.cpp" />
+    <ClCompile Include="Engine\2d\ScreenPolygon.cpp" />
+    <ClCompile Include="Engine\Collider\SphereCollider.cpp" />
+    <ClCompile Include="Engine\3d\Light\SpotLight.cpp" />
+    <ClCompile Include="Engine\2d\Sprite.cpp" />
+    <ClCompile Include="Engine\2d\SpriteCommon.cpp" />
+    <ClCompile Include="Engine\2d\Particle.cpp" />
+    <ClCompile Include="Engine\2d\TextureData.cpp" />
+    <ClCompile Include="Engine\3d\obj\TouchableObject.cpp" />
+    <ClCompile Include="Engine\math\Vector2D.cpp" />
+    <ClCompile Include="Engine\math\Vector3D.cpp" />
+    <ClCompile Include="Engine\math\Vector4D.cpp" />
+    <ClCompile Include="Engine\base\VertIdxBuff.cpp" />
+    <ClCompile Include="Engine\base\Shader.cpp" />
+    <ClCompile Include="Engine\base\ViewPort.cpp" />
+    <ClCompile Include="Engine\base\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AbstractSceneFactory.h" />
-    <ClInclude Include="AssimpLoader.h" />
-    <ClInclude Include="AssimpModel.h" />
-    <ClInclude Include="CircleShadow.h" />
-    <ClInclude Include="Collision.h" />
-    <ClInclude Include="CollisionAttribute.h" />
-    <ClInclude Include="CollisionInfo.h" />
-    <ClInclude Include="CollisionManager.h" />
-    <ClInclude Include="CollisionPrimitive.h" />
-    <ClInclude Include="CollisionType.h" />
-    <ClInclude Include="ConstBuff.h" />
-    <ClInclude Include="DirectX.h" />
-    <ClInclude Include="DirLight.h" />
-    <ClInclude Include="Easing.h" />
-    <ClInclude Include="Framework.h" />
-    <ClInclude Include="GameCamera.h" />
-    <ClInclude Include="GameScene.h" />
-    <ClInclude Include="ICamera.h" />
-    <ClInclude Include="BaseCollider.h" />
-    <ClInclude Include="ImGuiManager.h" />
-    <ClInclude Include="IScene.h" />
-    <ClInclude Include="Light.h" />
-    <ClInclude Include="Material.h" />
-    <ClInclude Include="Mesh.h" />
-    <ClInclude Include="MeshCollider.h" />
-    <ClInclude Include="Model.h" />
-    <ClInclude Include="MyDebugCamera.h" />
-    <ClInclude Include="GPipeline.h" />
-    <ClInclude Include="Input.h" />
-    <ClInclude Include="InputJoypad.h" />
-    <ClInclude Include="Matrix.h" />
-    <ClInclude Include="MyGame.h" />
-    <ClInclude Include="MyMath.h" />
-    <ClInclude Include="MyXAudio.h" />
-    <ClInclude Include="Object3D.h" />
-    <ClInclude Include="ParticleCommon.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="PointLight.h" />
-    <ClInclude Include="Quaternion.h" />
-    <ClInclude Include="QueryCallBack.h" />
-    <ClInclude Include="RayCast.h" />
-    <ClInclude Include="SceneFactory.h" />
-    <ClInclude Include="SceneManager.h" />
-    <ClInclude Include="ScissorRect.h" />
-    <ClInclude Include="ScreenPolygon.h" />
-    <ClInclude Include="SphereCollider.h" />
-    <ClInclude Include="SpotLight.h" />
-    <ClInclude Include="Sprite.h" />
-    <ClInclude Include="SpriteCommon.h" />
-    <ClInclude Include="Particle.h" />
-    <ClInclude Include="TextureData.h" />
-    <ClInclude Include="TouchableObject.h" />
-    <ClInclude Include="Vector2D.h" />
-    <ClInclude Include="Vector3D.h" />
-    <ClInclude Include="Vector4D.h" />
-    <ClInclude Include="VertIdxBuff.h" />
-    <ClInclude Include="Shader.h" />
-    <ClInclude Include="VertexStruct.h" />
-    <ClInclude Include="ViewPort.h" />
-    <ClInclude Include="Window.h" />
+    <ClInclude Include="Engine\Scene\AbstractSceneFactory.h" />
+    <ClInclude Include="Engine\3d\Light\CircleShadow.h" />
+    <ClInclude Include="Engine\Collider\Collision.h" />
+    <ClInclude Include="Engine\Collider\CollisionAttribute.h" />
+    <ClInclude Include="Engine\Collider\CollisionInfo.h" />
+    <ClInclude Include="Engine\Collider\CollisionManager.h" />
+    <ClInclude Include="Engine\Collider\CollisionPrimitive.h" />
+    <ClInclude Include="Engine\Collider\CollisionType.h" />
+    <ClInclude Include="Engine\base\ConstBuff.h" />
+    <ClInclude Include="Engine\base\DirectX.h" />
+    <ClInclude Include="Engine\3d\Light\DirLight.h" />
+    <ClInclude Include="Engine\math\Easing.h" />
+    <ClInclude Include="Engine\base\Framework.h" />
+    <ClInclude Include="Engine\3d\camera\GameCamera.h" />
+    <ClInclude Include="Engine\Scene\GameScene.h" />
+    <ClInclude Include="Engine\3d\camera\ICamera.h" />
+    <ClInclude Include="Engine\Collider\BaseCollider.h" />
+    <ClInclude Include="Engine\base\ImGuiManager.h" />
+    <ClInclude Include="Engine\Collider\IScene.h" />
+    <ClInclude Include="Engine\3d\Light\Light.h" />
+    <ClInclude Include="Engine\3d\obj\Material.h" />
+    <ClInclude Include="Engine\3d\obj\Mesh.h" />
+    <ClInclude Include="Engine\Collider\MeshCollider.h" />
+    <ClInclude Include="Engine\3d\obj\Model.h" />
+    <ClInclude Include="Engine\3d\camera\MyDebugCamera.h" />
+    <ClInclude Include="Engine\base\GPipeline.h" />
+    <ClInclude Include="Engine\base\input\Input.h" />
+    <ClInclude Include="Engine\base\input\InputJoypad.h" />
+    <ClInclude Include="Engine\math\Matrix.h" />
+    <ClInclude Include="Engine\base\MyGame.h" />
+    <ClInclude Include="Engine\math\MyMath.h" />
+    <ClInclude Include="Engine\Audio\MyXAudio.h" />
+    <ClInclude Include="Engine\3d\obj\Object3D.h" />
+    <ClInclude Include="Engine\2d\ParticleCommon.h" />
+    <ClInclude Include="Engine\game\Player.h" />
+    <ClInclude Include="Engine\3d\Light\PointLight.h" />
+    <ClInclude Include="Engine\math\Quaternion.h" />
+    <ClInclude Include="Engine\Collider\QueryCallBack.h" />
+    <ClInclude Include="Engine\Collider\RayCast.h" />
+    <ClInclude Include="Engine\Scene\SceneFactory.h" />
+    <ClInclude Include="Engine\Scene\SceneManager.h" />
+    <ClInclude Include="Engine\base\ScissorRect.h" />
+    <ClInclude Include="Engine\2d\ScreenPolygon.h" />
+    <ClInclude Include="Engine\Collider\SphereCollider.h" />
+    <ClInclude Include="Engine\3d\Light\SpotLight.h" />
+    <ClInclude Include="Engine\2d\Sprite.h" />
+    <ClInclude Include="Engine\2d\SpriteCommon.h" />
+    <ClInclude Include="Engine\2d\Particle.h" />
+    <ClInclude Include="Engine\2d\TextureData.h" />
+    <ClInclude Include="Engine\3d\obj\TouchableObject.h" />
+    <ClInclude Include="Engine\math\Vector2D.h" />
+    <ClInclude Include="Engine\math\Vector3D.h" />
+    <ClInclude Include="Engine\math\Vector4D.h" />
+    <ClInclude Include="Engine\base\VertIdxBuff.h" />
+    <ClInclude Include="Engine\base\Shader.h" />
+    <ClInclude Include="Engine\base\VertexStruct.h" />
+    <ClInclude Include="Engine\base\ViewPort.h" />
+    <ClInclude Include="Engine\base\Window.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="DirectXTex\DirectXTex_Desktop_2022_Win10.vcxproj">
+    <ProjectReference Include="External\DirectXTex\DirectXTex_Desktop_2022_Win10.vcxproj">
       <Project>{371b9fa9-4c90-4ac6-a123-aced756d6c77}</Project>
     </ProjectReference>
-    <ProjectReference Include="imgui\imgui.vcxproj">
+    <ProjectReference Include="External\imgui\imgui.vcxproj">
       <Project>{3d08be00-9aeb-4280-a66e-0def6fcbd824}</Project>
     </ProjectReference>
   </ItemGroup>
@@ -234,12 +230,12 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(ProjectDir)lib\assimp\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)DirectXTex;$(SolutionDir)imgui</IncludePath>
+    <IncludePath>$(ProjectDir)lib\assimp\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)External\DirectXTex;$(SolutionDir)External\imgui</IncludePath>
     <LibraryPath>$(ProjectDir)lib\assimp\lib;$(LibraryPath);</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(ProjectDir)lib\assimp\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)DirectXTex;$(SolutionDir)imgui</IncludePath>
+    <IncludePath>$(ProjectDir)lib\assimp\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)External\DirectXTex;$(SolutionDir)External\imgui</IncludePath>
     <LibraryPath>$(ProjectDir)lib\assimp\lib;$(LibraryPath);</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -250,6 +246,7 @@
       <ConformanceMode>false</ConformanceMode>
       <LanguageStandard>Default</LanguageStandard>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <AdditionalIncludeDirectories>$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d\camera;$(ProjectDir)Engine\3d\Light;$(ProjectDir)Engine\3d\obj;$(ProjectDir)Engine\Audio;$(ProjectDir)Engine\base;$(ProjectDir)Engine\base\input;$(ProjectDir)Engine\Collider;$(ProjectDir)Engine\game;$(ProjectDir)Engine\math;$(ProjectDir)Engine\Scene;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -269,6 +266,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>Default</LanguageStandard>
       <Optimization>MaxSpeed</Optimization>
+      <AdditionalIncludeDirectories>$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d\camera;$(ProjectDir)Engine\3d\Light;$(ProjectDir)Engine\3d\obj;$(ProjectDir)Engine\Audio;$(ProjectDir)Engine\base;$(ProjectDir)Engine\base\input;$(ProjectDir)Engine\Collider;$(ProjectDir)Engine\game;$(ProjectDir)Engine\math;$(ProjectDir)Engine\Scene;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

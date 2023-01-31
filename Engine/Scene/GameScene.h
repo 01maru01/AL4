@@ -4,7 +4,6 @@
 #include "Input.h"
 #include "Shader.h"
 #include "Model.h"
-#include "AssimpModel.h"
 #include "Sprite.h"
 #include "Object3D.h"
 #include "Particle.h"
