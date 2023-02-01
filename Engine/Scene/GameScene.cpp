@@ -13,16 +13,15 @@
 
 void GameScene::CollisionUpdate()
 {
-	PlaneCollider* planeCollider = dynamic_cast<PlaneCollider*>(ground->GetCollider());
 	SphereCollider* sphereCollider = dynamic_cast<SphereCollider*>(sphere->GetCollider());
-	if (Collision::CheckSphere2Plane(*sphereCollider, *planeCollider)) {
+	if (collisionMan->CheckCollision(*sphereCollider, COLLISION_ATTR_PLANE)) {
 		sphere->SetColor({ 1.0f,0.2f,0.2f });
 	}
 	else {
 		sphere->SetColor({ 1.0f,1.0f,1.0f });
 	}
 	SphereCollider* sphere2Collider = dynamic_cast<SphereCollider*>(sphere2->GetCollider());
-	if (Collision::CheckSphere2Plane(*sphere2Collider, *planeCollider)) {
+	if (collisionMan->CheckCollision(*sphere2Collider, COLLISION_ATTR_PLANE)) {
 		sphere2->SetColor({ 1.0f,0.2f,0.2f });
 	}
 	else {
@@ -71,7 +70,7 @@ void GameScene::Initialize()
 	LoadResources();
 
 	ground->SetCollider(new PlaneCollider());
-	ground->SetAttribute(COLLISION_ATTR_LANDSHAPE);
+	ground->SetAttribute(COLLISION_ATTR_PLANE);
 
 	sphere->SetCollider(new SphereCollider());
 	sphere->SetAttribute(COLLISION_ATTR_LANDSHAPE);
