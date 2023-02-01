@@ -54,6 +54,26 @@ void CollisionManager::CheckAllCollisions()
                     colB->OnCollision(CollisionInfo(colA->GetObject3D(), colA, inter));
                 }
             }
+            else if (colA->GetShapeType() == COLLISIONSHAPE_SPHERE &&
+                colB->GetShapeType() == COLLISIONSHAPE_PLANE) {
+                Plane* plane = dynamic_cast<Plane*>(colB);
+                Sphere* sphere = dynamic_cast<Sphere*>(colA);
+                Vector3D inter;
+                if (Collision::CheckSphere2Plane(*sphere, *plane, &inter)) {
+                    colA->OnCollision(CollisionInfo(colB->GetObject3D(), colB, inter));
+                    colB->OnCollision(CollisionInfo(colA->GetObject3D(), colA, inter));
+                }
+            }
+            else if (colB->GetShapeType() == COLLISIONSHAPE_SPHERE &&
+                colA->GetShapeType() == COLLISIONSHAPE_PLANE) {
+                Plane* plane = dynamic_cast<Plane*>(colA);
+                Sphere* sphere = dynamic_cast<Sphere*>(colB);
+                Vector3D inter;
+                if (Collision::CheckSphere2Plane(*sphere, *plane, &inter)) {
+                    colA->OnCollision(CollisionInfo(colB->GetObject3D(), colB, inter));
+                    colB->OnCollision(CollisionInfo(colA->GetObject3D(), colA, inter));
+                }
+            }
         }
     }
 }
@@ -159,5 +179,56 @@ void CollisionManager::QuerySphere(const Sphere& sphere, QueryCallBack* callback
 
             if (!callback->OnQueryHit(info)) return;
         }
+        else if (col->GetShapeType() == COLLISIONSHAPE_PLANE) {
+            Plane* planeB = dynamic_cast<Plane*>(col);
+
+            Vector3D tempInter;
+            if (!Collision::CheckSphere2Plane(sphere, *planeB, &tempInter)) continue;
+
+            QueryHit info;
+            info.collider = col;
+            info.object = col->GetObject3D();
+            info.inter = tempInter;
+
+            if (!callback->OnQueryHit(info)) return;
+        }
     }
+}
+
+bool CollisionManager::CheckCollision(const Sphere& sphere, unsigned short attribute)
+{
+    std::forward_list<BaseCollider*>::iterator it;
+
+    it = colliders.begin();
+    for (; it != colliders.end(); ++it) {
+        BaseCollider* col = *it;
+
+        if (!(col->attribute & attribute)) continue;
+
+        // ‹…
+        if (col->GetShapeType() == COLLISIONSHAPE_SPHERE) {
+            Sphere* sphereB = dynamic_cast<Sphere*>(col);
+
+            if (!Collision::CheckSphere2Sphere(sphere, *sphereB)) continue;
+
+            return false;
+        }
+        // ƒƒbƒVƒ…
+        else if (col->GetShapeType() == COLLISIONSHAPE_MESH) {
+            MeshCollider* meshCollider = dynamic_cast<MeshCollider*>(col);
+
+            if (!meshCollider->CheckCollisionSphere(sphere)) continue;
+
+            return true;
+        }
+        else if (col->GetShapeType() == COLLISIONSHAPE_PLANE) {
+            Plane* planeB = dynamic_cast<Plane*>(col);
+
+            if (!Collision::CheckSphere2Plane(sphere, *planeB)) continue;
+
+            return true;
+        }
+    }
+
+    return false;
 }

@@ -44,13 +44,13 @@ private:
 	int grassG = -1;
 #pragma endregion
 	std::unique_ptr<Object3D> skydome;
-	std::unique_ptr<TouchableObject> ground;
+	std::unique_ptr<Object3D> ground;
 	std::unique_ptr<Object3D> sphere;
 	std::unique_ptr<Object3D> sphere2;
 	std::unique_ptr<Player> player;
 
 	int mord = 0;
-
+	int timer = 0;
 public:
 	enum TaskMord
 	{

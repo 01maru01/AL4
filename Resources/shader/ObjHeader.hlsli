@@ -51,6 +51,7 @@ cbuffer ConstBufferDataTransform:register(b1)
 	matrix matview;
 	matrix matworld;
 	float3 cameraPos;
+	float3 modelcolor;
 };
 
 cbuffer ConstBufferLightData:register(b2)

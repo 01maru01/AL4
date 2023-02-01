@@ -83,6 +83,6 @@ float4 main(VSOutput input) : SV_TARGET
 	}
 
 	float4 texcolor = float4(tex.Sample(smp,input.uv));
-	return shadercolor * texcolor;
+	return shadercolor * texcolor * float4(modelcolor, 1.0f);
 	//return float4(texcolor.rgb * shader_color, texcolor.a*m_alpha);
 }

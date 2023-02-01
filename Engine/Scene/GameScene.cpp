@@ -8,9 +8,27 @@
 #include "SceneManager.h"
 #include "MyXAudio.h"
 #include "NormalCamera.h"
+#include "PlaneCollider.h"
+#include "Collision.h"
 
 void GameScene::CollisionUpdate()
 {
+	PlaneCollider* planeCollider = dynamic_cast<PlaneCollider*>(ground->GetCollider());
+	SphereCollider* sphereCollider = dynamic_cast<SphereCollider*>(sphere->GetCollider());
+	if (Collision::CheckSphere2Plane(*sphereCollider, *planeCollider)) {
+		sphere->SetColor({ 1.0f,0.2f,0.2f });
+	}
+	else {
+		sphere->SetColor({ 1.0f,1.0f,1.0f });
+	}
+	SphereCollider* sphere2Collider = dynamic_cast<SphereCollider*>(sphere2->GetCollider());
+	if (Collision::CheckSphere2Plane(*sphere2Collider, *planeCollider)) {
+		sphere2->SetColor({ 1.0f,0.2f,0.2f });
+	}
+	else {
+		sphere2->SetColor({ 1.0f,1.0f,1.0f });
+	}
+	
 	player->CollisionUpdate();
 	collisionMan->CheckAllCollisions();
 }
@@ -51,6 +69,9 @@ void GameScene::Initialize()
 	Object3D::SetPipeline(modelpipeline.get());
 	Object3D::SetCamera(camera);
 	LoadResources();
+
+	ground->SetCollider(new PlaneCollider());
+	ground->SetAttribute(COLLISION_ATTR_LANDSHAPE);
 
 	sphere->SetCollider(new SphereCollider());
 	sphere->SetAttribute(COLLISION_ATTR_LANDSHAPE);
@@ -108,6 +129,8 @@ void GameScene::LoadResources()
 void GameScene::Update()
 {
 #pragma region XVˆ—
+	timer++;
+	if (timer > 120) timer = 0;
 
 	//	ƒJƒƒ‰Ø‚è‘Ö‚¦
 	if (input->GetTrigger(DIK_V)) {
@@ -129,13 +152,16 @@ void GameScene::Update()
 			Object3D::SetCamera(camera);
 		}
 	}
+	float movelen = 3.0f;
+	Vector3D spherePos = sphere->GetPosition();
+	spherePos.y = -movelen + timer / 60.0f * movelen;
+	sphere->SetPosition(spherePos);
+	
+	spherePos = sphere2->GetPosition();
+	spherePos.y = movelen - timer / 60.0f * movelen;
+	sphere2->SetPosition(spherePos);
 
-	if (input->GetTrigger(DIK_B)) {
-		SceneManager::GetInstance()->SetNextScene("TITLESCENE");
-	}
-
-	square->SetIsBillboard(input->GetKey(DIK_R));
-	square->SetIsBillboardY(input->GetKey(DIK_T));
+	square->SetIsBillboardY(true);
 
 	camera->Update();
 
@@ -157,54 +183,6 @@ void GameScene::Update()
 	MatUpdate();
 
 	CollisionUpdate();
-
-	if (input->GetTrigger(DIK_1)) {
-		mord = Phong;
-
-		Light::GetInstance()->SetCircleShadowActive(0, false);
-		Light::GetInstance()->SetSpotLightActive(0, false);
-		Light::GetInstance()->SetDirLightActive(0, true);
-		Light::GetInstance()->SetPointLightActive(0, false);
-		Light::GetInstance()->SetPointLightActive(1, false);
-		Light::GetInstance()->SetPointLightActive(2, false);
-	}
-	else if (input->GetTrigger(DIK_2)) {
-		mord = PointLight;
-
-		Light::GetInstance()->SetCircleShadowActive(0, false);
-		Light::GetInstance()->SetSpotLightActive(0, false);
-		Light::GetInstance()->SetDirLightActive(0, false);
-		Light::GetInstance()->SetPointLightActive(0, true);
-		Light::GetInstance()->SetPointLightActive(1, true);
-		Light::GetInstance()->SetPointLightActive(2, true);
-	}
-	else if (input->GetTrigger(DIK_3)) {
-		mord = SpotLight;
-
-		Light::GetInstance()->SetCircleShadowActive(0, false);
-		Light::GetInstance()->SetSpotLightActive(0, true);
-		Light::GetInstance()->SetDirLightActive(0, false);
-		Light::GetInstance()->SetPointLightActive(0, false);
-		Light::GetInstance()->SetPointLightActive(1, false);
-		Light::GetInstance()->SetPointLightActive(2, false);
-	}
-	else if (input->GetTrigger(DIK_4)) {
-		mord = CircleShadow;
-
-		Light::GetInstance()->SetSpotLightActive(0, false);
-		Light::GetInstance()->SetCircleShadowActive(0, true);
-		Light::GetInstance()->SetDirLightActive(0, true);
-		Light::GetInstance()->SetPointLightActive(0, false);
-		Light::GetInstance()->SetPointLightActive(1, false);
-		Light::GetInstance()->SetPointLightActive(2, false);
-	}
-
-	Vector3D playerGroundPos = player->GetPosition();
-	playerGroundPos.y += 0.1f;
-	Light::GetInstance()->SetCircleShadowCasterPos(0, playerGroundPos);
-	Light::GetInstance()->SetCircleShadowDir(0, { 0.0f,1.0f,0.0f });
-	Light::GetInstance()->SetCircleShadowFactorAngle(0, { 0.0f,0.5f });
-	Light::GetInstance()->SetCircleShadowAtten(0, { 0.2f,0.2f,0.0f });
 }
 
 void GameScene::Draw()
