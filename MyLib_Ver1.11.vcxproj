@@ -71,6 +71,7 @@
     <ClCompile Include="Engine\3d\camera\NormalCamera.cpp" />
     <ClCompile Include="Engine\Scene\TitleScene.cpp" />
     <ClCompile Include="Engine\Collider\PlaneCollider.cpp" />
+    <ClCompile Include="Engine\Collider\TriangleCollider.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Scene\AbstractSceneFactory.h" />
@@ -134,6 +135,7 @@
     <ClInclude Include="Engine\3d\camera\NormalCamera.h" />
     <ClInclude Include="Engine\Scene\TitleScene.h" />
     <ClInclude Include="Engine\Collider\PlaneCollider.h" />
+    <ClInclude Include="Engine\Collider\TriangleCollider.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="External\DirectXTex\DirectXTex_Desktop_2022_Win10.vcxproj">

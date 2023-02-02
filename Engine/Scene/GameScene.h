@@ -30,7 +30,9 @@ private:
 	std::unique_ptr<Model> modelGround;
 	std::unique_ptr<Model> modelSword;
 	std::unique_ptr<Model> modelSphere;
+	std::unique_ptr<Model> modelTriangle;
 	std::unique_ptr<Model> modelSmoothSphere;
+	std::unique_ptr<Model> modelBox;
 #pragma endregion
 
 #pragma region Sprite
@@ -45,19 +47,25 @@ private:
 #pragma endregion
 	std::unique_ptr<Object3D> skydome;
 	std::unique_ptr<Object3D> ground;
+	std::unique_ptr<TouchableObject> ground2;
 	std::unique_ptr<Object3D> sphere;
 	std::unique_ptr<Object3D> sphere2;
+	std::unique_ptr<Object3D> triangle;
+	std::unique_ptr<Object3D> box;
 	std::unique_ptr<Player> player;
 
 	int mord = 0;
 	int timer = 0;
+	Vector3D layStart;
 public:
 	enum TaskMord
 	{
-		Phong,
-		PointLight,
-		SpotLight,
-		CircleShadow,
+		CircleCollisionPlane,
+		CircleCollisionTriangle,
+		RayCollisionPlane,
+		RayCollisionTriangle,
+		RayCollisionSphere,
+		PlayerOnGround,
 	};
 	
 	GameScene();

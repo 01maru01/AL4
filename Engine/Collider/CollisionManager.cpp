@@ -228,6 +228,13 @@ bool CollisionManager::CheckCollision(const Sphere& sphere, unsigned short attri
 
             return true;
         }
+        else if (col->GetShapeType() == COLLISIONSHAPE_TRIANGLE) {
+            Triangle* triangle = dynamic_cast<Triangle*>(col);
+
+            if (!Collision::CheckSphere2Triangle(sphere, *triangle)) continue;
+
+            return true;
+        }
     }
 
     return false;
