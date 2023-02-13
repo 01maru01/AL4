@@ -1,7 +1,7 @@
 #include "MyMath.h"
 #include <cassert>
 
-Matrix MyMath::LookAtLH(const Vector3D& eye, const Vector3D& target, const Vector3D& up)
+const Matrix MyMath::LookAtLH(const Vector3D& eye, const Vector3D& target, const Vector3D& up)
 {
 	Vector3D baseX = up;
 	Vector3D baseY;
@@ -74,7 +74,7 @@ bool MyMath::CollisionCircleLay(Vector3D startL, Vector3D endL, Vector3D pos, fl
 	return false;
 }
 
-Matrix MyMath::PerspectiveFovLH(const int winwidth, const int winheight, float fovY, float nearZ, float farZ)
+const Matrix MyMath::PerspectiveFovLH(const int winwidth, const int winheight, float fovY, float nearZ, float farZ)
 {
 	assert(nearZ > 0.f && farZ > 0.f);
 	//assert(!XMScalarNearEqual(FovAngleY, 0.0f, 0.00001f * 2.0f));
@@ -132,16 +132,6 @@ void MyMath::MatView::Init(Vector3D _eye, Vector3D _target, Vector3D _up)
 void MyMath::MatView::MatUpdate()
 {
 	mat = LookAtLH(eye, target, up);
-}
-
-MyMath::float4::float4() :
-	x(0.0f), y(0.0f), z(0.0f), w(0.0f)
-{
-}
-
-MyMath::float4::float4(float x, float y, float z, float w) :
-	x(x), y(y), z(z), w(w)
-{
 }
 
 void MyMath::ObjMatrix::SetMatScaling()
