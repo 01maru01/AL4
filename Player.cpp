@@ -54,7 +54,7 @@ void Player::Update()
 	mat.trans += moveVec;
 	camera->SetTarget({ mat.trans.x,mat.trans.y + 1.0f,mat.trans.z });
 	camera->EyeMove(moveVec);
-	camera->MatUpdate();
+	camera->SetMatView();
 
 	if (Input::GetInstance()->GetKey(DIK_W) || Input::GetInstance()->GetKey(DIK_S) ||
 		Input::GetInstance()->GetKey(DIK_A) || Input::GetInstance()->GetKey(DIK_D)) {

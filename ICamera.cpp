@@ -42,7 +42,7 @@ void ICamera::CalcCameraDirVec()
 	downVec.normalize();
 }
 
-void ICamera::MatUpdate()
+void ICamera::SetMatView()
 {
 	matView = MyMath::LookAtLH(eye, target, up);
 }

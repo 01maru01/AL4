@@ -15,7 +15,7 @@ void MyDebugCamera::Initialize(Vector3D eye_, Vector3D target_, Vector3D up_)
 	target = target_;
 	up = up_;
 
-	MatUpdate();
+	SetMatView();
 
 	frontVec = target - eye;
 	disEyeTarget = frontVec.length();
@@ -61,5 +61,5 @@ void MyDebugCamera::Update()
 	eye.x = target.x - disEyeTarget * cosf(angle.y) * sinf(angle.x);
 	eye.y = target.y + disEyeTarget * sinf(angle.y);
 	eye.z = target.z - disEyeTarget * cosf(angle.y) * cosf(angle.x);
-	MatUpdate();
+	SetMatView();
 }

@@ -15,7 +15,7 @@ void GameCamera::Initialize(Vector3D eye_, Vector3D target_, Vector3D up_)
 	target = target_;
 	up = up_;
 
-	MatUpdate();
+	SetMatView();
 
 	frontVec = target - eye;
 	disEyeTarget = frontVec.length();
@@ -60,5 +60,5 @@ void GameCamera::Update()
 	//	target.y‚Íplayer‚Ì“ª‚Ì‚‚³
 	eye.y = target.y + disEyeTarget * sinf(angle.y);
 	eye.z = target.z - disEyeTarget * cosf(angle.y) * cosf(angle.x);
-	MatUpdate();
+	SetMatView();
 }
