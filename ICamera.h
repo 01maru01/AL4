@@ -45,7 +45,7 @@ public:
 	const Matrix& GetBillboardY() { return billboardY; }
 	//	éÀâeïœä∑çsóÒ
 	const Matrix& GetProjection() { return matProjection; }
-	const Matrix& GetViewProj() {
+	const Matrix GetViewProj() {
 		Matrix mat = matView;
 		mat *= matProjection;
 		return mat;
@@ -56,7 +56,7 @@ public:
 	void SetTarget(const Vector3D& target_) { target = target_; }
 	void SetEye(const Vector3D& eye_) { eye = eye_; }
 	void SetUp(const Vector3D& up_) { up = up_; }
-	void SetProjection(float fovY, float nearZ, float farZ, float width_ = Window::window_width, float height_ = Window::window_height);
+	void SetProjection(float fovY, float nearZ, float farZ, int width_ = Window::window_width, int height_ = Window::window_height);
 #pragma endregion
 };
 
