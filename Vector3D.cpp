@@ -96,7 +96,28 @@ const Vector3D operator*(float s, const Vector3D& v)
 	return v * s;
 }
 
-const Vector3D Vec3Transform(const Vector3D& v, const Matrix& m)
+const Vector3D MyMath::Normalize(const Vector3D& v)
+{
+	Vector3D vec = v;
+	float len = vec.length();
+	if (len != 0)
+	{
+		return vec /= len;
+	}
+	return vec;
+}
+
+float MyMath::Dot(const Vector3D& v1, const Vector3D& v2)
+{
+	return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+}
+
+const Vector3D MyMath::Cross(const Vector3D& v1, const Vector3D& v2)
+{
+	return Vector3D(v1.y * v2.z - v1.z * v2.y, v1.z * v2.x - v1.x * v2.z, v1.x * v2.y - v1.y * v2.x);
+}
+
+const Vector3D MyMath::Vec3Transform(const Vector3D& v, const Matrix& m)
 {
 	Vector3D ans;
 	ans.x = v.x * m.m[0][0] + v.y * m.m[1][0] + v.z * m.m[2][0] + m.m[3][0];
@@ -107,7 +128,7 @@ const Vector3D Vec3Transform(const Vector3D& v, const Matrix& m)
 	return ans;
 }
 
-const Vector3D Vec3TransformNormal(const Vector3D& v, const Matrix& m)
+const Vector3D MyMath::Vec3TransformNormal(const Vector3D& v, const Matrix& m)
 {
 	Vector3D ans;
 	ans.x = v.x * m.m[0][0] + v.y * m.m[1][0] + v.z * m.m[2][0];
@@ -118,7 +139,7 @@ const Vector3D Vec3TransformNormal(const Vector3D& v, const Matrix& m)
 	return ans;
 }
 
-Vector3D CreatePolygonNormal(Vector3D a, Vector3D b, Vector3D c)
+const Vector3D MyMath::CreatePolygonNormal(const Vector3D& a, const Vector3D& b, const Vector3D& c)
 {
 	Vector3D AB(b - a);
 	Vector3D BC(c - b);

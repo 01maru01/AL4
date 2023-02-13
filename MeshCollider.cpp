@@ -52,7 +52,7 @@ void MeshCollider::Update()
 bool MeshCollider::CheckCollisionSphere(const Sphere& sphere, Vector3D* inter, Vector3D* reject)
 {
 	Sphere localSphere;
-	localSphere.center = Vec3Transform(sphere.center, invMatWorld);
+	localSphere.center = MyMath::Vec3Transform(sphere.center, invMatWorld);
 	Vector3D vec(invMatWorld.m[0][0], invMatWorld.m[0][1], invMatWorld.m[0][2]);
 	localSphere.radius *= vec.length();
 
@@ -65,12 +65,12 @@ bool MeshCollider::CheckCollisionSphere(const Sphere& sphere, Vector3D* inter, V
 			if (inter) {
 				const Matrix& matWorld = GetObject3D()->GetMatWorld();
 
-				*inter = Vec3Transform(*inter, matWorld);
+				*inter = MyMath::Vec3Transform(*inter, matWorld);
 			}
 
 			if (reject) {
 				const Matrix& matWorld = GetObject3D()->GetMatWorld();
-				*reject = Vec3TransformNormal(*reject, matWorld);
+				*reject = MyMath::Vec3TransformNormal(*reject, matWorld);
 			}
 			return true;
 		}
@@ -83,8 +83,8 @@ bool MeshCollider::CheckCollisionRay(const Ray& ray, float* dis, Vector3D* inter
 {
 	// オブジェクトのローカル座標系でのレイを得る
 	Ray localRay;
-	localRay.start = Vec3Transform(ray.start, invMatWorld);
-	localRay.dir = Vec3TransformNormal(ray.dir, invMatWorld);
+	localRay.start = MyMath::Vec3Transform(ray.start, invMatWorld);
+	localRay.dir = MyMath::Vec3TransformNormal(ray.dir, invMatWorld);
 
 	std::vector<Triangle>::const_iterator it = triangles.cbegin();
 
@@ -95,7 +95,7 @@ bool MeshCollider::CheckCollisionRay(const Ray& ray, float* dis, Vector3D* inter
 		if (Collision::CheckRay2Triangle(localRay, triangle, nullptr, &tempInter)) {
 
 			const Matrix& matWorld = GetObject3D()->GetMatWorld();
-			tempInter = Vec3Transform(tempInter, matWorld);
+			tempInter = MyMath::Vec3Transform(tempInter, matWorld);
 
 			if (dis) {
 				Vector3D sub = tempInter - ray.start;
