@@ -37,11 +37,6 @@ void GameCamera::Update()
 		cursorSpd += cursorMoveVec;
 	}
 
-	frontVec = target - eye;
-	frontVec.normalize();
-	rightVec = Vector3D(0, 1, 0).cross(frontVec);
-	downVec = rightVec.cross(frontVec);
-
 	if (rotAngle.x >= MyMath::PIx2) rotAngle.x -= MyMath::PIx2;
 	if (rotAngle.x < 0) rotAngle.x += MyMath::PIx2;
 	if (rotAngle.y >= MyMath::PIx2) rotAngle.y -= MyMath::PIx2;
@@ -50,29 +45,11 @@ void GameCamera::Update()
 	Vector2D angle = rotAngle;
 	angle += cursorSpd;
 
-	rightVec.normalize();
-	downVec.normalize();
-#pragma region ビルボード
-	billboard.Identity();
-	billboard.m[0][0] = rightVec.x;
-	billboard.m[0][1] = rightVec.y;
-	billboard.m[0][2] = rightVec.z;
-	billboard.m[1][0] = -downVec.x;
-	billboard.m[1][1] = -downVec.y;
-	billboard.m[1][2] = -downVec.z;
-	billboard.m[2][0] = frontVec.x;
-	billboard.m[2][1] = frontVec.y;
-	billboard.m[2][2] = frontVec.z;
+	//	カメラ方向ベクトル計算
+	CalcCameraDirVec();
 
-	billboardY.Identity();
-	billboardY.m[0][0] = rightVec.x;
-	billboardY.m[0][1] = rightVec.y;
-	billboardY.m[0][2] = rightVec.z;
-	Vector3D billYvecZ = rightVec.cross(up);
-	billboardY.m[2][0] = billYvecZ.x;
-	billboardY.m[2][1] = billYvecZ.y;
-	billboardY.m[2][2] = billYvecZ.z;
-#pragma endregion
+	//	ビルボード計算
+	CalcBillboard();
 
 	if (cosf(angle.y) < 0.5f) {
 		cursorSpd.y = MyMath::ConvertToRad(60.0f);
