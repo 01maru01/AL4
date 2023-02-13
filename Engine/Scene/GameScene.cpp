@@ -108,7 +108,7 @@ void GameScene::Initialize()
 
 	bgmSound = MyXAudio::GetInstance()->SoundLoadWave("gameBGM.wav");
 
-	MyXAudio::GetInstance()->SoundPlayLoopWave(bgmSound, 0.05f);
+	//MyXAudio::GetInstance()->SoundPlayLoopWave(bgmSound, 0.05f);
 }
 
 void GameScene::Finalize()
@@ -155,6 +155,7 @@ void GameScene::Update()
 	if (timer > 240) timer = 0;
 
 	ground->SetColor({ 1.0f,1.0f,1.0f });
+	ground2->SetColor({ 1.0f,1.0f,1.0f });
 
 	//	ƒJƒƒ‰Ø‚è‘Ö‚¦
 	if (input->GetTrigger(DIK_V)) {
@@ -184,28 +185,14 @@ void GameScene::Update()
 		sphere2->SetPosition(Vector3D(-3.0f, 1.0f, 0.0f));
 	}
 	if (input->GetTrigger(DIK_2)) {
-		mord = CircleCollisionTriangle;
-		sphere2->SetPosition(Vector3D(-3.0f, 1.0f, 0.0f));
-	}
-	if (input->GetTrigger(DIK_3)) {
 		sphere->SetPosition(Vector3D(4.0f, 4.0f, 0.0f));
 		sphere2->SetPosition(Vector3D(-3.0f, 1.0f, 0.0f));
 		mord = RayCollisionPlane;
 	}
-	if (input->GetTrigger(DIK_4)) {
-		sphere->SetPosition(Vector3D(4.0f, 4.0f, 0.0f));
-		sphere2->SetPosition(Vector3D(-3.0f, 1.0f, 0.0f));
-		mord = RayCollisionTriangle;
-	}
-	if (input->GetTrigger(DIK_5)) {
+	if (input->GetTrigger(DIK_3)) {
 		sphere->SetPosition(Vector3D(0.0f, 4.0f, 0.0f));
 		sphere2->SetPosition(Vector3D(-3.0f, 1.0f, 0.0f));
 		mord = RayCollisionSphere;
-	}
-	if (input->GetTrigger(DIK_6)) {
-		mord = PlayerOnGround;
-		sphere->SetPosition(Vector3D(0.0f, 100.0f, 0.0f));
-		sphere2->SetPosition(Vector3D(0.0f, 100.0f, 0.0f));
 	}
 
 	Ray ray;
@@ -346,7 +333,5 @@ void GameScene::Draw()
 	default:
 		break;
 	}
-
-	triangle->Draw();
 	player->Draw();
 }
