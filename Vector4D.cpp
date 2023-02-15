@@ -11,7 +11,7 @@ Vector4D::Vector4D(float x, float y, float z, float w) :
 {
 }
 
-Vector4D::Vector4D(Vector3D v3d, float w) :
+Vector4D::Vector4D(const Vector3D& v3d, float w) :
 	x(v3d.x), y(v3d.y), z(v3d.z), w(w)
 {
 }

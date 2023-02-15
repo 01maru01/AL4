@@ -11,7 +11,7 @@ Vector2D::Vector2D(float x, float y) :
 {
 }
 
-Vector2D Vector2D::operator+() const
+const Vector2D Vector2D::operator+() const
 {
 	return *this;
 }
@@ -74,4 +74,20 @@ const Vector2D operator*(const Vector2D& v, float s)
 const Vector2D operator*(float s, const Vector2D& v)
 {
 	return v * s;
+}
+
+const Vector2D MyMath::Normalize(const Vector2D& v)
+{
+	Vector2D vec = v;
+	float len = vec.length();
+	if (len != 0)
+	{
+		return vec /= len;
+	}
+	return vec;
+}
+
+float MyMath::Dot(const Vector2D& v1, const Vector2D& v2)
+{
+	return v1.x * v2.x + v1.y * v2.y;
 }
