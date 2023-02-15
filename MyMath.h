@@ -11,11 +11,12 @@ namespace MyMath {
 	
 	//	視点座標、注視点座標、上方向ベクトル
 	const Matrix LookAtLH(const Vector3D& eye, const Vector3D& target, const Vector3D& up);
-	
+	//	射影変換行列
 	const Matrix PerspectiveFovLH(const int winwidth, const int winheight, float fovY, float nearZ, float farZ);
+	//	平行投影行列
 	const Matrix OrthoLH(const int winwidth, const int winheight, float nearZ, float farZ);
 	
-	float ConvertToRad(float angle);
+	float ConvertToRad(float angle);	//	ラジアン変換
 	
 	bool CollisionCircleLay(Vector3D startL, Vector3D endL, Vector3D pos, float rad);
 	
@@ -37,7 +38,7 @@ namespace MyMath {
 			void Init(Vector3D _eye, Vector3D _target, Vector3D _up);
 			void CalcCameraDirVec();	//	カメラ方向ベクトル計算
 			void CalcBillboard();		//	ビルボード計算
-			void SetMatrix();
+			void SetMatrix();			//	ビュー行列計算
 	};
 	
 	class ObjMatrix {

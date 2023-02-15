@@ -110,11 +110,6 @@ const Matrix MyMath::OrthoLH(const int winwidth, const int winheight, float near
 	return matProjection;
 }
 
-//MyMath::MatView::MatView(Vector3D _eye, Vector3D _target, Vector3D _up)
-//{
-//	Init(_eye, _target, _up);
-//}
-
 MyMath::MatView::MatView()
 {
 	Init(Vector3D(0.0f, 0.0f, -100.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
