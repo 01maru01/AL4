@@ -1,4 +1,5 @@
 #pragma once
+
 namespace Easing {
 	template<typename T>
 	T lerp(T a, T b, T t);

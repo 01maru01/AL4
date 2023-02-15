@@ -1,9 +1,10 @@
 #pragma once
+#pragma region Math
 #include "Vector2D.h"
 #include "Vector3D.h"
 #include "Vector4D.h"
 #include "Matrix.h"
-#include <cmath>
+#pragma endregion
 
 namespace MyMath {
 	const float PI = 3.14159265358979f;

@@ -1,4 +1,5 @@
 #include "MyMath.h"
+#include <cmath>
 #include <cassert>
 
 const Matrix MyMath::LookAtLH(const Vector3D& eye, const Vector3D& target, const Vector3D& up)
