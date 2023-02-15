@@ -1,5 +1,9 @@
 #pragma once
-#include "Matrix.h"
+
+#pragma region ‘O’uéŒ¾
+class Matrix;
+#pragma endregion
+
 
 class Vector3D
 {

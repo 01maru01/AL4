@@ -1,4 +1,6 @@
 #include "Vector4D.h"
+#include "Vector3D.h"
+#include "Matrix.h"
 #include <cmath>
 
 Vector4D::Vector4D() :
