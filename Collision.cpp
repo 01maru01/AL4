@@ -1,5 +1,6 @@
 #include "Collision.h"
 #include "Easing.h"
+#include <math.h>
 
 void Collision::ClosestPtPoint2Triangle(const Vector3D& point, const Triangle& triangle, Vector3D* closest)
 {

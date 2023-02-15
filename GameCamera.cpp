@@ -1,4 +1,5 @@
 #include "GameCamera.h"
+#include <math.h>
 
 GameCamera::GameCamera()
 {

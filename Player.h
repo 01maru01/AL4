@@ -6,7 +6,7 @@ class Player :public Object3D
 {
 private:
 	Vector2D frontVec;
-	float spd;
+	float spd = 0.0f;
 
 	bool onGround = true;
 	Vector3D fallVec;

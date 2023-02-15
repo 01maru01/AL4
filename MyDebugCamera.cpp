@@ -1,4 +1,5 @@
 #include "MyDebugCamera.h"
+#include <math.h>
 
 MyDebugCamera::MyDebugCamera()
 {

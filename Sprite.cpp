@@ -211,10 +211,10 @@ void Sprite::SetMatRotation()
 {
 	matRot.Identity();
 	Matrix matRotZ;
-	matRotZ.m[0][0] = cos(rotAngle);
-	matRotZ.m[0][1] = sin(rotAngle);
-	matRotZ.m[1][0] = -sin(rotAngle);
-	matRotZ.m[1][1] = cos(rotAngle);
+	matRotZ.m[0][0] = cosf(rotAngle);
+	matRotZ.m[0][1] = sinf(rotAngle);
+	matRotZ.m[1][0] = -sinf(rotAngle);
+	matRotZ.m[1][1] = cosf(rotAngle);
 
 	matRot = matRotZ;
 }
