@@ -13,44 +13,53 @@ namespace MyMath {
 	const Matrix LookAtLH(const Vector3D& eye, const Vector3D& target, const Vector3D& up);
 	
 	const Matrix PerspectiveFovLH(const int winwidth, const int winheight, float fovY, float nearZ, float farZ);
-	Matrix OrthoLH(const int winwidth, const int winheight, float nearZ, float farZ);
+	const Matrix OrthoLH(const int winwidth, const int winheight, float nearZ, float farZ);
 	
 	float ConvertToRad(float angle);
 	
 	bool CollisionCircleLay(Vector3D startL, Vector3D endL, Vector3D pos, float rad);
 	
 	class MatView{
-	public:
-		Matrix mat;
-		Vector3D eye;		//	視点座標
-		Vector3D target;	//	注視点座標
-		Vector3D up;		//	上方向ベクトル
-	public:
-		MatView();
-		void Init(Vector3D _eye, Vector3D _target, Vector3D _up);
-		void MatUpdate();
+		public:
+			Matrix mat;
+			Vector3D eye;		//	視点座標
+			Vector3D target;	//	注視点座標
+			Vector3D up;		//	上方向ベクトル
+			//	カメラの方向ベクトル
+			Vector3D frontVec;
+			Vector3D rightVec;
+			Vector3D downVec;
+			//	ビルボード
+			Matrix billboard;
+			Matrix billboardY;
+		public:
+			MatView();
+			void Init(Vector3D _eye, Vector3D _target, Vector3D _up);
+			void CalcCameraDirVec();	//	カメラ方向ベクトル計算
+			void CalcBillboard();		//	ビルボード計算
+			void SetMatrix();
 	};
 	
 	class ObjMatrix {
-	public:
-		Matrix matWorld;
+		public:
+			Matrix matWorld;
 	
-		Matrix matScale;
-		Vector3D scale;
+			Matrix matScale;
+			Vector3D scale;
 	
-		Matrix matRot;
-		Vector3D rotAngle;
+			Matrix matRot;
+			Vector3D rotAngle;
 	
-		Matrix matTrans;
-		Vector3D trans;
+			Matrix matTrans;
+			Vector3D trans;
 	
-	private:
-		void SetMatScaling();
-		void SetMatRotation();
-		void SetMatTransform();
-	public:
-		void Initialize();
-		void Update();
+		private:
+			void SetMatScaling();
+			void SetMatRotation();
+			void SetMatTransform();
+		public:
+			void Initialize();
+			void Update();
 	};
 }
 

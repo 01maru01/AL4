@@ -11,14 +11,14 @@ MyDebugCamera::~MyDebugCamera()
 
 void MyDebugCamera::Initialize(Vector3D eye_, Vector3D target_, Vector3D up_)
 {
-	eye = eye_;
-	target = target_;
-	up = up_;
+	view.eye = eye_;
+	view.target = target_;
+	view.up = up_;
 
 	SetMatView();
 
-	frontVec = target - eye;
-	disEyeTarget = frontVec.length();
+	view.frontVec = view.target - view.eye;
+	disEyeTarget = view.frontVec.length();
 }
 
 void MyDebugCamera::Update()
@@ -30,7 +30,7 @@ void MyDebugCamera::Update()
 	if (input->Click(Input::LeftClick) && input->GetKey(DIK_LSHIFT)) {
 		moveCursor /= 1000;
 		moveCursor *= cursorDisPrev;
-		if (up.y < 0) {
+		if (view.up.y < 0) {
 			moveCursor.x = -moveCursor.x;
 		}
 		cursorSpd += moveCursor;
@@ -39,9 +39,9 @@ void MyDebugCamera::Update()
 	if (disEyeTarget < 10) {
 		disEyeTarget = 10;
 	}
-	target += rightVec * (float)(input->GetKey(DIK_RIGHT) - input->GetKey(DIK_LEFT));
-	target += downVec * (float)(input->GetKey(DIK_DOWN) - input->GetKey(DIK_UP));
-	target += -frontVec * (float)(input->GetKey(DIK_Z) - input->GetKey(DIK_X));
+	view.target += view.rightVec * (float)(input->GetKey(DIK_RIGHT) - input->GetKey(DIK_LEFT));
+	view.target += view.downVec * (float)(input->GetKey(DIK_DOWN) - input->GetKey(DIK_UP));
+	view.target += -view.frontVec * (float)(input->GetKey(DIK_Z) - input->GetKey(DIK_X));
 	
 	if (rotAngle.x >= MyMath::PIx2) rotAngle.x -= MyMath::PIx2;
 	if (rotAngle.x < 0) rotAngle.x += MyMath::PIx2;
@@ -52,14 +52,14 @@ void MyDebugCamera::Update()
 	angle += cursorSpd;
 
 	//	カメラ方向ベクトル計算
-	CalcCameraDirVec();
+	view.CalcCameraDirVec();
 
 	//	ビルボード計算
-	CalcBillboard();
+	view.CalcBillboard();
 
-	up.y = cosf(angle.y);
-	eye.x = target.x - disEyeTarget * cosf(angle.y) * sinf(angle.x);
-	eye.y = target.y + disEyeTarget * sinf(angle.y);
-	eye.z = target.z - disEyeTarget * cosf(angle.y) * cosf(angle.x);
+	view.up.y = cosf(angle.y);
+	view.eye.x = view.target.x - disEyeTarget * cosf(angle.y) * sinf(angle.x);
+	view.eye.y = view.target.y + disEyeTarget * sinf(angle.y);
+	view.eye.z = view.target.z - disEyeTarget * cosf(angle.y) * cosf(angle.x);
 	SetMatView();
 }

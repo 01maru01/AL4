@@ -11,14 +11,14 @@ GameCamera::~GameCamera()
 
 void GameCamera::Initialize(Vector3D eye_, Vector3D target_, Vector3D up_)
 {
-	eye = eye_;
-	target = target_;
-	up = up_;
+	view.eye = eye_;
+	view.target = target_;
+	view.up = up_;
 
 	SetMatView();
 
-	frontVec = target - eye;
-	disEyeTarget = frontVec.length();
+	view.frontVec = view.target - view.eye;
+	disEyeTarget = view.frontVec.length();
 }
 
 void GameCamera::Update()
@@ -31,7 +31,7 @@ void GameCamera::Update()
 	if (!rockOn) {
 		cursorMoveVec /= 1000;
 		cursorMoveVec *= cursorDisPrev;
-		if (up.y < 0) {
+		if (view.up.y < 0) {
 			cursorMoveVec.x = -cursorMoveVec.x;
 		}
 		cursorSpd += cursorMoveVec;
@@ -46,19 +46,19 @@ void GameCamera::Update()
 	angle += cursorSpd;
 
 	//	カメラ方向ベクトル計算
-	CalcCameraDirVec();
+	view.CalcCameraDirVec();
 
 	//	ビルボード計算
-	CalcBillboard();
+	view.CalcBillboard();
 
 	if (cosf(angle.y) < 0.5f) {
 		cursorSpd.y = MyMath::ConvertToRad(60.0f);
 		angle.y = MyMath::ConvertToRad(60.0f);
 	}
-	up.y = cosf(angle.y);
-	eye.x = target.x - disEyeTarget * cosf(angle.y) * sinf(angle.x);
+	view.up.y = cosf(angle.y);
+	view.eye.x = view.target.x - disEyeTarget * cosf(angle.y) * sinf(angle.x);
 	//	target.yはplayerの頭の高さ
-	eye.y = target.y + disEyeTarget * sinf(angle.y);
-	eye.z = target.z - disEyeTarget * cosf(angle.y) * cosf(angle.x);
+	view.eye.y = view.target.y + disEyeTarget * sinf(angle.y);
+	view.eye.z = view.target.z - disEyeTarget * cosf(angle.y) * cosf(angle.x);
 	SetMatView();
 }
