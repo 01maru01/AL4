@@ -15,7 +15,7 @@ public:
 	Quaternion() {};
 	Quaternion(float w, float x, float y, float z) :w(w), x(x), y(y), z(z) {};
 	Quaternion(float w, const Vector3D& vec);
-	Quaternion SetQuaternion(Vector3D v);
+	Quaternion SetQuaternion(const Vector3D& v);
 
 	Vector3D GetVec();
 	void SetVec(const Vector3D& vec);

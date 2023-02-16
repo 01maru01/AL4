@@ -23,7 +23,7 @@ Quaternion::Quaternion(float w, const Vector3D& vec) :w(w), x(vec.x), y(vec.y), 
 {
 }
 
-Quaternion Quaternion::SetQuaternion(Vector3D v)
+Quaternion Quaternion::SetQuaternion(const Vector3D& v)
 {
     Quaternion r;
     r.x = v.x;

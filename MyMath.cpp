@@ -42,6 +42,11 @@ float MyMath::ConvertToRad(float angle)
 	return angle / 180.0f * PI;
 }
 
+size_t MyMath::AlignmentSize(size_t size, size_t alignment)
+{
+	return size + alignment - size & alignment;
+}
+
 bool MyMath::CollisionCircleLay(Vector3D startL, Vector3D endL, Vector3D pos, float rad)
 {
 	Vector3D start_to_center = Vector3D(pos.x - startL.x, pos.y - startL.y, pos.z - startL.z);

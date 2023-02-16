@@ -1,5 +1,6 @@
 #include "DirectX.h"
 #include "Window.h"
+#include "MyMath.h"
 #pragma comment (lib, "winmm.lib")
 #include <DirectXTex.h>
 using namespace DirectX;
@@ -492,6 +493,8 @@ int MyDirectX::LoadTextureGraph(const wchar_t* textureName, bool tga)
 		metadata = scratchImg.GetMetadata();
 	}
 
+	const Image* img = scratchImg.GetImage(0, 0, 0);			//	生データ
+
 	metadata.format = MakeSRGB(metadata.format);
 
 	D3D12_RESOURCE_DESC tectureResourceDesc{};
@@ -505,9 +508,7 @@ int MyDirectX::LoadTextureGraph(const wchar_t* textureName, bool tga)
 
 	//	ヒープ設定
 	D3D12_HEAP_PROPERTIES textureHeapProp{};
-	textureHeapProp.Type = D3D12_HEAP_TYPE_CUSTOM;
-	textureHeapProp.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_WRITE_BACK;
-	textureHeapProp.MemoryPoolPreference = D3D12_MEMORY_POOL_L0;
+	textureHeapProp.Type = D3D12_HEAP_TYPE_DEFAULT;
 
 	int buffIndex = textureNum - 1;
 	//	テクスチャバッファ生成
@@ -515,23 +516,74 @@ int MyDirectX::LoadTextureGraph(const wchar_t* textureName, bool tga)
 		&textureHeapProp,
 		D3D12_HEAP_FLAG_NONE,
 		&tectureResourceDesc,
-		D3D12_RESOURCE_STATE_GENERIC_READ,
+		D3D12_RESOURCE_STATE_COPY_DEST,
 		nullptr,
 		IID_PPV_ARGS(&texBuff[buffIndex]));
-	//	テクスチャバッファ転送
-	for (size_t i = 0; i < metadata.mipLevels; i++)
-	{
-		const Image* img = scratchImg.GetImage(i, 0, 0);
 
-		result = texBuff[buffIndex]->WriteToSubresource(
-			(UINT)i,
-			nullptr,
-			img->pixels,
-			(UINT)img->rowPitch,
-			(UINT)img->slicePitch
+	//	FootPrint取得
+	D3D12_PLACED_SUBRESOURCE_FOOTPRINT footprint;
+	UINT64 total_bytes = 0;
+	device->GetCopyableFootprints(&tectureResourceDesc, 0, 1, 0, &footprint, nullptr, nullptr, &total_bytes);
+
+#pragma region Upload
+	D3D12_RESOURCE_DESC uploadDesc{};
+	uploadDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+	//uploadDesc.Width = MyMath::AlignmentSize(img->rowPitch, D3D12_TEXTURE_DATA_PITCH_ALIGNMENT) * img->height;
+	uploadDesc.Width = total_bytes;
+	uploadDesc.Height = 1;
+	uploadDesc.DepthOrArraySize = 1;
+	uploadDesc.MipLevels = 1;
+	uploadDesc.SampleDesc.Count = 1;
+	uploadDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+
+	D3D12_HEAP_PROPERTIES uploadHeap{};
+	uploadHeap.Type = D3D12_HEAP_TYPE_UPLOAD;
+	
+	ID3D12Resource* uploadBuff = nullptr;
+	device->CreateCommittedResource(&uploadHeap, D3D12_HEAP_FLAG_NONE, &uploadDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(&uploadBuff));
+#pragma endregion
+
+	//	転送
+	uint8_t* mapforImg = nullptr;
+	result = uploadBuff->Map(0, nullptr, (void**)&mapforImg);	//	map
+	
+	uint8_t* uploadStart = mapforImg + footprint.Offset;
+	uint8_t* sourceStart = img->pixels;
+	uint32_t sourcePitch = ((uint32_t)img->width * sizeof(uint32_t));
+	for (uint32_t i = 0; i < footprint.Footprint.Height; i++)
+	{
+		memcpy(
+			uploadStart + i * footprint.Footprint.RowPitch,
+			sourceStart + i * sourcePitch,
+			sourcePitch
 		);
-		assert(SUCCEEDED(result));
 	}
+	uploadBuff->Unmap(0, nullptr);	//	unmap
+
+#pragma region CopyCommand
+	//	グラフィックボード上のコピー先アドレス
+	D3D12_TEXTURE_COPY_LOCATION texCopyDest{};
+	texCopyDest.pResource = texBuff[buffIndex].Get();
+	texCopyDest.Type = D3D12_TEXTURE_COPY_TYPE_SUBRESOURCE_INDEX;
+	texCopyDest.SubresourceIndex = 0;
+	//	グラフィックボード上のコピー元アドレス
+	D3D12_TEXTURE_COPY_LOCATION src{};
+	src.pResource = uploadBuff;
+	src.Type = D3D12_TEXTURE_COPY_TYPE_PLACED_FOOTPRINT;
+	src.PlacedFootprint = footprint;
+
+	//	作成
+	cmdList->CopyTextureRegion(&texCopyDest, 0, 0, 0, &src, nullptr);
+
+	//	resourceBarrier挿入
+	D3D12_RESOURCE_BARRIER copyBarrier{};
+	copyBarrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+	copyBarrier.Transition.pResource = texBuff[buffIndex].Get();
+	copyBarrier.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
+	copyBarrier.Transition.StateBefore = D3D12_RESOURCE_STATE_COPY_DEST;
+	copyBarrier.Transition.StateAfter = D3D12_RESOURCE_STATE_GENERIC_READ;
+
+	cmdList->ResourceBarrier(1, &copyBarrier);
 
 #pragma region SetSRV
 	incrementSize = device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
@@ -540,6 +592,7 @@ int MyDirectX::LoadTextureGraph(const wchar_t* textureName, bool tga)
 
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};
 	srvDesc.Format = DXGI_FORMAT_UNKNOWN;
+	//srvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
 	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
 	srvDesc.Texture2D.MipLevels = 1;

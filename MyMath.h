@@ -18,6 +18,7 @@ namespace MyMath {
 	const Matrix OrthoLH(const int winwidth, const int winheight, float nearZ, float farZ);
 	
 	float ConvertToRad(float angle);	//	ラジアン変換
+	size_t AlignmentSize(size_t size, size_t alignment);	//	アライメント
 	
 	bool CollisionCircleLay(Vector3D startL, Vector3D endL, Vector3D pos, float rad);
 	
