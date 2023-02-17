@@ -275,6 +275,7 @@ void MyDirectX::Initialize()
 	//	vector::resize
 	screenSRVHeap.resize(heapDesc.NumDescriptors);
 	texBuff.resize(heapDesc.NumDescriptors);
+	uploadBuff.resize(heapDesc.NumDescriptors);
 
 	result = device->CreateDescriptorHeap(
 		&heapDesc,
@@ -539,17 +540,17 @@ int MyDirectX::LoadTextureGraph(const wchar_t* textureName, bool tga)
 	D3D12_HEAP_PROPERTIES uploadHeap{};
 	uploadHeap.Type = D3D12_HEAP_TYPE_UPLOAD;
 	
-	ID3D12Resource* uploadBuff = nullptr;
-	device->CreateCommittedResource(&uploadHeap, D3D12_HEAP_FLAG_NONE, &uploadDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(&uploadBuff));
+	device->CreateCommittedResource(&uploadHeap, D3D12_HEAP_FLAG_NONE, &uploadDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(&uploadBuff[buffIndex]));
 #pragma endregion
 
 	//	転送
 	uint8_t* mapforImg = nullptr;
-	result = uploadBuff->Map(0, nullptr, (void**)&mapforImg);	//	map
+	result = uploadBuff[buffIndex]->Map(0, nullptr, (void**)&mapforImg);	//	map
 	
 	uint8_t* uploadStart = mapforImg + footprint.Offset;
 	uint8_t* sourceStart = img->pixels;
 	uint32_t sourcePitch = ((uint32_t)img->width * sizeof(uint32_t));
+	//	画像の高さ(ピクセル)分コピーする
 	for (uint32_t i = 0; i < footprint.Footprint.Height; i++)
 	{
 		memcpy(
@@ -558,8 +559,7 @@ int MyDirectX::LoadTextureGraph(const wchar_t* textureName, bool tga)
 			sourcePitch
 		);
 	}
-	uploadBuff->Unmap(0, nullptr);	//	unmap
-
+	uploadBuff[buffIndex]->Unmap(0, nullptr);	//	unmap
 #pragma region CopyCommand
 	//	グラフィックボード上のコピー先アドレス
 	D3D12_TEXTURE_COPY_LOCATION texCopyDest{};
@@ -568,7 +568,7 @@ int MyDirectX::LoadTextureGraph(const wchar_t* textureName, bool tga)
 	texCopyDest.SubresourceIndex = 0;
 	//	グラフィックボード上のコピー元アドレス
 	D3D12_TEXTURE_COPY_LOCATION src{};
-	src.pResource = uploadBuff;
+	src.pResource = uploadBuff[buffIndex].Get();
 	src.Type = D3D12_TEXTURE_COPY_TYPE_PLACED_FOOTPRINT;
 	src.PlacedFootprint = footprint;
 
