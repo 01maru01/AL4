@@ -1,5 +1,8 @@
 #pragma once
 #include "Matrix.h"
+
+class Vector2D;
+
 class Vector3D
 {
 public:
@@ -9,6 +12,7 @@ public:
 public:
 	Vector3D();
 	Vector3D(float x, float y, float z);
+	Vector3D(const Vector2D& vec, float z);
 
 	float length() const;
 

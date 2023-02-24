@@ -25,7 +25,7 @@ void GameScene::MatUpdate()
 
 	square->MatUpdate();
 	
-	test2d->MatUpdate();
+	testVolLight->MatUpdate();
 }
 
 GameScene::GameScene()
@@ -68,7 +68,7 @@ void GameScene::Initialize()
 
 	Shader test2dShader(L"Resources/shader/SpriteVS.hlsl", L"Resources/shader/SpritePS.hlsl");
 	obj2Dpipeline = std::make_unique<GPipeline>();
-	obj2Dpipeline->Init(test2dShader, inputLayout2D, _countof(inputLayout2D), 2, D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE, D3D12_FILL_MODE_SOLID, D3D12_CULL_MODE_NONE);
+	obj2Dpipeline->Init(test2dShader, inputLayout2D, _countof(inputLayout2D), 2, D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE, D3D12_FILL_MODE_SOLID, D3D12_CULL_MODE_NONE, D3D12_DEPTH_WRITE_MASK_ZERO);
 	obj2Dpipeline->SetBlend(GPipeline::ADD_BLEND);
 	Object2D::SetPipeline(obj2Dpipeline.get());
 	Object2D::SetCamera(camera);
@@ -84,7 +84,8 @@ void GameScene::Initialize()
 	Particle::SetCamera(camera);
 	square = new Particle();
 
-	test2d->GetMatObj().scale = Vector3D(1.0f,100.0f,1.0f);
+	testVolLight.reset(new VolumeLightObj());
+	testVolLight->Initialize(Vector2D(30.0f, 10.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, -1.0f, 0.0f));
 
 	mord = Phong;
 }
@@ -109,7 +110,7 @@ void GameScene::LoadResources()
 	tree.reset(Object3D::Create(modelTree.get()));
 	sphere2.reset(Object3D::Create(modelSmoothSphere.get()));
 #pragma region Texture
-	test2d.reset(Object2D::Create());
+	VolumeLightObj::SetLightGraph(dx->LoadTextureGraph(L"Resources/lightTex.jpg"));
 	reimuG = dx->LoadTextureGraph(L"Resources/reimu.png");
 	grassG = dx->LoadTextureGraph(L"Resources/grass.png");
 #pragma endregion
@@ -120,7 +121,6 @@ void GameScene::LoadResources()
 	//sprite->SetTextureLeftTop(Vector2D(sprite->GetSize().x / 2.0f, sprite->GetSize().y / 2.0f));
 	//sprite->SetTextureSize(Vector2D(sprite->GetSize().x / 2.0f, sprite->GetSize().y / 2.0f));
 #pragma endregion
-	lightG = dx->LoadTextureGraph(L"Resources/lightTex.jpg");
 }
 
 void GameScene::Update()
@@ -229,11 +229,11 @@ void GameScene::Draw()
 {
 	ground->Draw();
 	skydome->Draw();
-	tree->Draw();
+	//tree->Draw();
 	//sphere2->Draw();
 	//player->Draw();
 	//square->Draw(grassG);
 
-	test2d->Draw(lightG);
+	testVolLight->Draw();
 	//sprite->Draw();
 }

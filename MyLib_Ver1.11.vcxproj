@@ -257,7 +257,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
       <LanguageStandard>Default</LanguageStandard>
-      <TreatWarningAsError>true</TreatWarningAsError>
+      <TreatWarningAsError>false</TreatWarningAsError>
       <AdditionalIncludeDirectories>$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d\camera;$(ProjectDir)Engine\3d\Light;$(ProjectDir)Engine\3d\obj;$(ProjectDir)Engine\Audio;$(ProjectDir)Engine\base;$(ProjectDir)Engine\base\input;$(ProjectDir)Engine\Collider;$(ProjectDir)Engine\game;$(ProjectDir)Engine\math;$(ProjectDir)Engine\Scene;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>

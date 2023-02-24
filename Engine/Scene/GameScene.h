@@ -10,6 +10,7 @@
 #include "Particle.h"
 #include "TouchableObject.h"
 
+#include "VolumeLight.h"
 #include "Player.h"
 #include "ICamera.h"
 
@@ -44,14 +45,13 @@ private:
 #pragma region Texture
 	int reimuG = -1;
 	int grassG = -1;
-	int lightG = -1;
 #pragma endregion
 	std::unique_ptr<Object3D> skydome;
 	std::unique_ptr<TouchableObject> ground;
 	std::unique_ptr<Object3D> tree;
 	std::unique_ptr<Object3D> sphere2;
 	std::unique_ptr<Player> player;
-	std::unique_ptr<Object2D> test2d;
+	std::unique_ptr<VolumeLightObj> testVolLight;
 
 	int mord = 0;
 

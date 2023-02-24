@@ -1,4 +1,5 @@
 #include "Vector3D.h"
+#include "Vector2D.h"
 
 #include <cmath>
 
@@ -9,6 +10,11 @@ Vector3D::Vector3D()
 
 Vector3D::Vector3D(float x, float y, float z)
 	: x(x), y(y), z(z)
+{
+}
+
+Vector3D::Vector3D(const Vector2D& vec, float z)
+	: x(vec.x), y(vec.y), z(z)
 {
 }
 
