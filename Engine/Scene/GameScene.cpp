@@ -20,10 +20,12 @@ void GameScene::MatUpdate()
 	ground->MatUpdate();
 	skydome->MatUpdate();
 	player->MatUpdate();
-	sphere->MatUpdate();
+	tree->MatUpdate();
 	sphere2->MatUpdate();
 
 	square->MatUpdate();
+	
+	test2d->MatUpdate();
 }
 
 GameScene::GameScene()
@@ -46,15 +48,31 @@ void GameScene::Initialize()
 
 	objShader.Initialize(L"Resources/shader/ObjVS.hlsl", L"Resources/shader/ObjPS.hlsl");
 
-	modelpipeline = std::make_unique<GPipeline>(objShader, GPipeline::ALPHA_BLEND, 4);
+	D3D12_INPUT_ELEMENT_DESC inputLayout[] = {
+		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,	D3D12_APPEND_ALIGNED_ELEMENT,	D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},		//	xyz座標
+		{"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,	D3D12_APPEND_ALIGNED_ELEMENT,	D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},		//	法線ベクトル
+		{"TEXCOORD",0,DXGI_FORMAT_R32G32_FLOAT,0,D3D12_APPEND_ALIGNED_ELEMENT,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0},				//	uv座標
+	};
+	modelpipeline = std::make_unique<GPipeline>();
+	modelpipeline->Init(objShader, inputLayout, _countof(inputLayout), 4, D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE, D3D12_FILL_MODE_SOLID, D3D12_CULL_MODE_NONE);
+	modelpipeline->SetBlend(GPipeline::ALPHA_BLEND);
 
 	Object3D::SetPipeline(modelpipeline.get());
 	Object3D::SetCamera(camera);
 	LoadResources();
 
-	sphere->SetCollider(new SphereCollider());
-	sphere->SetAttribute(COLLISION_ATTR_LANDSHAPE);
-	sphere->SetPosition(Vector3D(3.0f, 1.0f, 0.0f));
+	D3D12_INPUT_ELEMENT_DESC inputLayout2D[] = {
+		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,	D3D12_APPEND_ALIGNED_ELEMENT,	D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},		//	xyz座標
+		{"TEXCOORD",0,DXGI_FORMAT_R32G32_FLOAT,0,D3D12_APPEND_ALIGNED_ELEMENT,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0},				//	uv座標
+	};
+
+	Shader test2dShader(L"Resources/shader/SpriteVS.hlsl", L"Resources/shader/SpritePS.hlsl");
+	obj2Dpipeline = std::make_unique<GPipeline>();
+	obj2Dpipeline->Init(test2dShader, inputLayout2D, _countof(inputLayout2D), 2, D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE, D3D12_FILL_MODE_SOLID, D3D12_CULL_MODE_NONE);
+	obj2Dpipeline->SetBlend(GPipeline::ADD_BLEND);
+	Object2D::SetPipeline(obj2Dpipeline.get());
+	Object2D::SetCamera(camera);
+
 	sphere2->SetCollider(new SphereCollider());
 	sphere2->SetAttribute(COLLISION_ATTR_LANDSHAPE);
 	sphere2->SetPosition(Vector3D(-3.0f, 1.0f, 0.0f));
@@ -66,11 +84,9 @@ void GameScene::Initialize()
 	Particle::SetCamera(camera);
 	square = new Particle();
 
+	test2d->GetMatObj().scale = Vector3D(1.0f,100.0f,1.0f);
+
 	mord = Phong;
-
-	bgmSound = MyXAudio::GetInstance()->SoundLoadWave("gameBGM.wav");
-
-	MyXAudio::GetInstance()->SoundPlayLoopWave(bgmSound, 0.05f);
 }
 
 void GameScene::Finalize()
@@ -84,15 +100,16 @@ void GameScene::LoadResources()
 	modelSword = std::make_unique<Model>("chr_sword");
 	modelSkydome = std::make_unique<Model>("skydome");
 	modelGround = std::make_unique<Model>("ground");
-	modelSphere = std::make_unique<Model>("sphere");
+	modelTree = std::make_unique<Model>("tree");
 	modelSmoothSphere = std::make_unique<Model>("sphere", false, true);
 #pragma endregion
 
 	skydome.reset(Object3D::Create(modelSkydome.get()));
 	ground.reset(TouchableObject::Create(modelGround.get()));
-	sphere.reset(Object3D::Create(modelSphere.get()));
+	tree.reset(Object3D::Create(modelTree.get()));
 	sphere2.reset(Object3D::Create(modelSmoothSphere.get()));
 #pragma region Texture
+	test2d.reset(Object2D::Create());
 	reimuG = dx->LoadTextureGraph(L"Resources/reimu.png");
 	grassG = dx->LoadTextureGraph(L"Resources/grass.png");
 #pragma endregion
@@ -103,6 +120,7 @@ void GameScene::LoadResources()
 	//sprite->SetTextureLeftTop(Vector2D(sprite->GetSize().x / 2.0f, sprite->GetSize().y / 2.0f));
 	//sprite->SetTextureSize(Vector2D(sprite->GetSize().x / 2.0f, sprite->GetSize().y / 2.0f));
 #pragma endregion
+	lightG = dx->LoadTextureGraph(L"Resources/lightTex.jpg");
 }
 
 void GameScene::Update()
@@ -146,9 +164,9 @@ void GameScene::Update()
 	float front = (float)input->GetKey(DIK_N) - input->GetKey(DIK_M);
 	float up = (float)input->GetKey(DIK_DOWN) - input->GetKey(DIK_UP);
 	if (left == 0 && front == 0 && up == 0) left = 1.0f;
-	Light::GetInstance()->SetDirLightDir(0, { left, up, front });
-	sphere->mat.rotAngle.y += 0.02f;
-	sphere->ColliderUpdate();
+	//Light::GetInstance()->SetDirLightDir(0, { left, up, front });
+	//sphere->mat.rotAngle.y += 0.02f;
+	tree->ColliderUpdate();
 	sphere2->mat.rotAngle.y += 0.02f;
 	sphere2->ColliderUpdate();
 
@@ -211,10 +229,11 @@ void GameScene::Draw()
 {
 	ground->Draw();
 	skydome->Draw();
-	sphere->Draw();
-	sphere2->Draw();
-	player->Draw();
-	square->Draw(grassG);
+	tree->Draw();
+	//sphere2->Draw();
+	//player->Draw();
+	//square->Draw(grassG);
 
-	sprite->Draw();
+	test2d->Draw(lightG);
+	//sprite->Draw();
 }

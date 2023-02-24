@@ -312,6 +312,12 @@
     <ClCompile Include="Engine\Scene\TitleScene.cpp">
       <Filter>ソース ファイル\lib\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\3d\Light\VolumeLight.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\3d\obj\Object2D.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\base\input\InputJoypad.h">
@@ -493,6 +499,12 @@
     </ClInclude>
     <ClInclude Include="Engine\Scene\TitleScene.h">
       <Filter>ヘッダー ファイル\lib\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\3d\Light\VolumeLight.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\3d\obj\Object2D.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
