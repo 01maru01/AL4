@@ -192,6 +192,8 @@ void GameScene::LoadResources()
 
 	skydome.reset(Object3D::Create(modelSkydome.get()));
 	ground.reset(TouchableObject::Create(modelGround.get()));
+	//float groundscale = 10.0f;
+	//ground->SetScale({ groundscale,groundscale,groundscale });
 	tree.reset(Object3D::Create(modelTree.get()));
 	tree2.push_back(Object3D::Create(modelTree2.get()));
 	tree2.push_back(Object3D::Create(modelTree2.get()));

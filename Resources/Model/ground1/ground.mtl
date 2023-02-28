@@ -1,7 +1,7 @@
-# 3ds Max Wavefront OBJ Exporter v0.99 - (c)2007 guruware
-# File Created: 13.10.2020 00:12:54
+# Blender MTL File: 'ground.blend'
+# Material Count: 1
 
-newmtl Material__44
+newmtl マテリアル.002
 Ns 250.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.800000 0.800000 0.800000
