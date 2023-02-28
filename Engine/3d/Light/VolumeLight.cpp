@@ -6,13 +6,15 @@ void VolumeLightObj::SetLightGraph(int handle_)
 	handle = handle_;
 }
 
-void VolumeLightObj::Initialize(const Vector2D& scale_, const Vector3D& pos, const Vector3D& dir)
+void VolumeLightObj::Initialize(const Vector2D& scale_, const Vector3D& pos, float angle)
 {
 	for (int i = 0; i < 2; i++) {
 		lightObj[i].ObjInitialize(Vector2D(0.5f, 0.0f));
-		lightObj[i].GetMatObj().scale = Vector3D(scale_, 1.0f);
-		lightObj[i].GetMatObj().trans = pos;
 	}
+	lightObj[0].GetMatObj().scale = Vector3D(scale_, 1.0f);
+	lightObj[0].GetMatObj().trans = pos;
+	lightObj[0].GetMatObj().rotAngle.z = MyMath::ConvertToRad(angle);
+	lightObj[1].SetParent(&lightObj[0]);
 	lightObj[1].GetMatObj().rotAngle.y = MyMath::ConvertToRad(90.0f);
 }
 

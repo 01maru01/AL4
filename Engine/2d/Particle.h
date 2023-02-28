@@ -4,6 +4,7 @@
 #include "VertIdxBuff.h"
 #include "ICamera.h"
 #include "ParticleCommon.h"
+#include "Wind.h"
 
 class Particle :public VertIdxBuff
 {
@@ -28,18 +29,30 @@ private:
 	ComPtr<ID3D12Resource> material;
 	ConstBufferDataMaterial* mapMaterial = nullptr;
 
+	struct ConstBufferDataWind {
+		Vector3D windDir;
+		float pad1;
+		Vector3D windForce;
+		float elapsedTime;
+	};
+	ComPtr<ID3D12Resource> windRes;
+	ConstBufferDataWind* constMapWind = nullptr;
+
 	Vector3D vertex;
 	Vector4D color = { 1.0f,1.0f,1.0f,1.0f };
 
 	float scale = 1.0f;
 
+	Wind wind;
+
 	bool isBillboard = false;
-	bool isBillboardY = false;
+	bool isBillboardY = true;
 public:
 	static void SetCamera(ICamera* camera_);
 
 	void Initialize();
 	Particle();
+	Particle(const Vector3D& pos_);
 	void MatUpdate();
 	void Draw(int handle);
 

@@ -28,6 +28,8 @@ Matrix OrthoLH(const int winwidth, const int winheight, float nearZ, float farZ)
 
 float ConvertToRad(float angle);
 
+float GetRand(float min, float max);
+
 bool CollisionCircleLay(Vector3D startL, Vector3D endL, Vector3D pos, float rad);
 
 class MatView{

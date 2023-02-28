@@ -20,7 +20,7 @@ void ParticleCommon::Initialize()
 
 	Shader shader;
 	shader.Initialize(L"Resources/shader/ParticleVS.hlsl", L"Resources/shader/ParticlePS.hlsl","main", L"Resources/shader/ParticleGS.hlsl");
-	pipeline.Init(shader, inputLayout, _countof(inputLayout), 2, D3D12_PRIMITIVE_TOPOLOGY_TYPE_POINT, D3D12_FILL_MODE_SOLID, D3D12_CULL_MODE_NONE, D3D12_DEPTH_WRITE_MASK_ZERO);
+	pipeline.Init(shader, inputLayout, _countof(inputLayout), 3, D3D12_PRIMITIVE_TOPOLOGY_TYPE_POINT, D3D12_FILL_MODE_SOLID, D3D12_CULL_MODE_NONE);
 	pipeline.SetBlend(GPipeline::ALPHA_BLEND);
 }
 

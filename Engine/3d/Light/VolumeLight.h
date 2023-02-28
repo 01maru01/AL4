@@ -10,7 +10,7 @@ private:
 	
 public:
 	static void SetLightGraph(int handle_);
-	void Initialize(const Vector2D& scale_, const Vector3D& pos, const Vector3D& dir);
+	void Initialize(const Vector2D& scale_, const Vector3D& pos, float angle);
 	void MatUpdate();
 	void Draw();
 };

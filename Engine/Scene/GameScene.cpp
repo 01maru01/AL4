@@ -21,9 +21,16 @@ void GameScene::MatUpdate()
 	skydome->MatUpdate();
 	player->MatUpdate();
 	tree->MatUpdate();
+	for (int i = 0; i < tree2.size(); i++)
+	{
+		tree2[i]->MatUpdate();
+	}
 	sphere2->MatUpdate();
 
-	square->MatUpdate();
+	for (int i = 0; i < grass.size(); i++)
+	{
+		grass[i].MatUpdate();
+	}
 	
 	testVolLight->MatUpdate();
 }
@@ -35,8 +42,10 @@ GameScene::GameScene()
 GameScene::~GameScene()
 {
 	delete camera;
-
-	delete square;
+	for (int i = 0; i < tree2.size(); i++)
+	{
+		delete tree2[i];
+	}
 }
 
 void GameScene::Initialize()
@@ -82,10 +91,85 @@ void GameScene::Initialize()
 	player->PlayerInitialize(modelSword.get());
 
 	Particle::SetCamera(camera);
-	square = new Particle();
+	grass.push_back(Particle());
+	float dis = 6.0f;
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-dis, 0.0f), 0.0f, 0.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-dis, 0.0f), 0.0f, 0.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-dis, 0.0f), 0.0f, 0.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-0.0f,dis), 0.0f, 0.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-0.0f,dis), 0.0f, 0.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-0.0f,dis), 0.0f, 0.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-dis, 0.0f), 0.0f, 2.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-dis, 0.0f), 0.0f, 2.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-dis, 0.0f), 0.0f, 2.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-0.0f, dis), 0.0f, 2.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-0.0f, dis), 0.0f, 2.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-0.0f, dis), 0.0f, 2.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-dis, 0.0f), 0.0f, -2.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-dis, 0.0f), 0.0f, -2.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-dis, 0.0f), 0.0f, -2.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-0.0f, dis), 0.0f, -2.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-0.0f, dis), 0.0f, -2.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-0.0f, dis), 0.0f, -2.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-dis, 0.0f), 0.0f, -3.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-dis, 0.0f), 0.0f, -3.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-dis, 0.0f), 0.0f, -3.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-0.0f, dis), 0.0f, -3.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-0.0f, dis), 0.0f, -3.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-0.0f, dis), 0.0f, -3.0f)));
+
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-dis, 0.0f) + dis, 0.0f, 0.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-dis, 0.0f) + dis, 0.0f, 0.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-dis, 0.0f) + dis, 0.0f, 0.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-0.0f, dis) + dis, 0.0f, 0.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-0.0f, dis) + dis, 0.0f, 0.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-0.0f, dis) + dis, 0.0f, 0.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-dis, 0.0f) + dis, 0.0f, 2.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-dis, 0.0f) + dis, 0.0f, 2.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-dis, 0.0f) + dis, 0.0f, 2.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-0.0f, dis) + dis, 0.0f, 2.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-0.0f, dis) + dis, 0.0f, 2.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-0.0f, dis) + dis, 0.0f, 2.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-dis, 0.0f) + dis, 0.0f, -2.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-dis, 0.0f) + dis, 0.0f, -2.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-dis, 0.0f) + dis, 0.0f, -2.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-0.0f, dis) + dis, 0.0f, -2.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-0.0f, dis) + dis, 0.0f, -2.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-0.0f, dis) + dis, 0.0f, -2.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-dis, 0.0f) + dis, 0.0f, -3.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-dis, 0.0f) + dis, 0.0f, -3.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-dis, 0.0f) + dis, 0.0f, -3.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-0.0f, dis) + dis, 0.0f, -3.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-0.0f, dis) + dis, 0.0f, -3.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-0.0f, dis) + dis, 0.0f, -3.0f)));
+
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-dis, 0.0f) - dis, 0.0f, 0.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-dis, 0.0f) - dis, 0.0f, 0.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-dis, 0.0f) - dis, 0.0f, 0.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-0.0f, dis) - dis, 0.0f, 0.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-0.0f, dis) - dis, 0.0f, 0.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-0.0f, dis) - dis, 0.0f, 0.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-dis, 0.0f) - dis, 0.0f, 2.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-dis, 0.0f) - dis, 0.0f, 2.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-dis, 0.0f) - dis, 0.0f, 2.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-0.0f, dis) - dis, 0.0f, 2.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-0.0f, dis) - dis, 0.0f, 2.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-0.0f, dis) - dis, 0.0f, 2.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-dis, 0.0f) - dis, 0.0f, -2.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-dis, 0.0f) - dis, 0.0f, -2.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-dis, 0.0f) - dis, 0.0f, -2.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-0.0f, dis) - dis, 0.0f, -2.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-0.0f, dis) - dis, 0.0f, -2.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-0.0f, dis) - dis, 0.0f, -2.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-dis, 0.0f) - dis, 0.0f, -3.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-dis, 0.0f) - dis, 0.0f, -3.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-dis, 0.0f) - dis, 0.0f, -3.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-0.0f, dis) - dis, 0.0f, -3.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-0.0f, dis) - dis, 0.0f, -3.0f)));
+	grass.push_back(Particle(Vector3D(MyMath::GetRand(-0.0f, dis) - dis, 0.0f, -3.0f)));
 
 	testVolLight.reset(new VolumeLightObj());
-	testVolLight->Initialize(Vector2D(30.0f, 10.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, -1.0f, 0.0f));
+	testVolLight->Initialize(Vector2D(5.0f, 15.0f), Vector3D(0.0f, 0.0f, -2.0f), 30.0f);
 
 	mord = Phong;
 }
@@ -102,12 +186,29 @@ void GameScene::LoadResources()
 	modelSkydome = std::make_unique<Model>("skydome");
 	modelGround = std::make_unique<Model>("ground");
 	modelTree = std::make_unique<Model>("tree");
+	modelTree2 = std::make_unique<Model>("tree2");
 	modelSmoothSphere = std::make_unique<Model>("sphere", false, true);
 #pragma endregion
 
 	skydome.reset(Object3D::Create(modelSkydome.get()));
 	ground.reset(TouchableObject::Create(modelGround.get()));
 	tree.reset(Object3D::Create(modelTree.get()));
+	tree2.push_back(Object3D::Create(modelTree2.get()));
+	tree2.push_back(Object3D::Create(modelTree2.get()));
+	tree2.push_back(Object3D::Create(modelTree2.get()));
+	tree2.push_back(Object3D::Create(modelTree2.get()));
+	tree2.push_back(Object3D::Create(modelTree2.get()));
+	tree2.push_back(Object3D::Create(modelTree2.get()));
+	tree2.push_back(Object3D::Create(modelTree2.get()));
+	tree2.push_back(Object3D::Create(modelTree2.get()));
+	tree2.push_back(Object3D::Create(modelTree2.get()));
+	tree2.push_back(Object3D::Create(modelTree2.get()));
+	tree2.push_back(Object3D::Create(modelTree2.get()));
+	tree2.push_back(Object3D::Create(modelTree2.get()));
+	for (int i = 0; i < tree2.size(); i++)
+	{
+		tree2[i]->SetPosition(Vector3D(-12.0f + 2.0f * i, 0.0f, 5.0f+MyMath::GetRand(0.0f,6.0f)));
+	}
 	sphere2.reset(Object3D::Create(modelSmoothSphere.get()));
 #pragma region Texture
 	VolumeLightObj::SetLightGraph(dx->LoadTextureGraph(L"Resources/lightTex.jpg"));
@@ -152,8 +253,8 @@ void GameScene::Update()
 		SceneManager::GetInstance()->SetNextScene("TITLESCENE");
 	}
 
-	square->SetIsBillboard(input->GetKey(DIK_R));
-	square->SetIsBillboardY(input->GetKey(DIK_T));
+	//grass->SetIsBillboard(input->GetKey(DIK_R));
+	//grass->SetIsBillboardY(input->GetKey(DIK_T));
 
 	camera->Update();
 
@@ -229,10 +330,18 @@ void GameScene::Draw()
 {
 	ground->Draw();
 	skydome->Draw();
-	//tree->Draw();
+	tree->Draw();
+	for (int i = 0; i < tree2.size(); i++)
+	{
+		tree2[i]->Draw();
+	}
 	//sphere2->Draw();
 	//player->Draw();
-	//square->Draw(grassG);
+	
+	for (int i = 0; i < grass.size(); i++)
+	{
+		grass[i].Draw(grassG);
+	}
 
 	testVolLight->Draw();
 	//sprite->Draw();

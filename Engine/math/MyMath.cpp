@@ -1,5 +1,6 @@
 #include "MyMath.h"
 #include <cassert>
+#include <random>
 
 Matrix MyMath::LookAtLH(const Vector3D& eye, const Vector3D& target, const Vector3D& up)
 {
@@ -39,6 +40,14 @@ Matrix MyMath::LookAtLH(const Vector3D& eye, const Vector3D& target, const Vecto
 float MyMath::ConvertToRad(float angle)
 {
 	return angle / 180.0f * PI;
+}
+
+float MyMath::GetRand(float min, float max)
+{
+	std::random_device rd;
+	std::mt19937_64 eng(rd());
+	std::uniform_real_distribution<float> distr(min, max);
+	return distr(eng);
 }
 
 bool MyMath::CollisionCircleLay(Vector3D startL, Vector3D endL, Vector3D pos, float rad)

@@ -3,6 +3,7 @@
 Texture2D<float4> tex: register(t0);
 SamplerState smp : register(s0);
 
+
 float4 main(VSOutput input) : SV_TARGET
 {
 	//float3 light = normalize(float3(1,-1,1));
@@ -82,7 +83,42 @@ float4 main(VSOutput input) : SV_TARGET
 		}
 	}
 
+	////	フォグ
+	//float4 m_FogColor = float4(1.0f, 1.0f, 1.0f, 1.0f);                  //フォグカラー
+	//float  m_Near = 0.0f;             //フォグの開始位置
+	//float  m_Far = 1.0f;             //フォグの終了位置
+	//float  m_FogLen = 1.0f;             //m_Far - m_Nearの結果
+	////	頂点と視点との距離を計算する
+	//float d = distance(input.svpos.xyz, cameraPos.xyz);
+	//
+	//
+	//if( d < m_Near )
+	//  d = 0.0f;
+	//else if( d > m_Far )
+	//  d = 1.0f;
+	//else
+	//  d = ( d - m_Near ) / ( m_FogLen );
+	//
+	//// //オブジェクトのランバート拡散照明の計算結果とフォグカラーを線形合成する
+	//// Out = In.Col * tex2D( tex0, In.Tex ) * ( 1.0f - d ) + m_FogColor * d;
+	//
+	//float f = (m_Far - d) / (m_Far - m_Near);
+	//f = clamp(f, 0.0f, 1.0f);
+	////オブジェクトのランバート拡散照明の計算結果とフォグカラーを線形合成する
+
+	float fogStart = 0.1f;
+	float fogEnd = 10.0f;
+	float4 fogColor = float4(1.0f, 1.0f, 1.0f, 1.0f);                  //フォグカラー
+
+	const float near = 0.1;
+	const float far = 30.0;
+	const float linerDepth = 1.0 / (far - near);
+
+	//float3 pos_ = (matview * float4(input.worldpos.xyz, 1.0)).xyz;
+	float linerPos = length(cameraPos - input.worldpos) * linerDepth;
+	float fogFactor = saturate((fogEnd - linerPos) / (fogEnd - fogStart));
+
 	float4 texcolor = float4(tex.Sample(smp,input.uv));
-	return shadercolor * texcolor;
+	return lerp(fogColor, shadercolor * texcolor, fogFactor);
 	//return float4(texcolor.rgb * shader_color, texcolor.a*m_alpha);
 }

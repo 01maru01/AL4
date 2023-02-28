@@ -10,6 +10,13 @@ cbuffer ConstBufferDataTransform:register(b1)
 	float scale;
 };
 
+cbuffer ConstBufferDataTransform:register(b2)
+{
+	float3 windDir;
+	float3 windForce;
+	float elapsedTime;
+};
+
 struct VSOutput
 {
 	//	セマンティック(SV_はSystem Value)

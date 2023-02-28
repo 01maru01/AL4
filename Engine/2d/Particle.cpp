@@ -56,11 +56,27 @@ void Particle::Initialize()
 	//	定数バッファのマッピング
 	result = material->Map(0, nullptr, (void**)&mapMaterial);	//	マッピング
 	assert(SUCCEEDED(result));
+
+	cbResourceDesc.Width = (sizeof(ConstBufferDataWind) + 0xFF) & ~0xFF;
+	//	生成
+	result = dev->CreateCommittedResource(
+		&cbHeapProp,	//	ヒープ設定
+		D3D12_HEAP_FLAG_NONE,
+		&cbResourceDesc,	//	リソース設定
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
+		IID_PPV_ARGS(&windRes));
+	assert(SUCCEEDED(result));
+
+	//	定数バッファのマッピング
+	result = windRes->Map(0, nullptr, (void**)&constMapWind);	//	マッピング
+	assert(SUCCEEDED(result));
 #pragma endregion
-	vertex = { 0.0f,0.0f,0.0f };
 	UINT sizePV = static_cast<UINT>(sizeof(vertex) * 1);
 
 	BuffInitialize(dev, sizePV, 1);
+
+	wind.Initialize();
 }
 
 Particle::Particle()
@@ -68,8 +84,19 @@ Particle::Particle()
 	Initialize();
 }
 
+Particle::Particle(const Vector3D& pos_)
+{
+	vertex = pos_;
+	Initialize();
+}
+
 void Particle::MatUpdate()
 {
+	wind.Update();
+	constMapWind->windDir = wind.GetDir();
+	constMapWind->windForce = wind.GetForce();
+	constMapWind->elapsedTime = MyMath::ConvertToRad(wind.GetTime());
+
 	constMapTransform->matBillboard = Matrix();
 	if (isBillboardY) {
 		constMapTransform->matBillboard = camera->GetBillboardY();
@@ -94,6 +121,7 @@ void Particle::Draw(int handle)
 	cmdList->SetGraphicsRootDescriptorTable(0, dx->GetTextureHandle(handle));
 	cmdList->SetGraphicsRootConstantBufferView(1, material->GetGPUVirtualAddress());
 	cmdList->SetGraphicsRootConstantBufferView(2, transform->GetGPUVirtualAddress());
+	cmdList->SetGraphicsRootConstantBufferView(3, windRes->GetGPUVirtualAddress());
 
 	cmdList->DrawInstanced(1, 1, 0, 0);
 }
