@@ -31,11 +31,12 @@ void main(
 	GSOutput element;
 	for (uint i = 0; i < vnum; i++) {
 		float4 offset = bottom_offset_array[i] * scale;
-		offset.x += windForce * sin(dot(offset.xz, windDir.xz) + elapsedTime) * offset.y;;
+		offset.x += windForce * sin(dot(offset.xz, windDir.xz) + elapsedTime) * offset.y;
 
 		offset = mul(matBillboard, offset);
 		//offset = mul(matWorld, offset);
 		float4 pos_ = input[0].svpos + offset;
+		element.worldpos = pos_;
 		element.svpos = mul(mat, pos_);
 		element.uv = uv_array[i];
 		output.Append(element);

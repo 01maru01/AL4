@@ -18,6 +18,7 @@ private:
 	struct ConstBufferDataTransform {
 		Matrix mat;
 		Matrix matBillboard;
+		Vector3D cameraPos;
 		float scale;
 	};
 	ComPtr<ID3D12Resource> transform;

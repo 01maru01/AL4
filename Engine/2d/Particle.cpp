@@ -105,6 +105,7 @@ void Particle::MatUpdate()
 		constMapTransform->matBillboard = camera->GetBillboard();
 	}
 	constMapTransform->scale = scale;
+	constMapTransform->cameraPos = camera->GetEye();
 	constMapTransform->mat = camera->GetViewProj();
 
 	mapMaterial->color = color;
