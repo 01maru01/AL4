@@ -39,9 +39,10 @@ void MyDebugCamera::Update()
 	if (disEyeTarget < 10) {
 		disEyeTarget = 10;
 	}
-	target += rightVec * (float)(input->GetKey(DIK_RIGHT) - input->GetKey(DIK_LEFT));
-	target += downVec * (float)(input->GetKey(DIK_DOWN) - input->GetKey(DIK_UP));
-	target += -frontVec * (float)(input->GetKey(DIK_Z) - input->GetKey(DIK_X));
+	float spd = 0.1f;
+	target += rightVec * (float)(input->GetKey(DIK_RIGHT) - input->GetKey(DIK_LEFT)) * spd;
+	target += downVec * (float)(input->GetKey(DIK_DOWN) - input->GetKey(DIK_UP)) * spd;
+	target += -frontVec * (float)(input->GetKey(DIK_Z) - input->GetKey(DIK_X)) * spd;
 
 	frontVec = target - eye;
 	frontVec.normalize();

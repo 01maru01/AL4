@@ -107,7 +107,7 @@ float4 main(VSOutput input) : SV_TARGET
 	////オブジェクトのランバート拡散照明の計算結果とフォグカラーを線形合成する
 
 	float fogStart = 0.1f;
-	float fogEnd = 10.0f;
+	float fogEnd = 5.0f;
 	float4 fogColor = float4(1.0f, 1.0f, 1.0f, 1.0f);                  //フォグカラー
 
 	const float near = 0.1;
@@ -120,5 +120,5 @@ float4 main(VSOutput input) : SV_TARGET
 
 	float4 texcolor = float4(tex.Sample(smp,input.uv));
 	return lerp(fogColor, shadercolor * texcolor, fogFactor);
-	//return float4(texcolor.rgb * shader_color, texcolor.a*m_alpha);
+	//return float4(texcolor.rgb * shadercolor, texcolor.a*m_alpha);
 }

@@ -31,6 +31,7 @@ private:
 #pragma region Model
 	std::unique_ptr<Model> modelSkydome;
 	std::unique_ptr<Model> modelGround;
+	std::unique_ptr<Model> modelHill;
 	std::unique_ptr<Model> modelSword;
 	std::unique_ptr<Model> modelTree;
 	std::unique_ptr<Model> modelTree2;
@@ -49,11 +50,12 @@ private:
 #pragma endregion
 	std::unique_ptr<Object3D> skydome;
 	std::unique_ptr<TouchableObject> ground;
+	std::unique_ptr<Object3D> hill;
 	std::unique_ptr<Object3D> tree;
 	std::vector<Object3D*> tree2;
 	std::unique_ptr<Object3D> sphere2;
 	std::unique_ptr<Player> player;
-	std::unique_ptr<VolumeLightObj> testVolLight;
+	std::vector<VolumeLightObj> testVolLight;
 
 	int mord = 0;
 
