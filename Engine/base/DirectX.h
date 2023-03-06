@@ -16,6 +16,9 @@
 
 class MyDirectX
 {
+public:
+	static int whiteTexHandle;
+
 private:
 	Window* win = nullptr;
 
@@ -68,6 +71,8 @@ private:
 
 private:
 	void DebugLayer();
+
+	void LoadWhiteTex();
 
 	void InitializeFPS();
 	void UpdateFPS();

@@ -4,6 +4,8 @@
 #include <DirectXTex.h>
 using namespace DirectX;
 
+int MyDirectX::whiteTexHandle = 2;
+
 // 対応レベルの配列
 D3D_FEATURE_LEVEL levels[] = {
 	D3D_FEATURE_LEVEL_12_1,
@@ -26,6 +28,70 @@ void MyDirectX::DebugLayer()
 		debugController->EnableDebugLayer();
 		debugController->SetEnableGPUBasedValidation(TRUE);
 	}
+}
+
+void MyDirectX::LoadWhiteTex()
+{
+	textureNum++;
+
+	const size_t textureWidth = 256;
+	const size_t textureHeight = 256;
+	const size_t imageDataCount = textureWidth * textureHeight;
+	XMFLOAT4* imageData = new XMFLOAT4[imageDataCount];
+
+	//	画像の色設定
+	for (size_t i = 0; i < imageDataCount; i++) {
+		imageData[i].x = 1.0f;
+		imageData[i].y = 1.0f;
+		imageData[i].z = 1.0f;
+		imageData[i].w = 1.0f;
+	}
+
+	//	ヒープ設定
+	D3D12_HEAP_PROPERTIES textureHeapProp{};
+	textureHeapProp.Type = D3D12_HEAP_TYPE_CUSTOM;
+	textureHeapProp.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_WRITE_BACK;
+	textureHeapProp.MemoryPoolPreference = D3D12_MEMORY_POOL_L0;
+	//	リソース設定
+	D3D12_RESOURCE_DESC tectureResourceDesc{};
+	tectureResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
+	tectureResourceDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+	tectureResourceDesc.Width = textureWidth;
+	tectureResourceDesc.Height = textureHeight;
+	tectureResourceDesc.DepthOrArraySize = 1;
+	tectureResourceDesc.MipLevels = 1;
+	tectureResourceDesc.SampleDesc.Count = 1;
+	//	テクスチャバッファ生成
+	int buffIndex = textureNum - 1;
+	HRESULT result = device->CreateCommittedResource(
+		&textureHeapProp,
+		D3D12_HEAP_FLAG_NONE,
+		&tectureResourceDesc,
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
+		IID_PPV_ARGS(&texBuff[buffIndex]));
+	//	テクスチャバッファ転送
+	result = texBuff[buffIndex]->WriteToSubresource(
+		0, nullptr, imageData, sizeof(XMFLOAT4) * textureWidth, sizeof(XMFLOAT4) * imageDataCount
+	);
+
+	delete[] imageData;
+
+#pragma region SetSRV
+	incrementSize = device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	D3D12_CPU_DESCRIPTOR_HANDLE srvHandle = screenSRVHeap[0]->GetCPUDescriptorHandleForHeapStart();
+	srvHandle.ptr += incrementSize * textureNum;
+
+	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};
+	srvDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
+	srvDesc.Texture2D.MipLevels = 1;
+
+	device->CreateShaderResourceView(texBuff[buffIndex].Get(), &srvDesc, srvHandle);
+
+	whiteTexHandle = textureNum;
+#pragma endregion
 }
 
 void MyDirectX::InitializeFPS()
@@ -263,7 +329,7 @@ void MyDirectX::Initialize()
 		screenRTVHeap.Get()->GetCPUDescriptorHandleForHeapStart());
 #pragma endregion
 #pragma region SRV
-	textureNum = 0;
+	textureNum = 0;			//	画像ロード失敗用の白色画像
 	const size_t kMaxSRVCount = 2056;
 
 	//	heapSETTING
@@ -342,6 +408,9 @@ void MyDirectX::Initialize()
 	viewPort.Init(Window::window_width, Window::window_height, 0, 0);
 	// シザー矩形
 	scissorRect.Init(0, Window::window_width, 0, Window::window_height);
+
+	//	白色画像ロード
+	LoadWhiteTex();
 }
 
 void MyDirectX::SetResourceBarrier(D3D12_RESOURCE_BARRIER& desc, D3D12_RESOURCE_STATES StateBefore, D3D12_RESOURCE_STATES StateAfter, ID3D12Resource* pResource)
@@ -463,7 +532,6 @@ void MyDirectX::PostDrawScreen()
 
 int MyDirectX::LoadTextureGraph(const wchar_t* textureName, bool tga)
 {
-	textureNum++;
 
 	TexMetadata metadata{};
 	ScratchImage scratchImg{};
@@ -480,6 +548,12 @@ int MyDirectX::LoadTextureGraph(const wchar_t* textureName, bool tga)
 			WIC_FLAGS_NONE,
 			&metadata, scratchImg);
 	}
+
+	if (!SUCCEEDED(result)) {
+		//	読み込みに失敗したら
+		return whiteTexHandle;
+	}
+	textureNum++;
 	
 	//	ミニマップ生成
 	ScratchImage mipChain{};
