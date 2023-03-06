@@ -244,7 +244,7 @@ void GameScene::LoadResources()
 	modelGround = std::make_unique<Model>("ground");
 	//	丘
 	modelHill = std::make_unique<Model>("ground1");
-	modelTree = std::make_unique<Model>("tree");
+	modelTree = std::make_unique<Model>("boneTest", true);
 	modelTree2 = std::make_unique<Model>("tree2");
 	modelSmoothSphere = std::make_unique<Model>("sphere", false, true);
 #pragma endregion
@@ -396,26 +396,26 @@ void GameScene::Update()
 
 void GameScene::Draw()
 {
-	//	地面
-	ground->Draw();
-	hill->Draw();
-	//	天球
-	skydome->Draw();
+	////	地面
+	//ground->Draw();
+	//hill->Draw();
+	////	天球
+	//skydome->Draw();
 	//	木
 	tree->Draw();
-	for (int i = 0; i < tree2.size(); i++)
-	{
-		tree2[i]->Draw();
-	}
-	
-	for (int i = 0; i < grass.size(); i++)
-	{
-		grass[i].Draw(grassG);
-	}
-	for (int i = 0; i < testVolLight.size(); i++)
-	{
-		testVolLight[i].Draw();
-	}
+	//for (int i = 0; i < tree2.size(); i++)
+	//{
+	//	tree2[i]->Draw();
+	//}
+	//
+	//for (int i = 0; i < grass.size(); i++)
+	//{
+	//	grass[i].Draw(grassG);
+	//}
+	//for (int i = 0; i < testVolLight.size(); i++)
+	//{
+	//	testVolLight[i].Draw();
+	//}
 
 	//sprite->Draw();
 }
