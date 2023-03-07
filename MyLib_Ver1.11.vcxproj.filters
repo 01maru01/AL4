@@ -159,12 +159,6 @@
     <ClCompile Include="Engine\Scene\IScene.cpp">
       <Filter>ソース ファイル\lib\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\3d\obj\Material.cpp">
-      <Filter>ソース ファイル\lib\Obj\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\3d\obj\Model.cpp">
-      <Filter>ソース ファイル\lib\Obj\Model</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\2d\Sprite.cpp">
       <Filter>ソース ファイル\lib\Sprite</Filter>
     </ClCompile>
@@ -270,20 +264,11 @@
     <ClCompile Include="Engine\2d\Particle.cpp">
       <Filter>ソース ファイル\lib\Particle</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\3d\obj\Mesh.cpp">
-      <Filter>ソース ファイル\lib\Obj\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\3d\obj\Object3D.cpp">
-      <Filter>ソース ファイル\lib\Obj\Model</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Collider\CollisionAttribute.cpp">
       <Filter>ソース ファイル\lib\Collider</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Collider\QueryCallBack.cpp">
       <Filter>ソース ファイル\lib\Collider</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\3d\obj\TouchableObject.cpp">
-      <Filter>ソース ファイル\lib\Obj</Filter>
     </ClCompile>
     <ClCompile Include="Engine\3d\Light\SpotLight.cpp">
       <Filter>ソース ファイル\lib\Light</Filter>
@@ -315,10 +300,25 @@
     <ClCompile Include="Engine\3d\Light\VolumeLight.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\3d\obj\Object2D.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="Engine\3d\Object\Model.cpp">
+      <Filter>ソース ファイル\lib\Obj\Model</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\3d\obj\Wind.cpp">
+    <ClCompile Include="Engine\3d\Object\Object3D.cpp">
+      <Filter>ソース ファイル\lib\Obj\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\3d\Object\TouchableObject.cpp">
+      <Filter>ソース ファイル\lib\Obj\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\3d\Object\Material.cpp">
+      <Filter>ソース ファイル\lib\Obj\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\3d\Object\Mesh.cpp">
+      <Filter>ソース ファイル\lib\Obj\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\3d\Object\Object2D.cpp">
+      <Filter>ソース ファイル\lib\Obj</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\3d\Object\Wind.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -346,12 +346,6 @@
     </ClInclude>
     <ClInclude Include="Engine\2d\SpriteCommon.h">
       <Filter>ヘッダー ファイル\lib\Sprite</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\3d\obj\Material.h">
-      <Filter>ヘッダー ファイル\lib\Obj\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\3d\obj\Model.h">
-      <Filter>ヘッダー ファイル\lib\Obj\Model</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Scene\GameScene.h">
       <Filter>ヘッダー ファイル\lib\Scene</Filter>
@@ -461,20 +455,11 @@
     <ClInclude Include="Engine\2d\Particle.h">
       <Filter>ヘッダー ファイル\lib\Particle</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\3d\obj\Mesh.h">
-      <Filter>ヘッダー ファイル\lib\Obj\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\3d\obj\Object3D.h">
-      <Filter>ヘッダー ファイル\lib\Obj\Model</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Collider\CollisionAttribute.h">
       <Filter>ヘッダー ファイル\lib\Collider</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Collider\QueryCallBack.h">
       <Filter>ヘッダー ファイル\lib\Collider</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\3d\obj\TouchableObject.h">
-      <Filter>ヘッダー ファイル\lib\Obj</Filter>
     </ClInclude>
     <ClInclude Include="Engine\3d\Light\Light.h">
       <Filter>ヘッダー ファイル\lib\Light</Filter>
@@ -506,11 +491,26 @@
     <ClInclude Include="Engine\3d\Light\VolumeLight.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\3d\obj\Object2D.h">
+    <ClInclude Include="Engine\3d\Object\Wind.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\3d\obj\Wind.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="Engine\3d\Object\Mesh.h">
+      <Filter>ヘッダー ファイル\lib\Obj\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\3d\Object\Model.h">
+      <Filter>ヘッダー ファイル\lib\Obj\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\3d\Object\Object3D.h">
+      <Filter>ヘッダー ファイル\lib\Obj\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\3d\Object\TouchableObject.h">
+      <Filter>ヘッダー ファイル\lib\Obj\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\3d\Object\Material.h">
+      <Filter>ヘッダー ファイル\lib\Obj\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\3d\Object\Object2D.h">
+      <Filter>ヘッダー ファイル\lib\Obj</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -11,6 +11,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\3d\Object\Material.cpp" />
+    <ClCompile Include="Engine\3d\Object\Mesh.cpp" />
+    <ClCompile Include="Engine\3d\Object\Model.cpp" />
+    <ClCompile Include="Engine\3d\Object\Object2D.cpp" />
+    <ClCompile Include="Engine\3d\Object\Object3D.cpp" />
+    <ClCompile Include="Engine\3d\Object\TouchableObject.cpp" />
+    <ClCompile Include="Engine\3d\Object\Wind.cpp" />
     <ClCompile Include="Engine\Scene\AbstractSceneFactory.cpp" />
     <ClCompile Include="Engine\3d\Light\CircleShadow.cpp" />
     <ClCompile Include="Engine\Collider\Collision.cpp" />
@@ -30,10 +37,7 @@
     <ClCompile Include="Engine\base\ImGuiManager.cpp" />
     <ClCompile Include="Engine\Scene\IScene.cpp" />
     <ClCompile Include="Engine\3d\Light\Light.cpp" />
-    <ClCompile Include="Engine\3d\obj\Material.cpp" />
-    <ClCompile Include="Engine\3d\obj\Mesh.cpp" />
     <ClCompile Include="Engine\Collider\MeshCollider.cpp" />
-    <ClCompile Include="Engine\3d\obj\Model.cpp" />
     <ClCompile Include="Engine\3d\camera\MyDebugCamera.cpp" />
     <ClCompile Include="Engine\base\GPipeline.cpp" />
     <ClCompile Include="Engine\base\input\Input.cpp" />
@@ -43,7 +47,6 @@
     <ClCompile Include="Engine\base\MyGame.cpp" />
     <ClCompile Include="Engine\math\MyMath.cpp" />
     <ClCompile Include="Engine\Audio\MyXAudio.cpp" />
-    <ClCompile Include="Engine\3d\obj\Object3D.cpp" />
     <ClCompile Include="Engine\2d\ParticleCommon.cpp" />
     <ClCompile Include="Engine\game\Player.cpp" />
     <ClCompile Include="Engine\3d\Light\PointLight.cpp" />
@@ -60,7 +63,6 @@
     <ClCompile Include="Engine\2d\SpriteCommon.cpp" />
     <ClCompile Include="Engine\2d\Particle.cpp" />
     <ClCompile Include="Engine\2d\TextureData.cpp" />
-    <ClCompile Include="Engine\3d\obj\TouchableObject.cpp" />
     <ClCompile Include="Engine\math\Vector2D.cpp" />
     <ClCompile Include="Engine\math\Vector3D.cpp" />
     <ClCompile Include="Engine\math\Vector4D.cpp" />
@@ -70,11 +72,16 @@
     <ClCompile Include="Engine\base\Window.cpp" />
     <ClCompile Include="Engine\3d\camera\NormalCamera.cpp" />
     <ClCompile Include="Engine\Scene\TitleScene.cpp" />
-    <ClCompile Include="Engine\3d\obj\Object2D.cpp" />
     <ClCompile Include="Engine\3d\Light\VolumeLight.cpp" />
-    <ClCompile Include="Engine\3d\obj\Wind.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\3d\Object\Material.h" />
+    <ClInclude Include="Engine\3d\Object\Mesh.h" />
+    <ClInclude Include="Engine\3d\Object\Model.h" />
+    <ClInclude Include="Engine\3d\Object\Object2D.h" />
+    <ClInclude Include="Engine\3d\Object\Object3D.h" />
+    <ClInclude Include="Engine\3d\Object\TouchableObject.h" />
+    <ClInclude Include="Engine\3d\Object\Wind.h" />
     <ClInclude Include="Engine\Scene\AbstractSceneFactory.h" />
     <ClInclude Include="Engine\3d\Light\CircleShadow.h" />
     <ClInclude Include="Engine\Collider\Collision.h" />
@@ -95,10 +102,7 @@
     <ClInclude Include="Engine\base\ImGuiManager.h" />
     <ClInclude Include="Engine\Collider\IScene.h" />
     <ClInclude Include="Engine\3d\Light\Light.h" />
-    <ClInclude Include="Engine\3d\obj\Material.h" />
-    <ClInclude Include="Engine\3d\obj\Mesh.h" />
     <ClInclude Include="Engine\Collider\MeshCollider.h" />
-    <ClInclude Include="Engine\3d\obj\Model.h" />
     <ClInclude Include="Engine\3d\camera\MyDebugCamera.h" />
     <ClInclude Include="Engine\base\GPipeline.h" />
     <ClInclude Include="Engine\base\input\Input.h" />
@@ -107,7 +111,6 @@
     <ClInclude Include="Engine\base\MyGame.h" />
     <ClInclude Include="Engine\math\MyMath.h" />
     <ClInclude Include="Engine\Audio\MyXAudio.h" />
-    <ClInclude Include="Engine\3d\obj\Object3D.h" />
     <ClInclude Include="Engine\2d\ParticleCommon.h" />
     <ClInclude Include="Engine\game\Player.h" />
     <ClInclude Include="Engine\3d\Light\PointLight.h" />
@@ -124,7 +127,6 @@
     <ClInclude Include="Engine\2d\SpriteCommon.h" />
     <ClInclude Include="Engine\2d\Particle.h" />
     <ClInclude Include="Engine\2d\TextureData.h" />
-    <ClInclude Include="Engine\3d\obj\TouchableObject.h" />
     <ClInclude Include="Engine\math\Vector2D.h" />
     <ClInclude Include="Engine\math\Vector3D.h" />
     <ClInclude Include="Engine\math\Vector4D.h" />
@@ -135,9 +137,7 @@
     <ClInclude Include="Engine\base\Window.h" />
     <ClInclude Include="Engine\3d\camera\NormalCamera.h" />
     <ClInclude Include="Engine\Scene\TitleScene.h" />
-    <ClInclude Include="Engine\3d\obj\Object2D.h" />
     <ClInclude Include="Engine\3d\Light\VolumeLight.h" />
-    <ClInclude Include="Engine\3d\obj\Wind.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="External\DirectXTex\DirectXTex_Desktop_2022_Win10.vcxproj">
@@ -260,7 +260,7 @@
       <ConformanceMode>false</ConformanceMode>
       <LanguageStandard>Default</LanguageStandard>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d\camera;$(ProjectDir)Engine\3d\Light;$(ProjectDir)Engine\3d\obj;$(ProjectDir)Engine\Audio;$(ProjectDir)Engine\base;$(ProjectDir)Engine\base\input;$(ProjectDir)Engine\Collider;$(ProjectDir)Engine\game;$(ProjectDir)Engine\math;$(ProjectDir)Engine\Scene;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d\camera;$(ProjectDir)Engine\3d\Light;$(ProjectDir)Engine\3d\Object;$(ProjectDir)Engine\Audio;$(ProjectDir)Engine\base;$(ProjectDir)Engine\base\input;$(ProjectDir)Engine\Collider;$(ProjectDir)Engine\game;$(ProjectDir)Engine\math;$(ProjectDir)Engine\Scene;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -280,7 +280,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>Default</LanguageStandard>
       <Optimization>MinSpace</Optimization>
-      <AdditionalIncludeDirectories>$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d\camera;$(ProjectDir)Engine\3d\Light;$(ProjectDir)Engine\3d\obj;$(ProjectDir)Engine\Audio;$(ProjectDir)Engine\base;$(ProjectDir)Engine\base\input;$(ProjectDir)Engine\Collider;$(ProjectDir)Engine\game;$(ProjectDir)Engine\math;$(ProjectDir)Engine\Scene;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d\camera;$(ProjectDir)Engine\3d\Light;$(ProjectDir)Engine\3d\Object;$(ProjectDir)Engine\Audio;$(ProjectDir)Engine\base;$(ProjectDir)Engine\base\input;$(ProjectDir)Engine\Collider;$(ProjectDir)Engine\game;$(ProjectDir)Engine\math;$(ProjectDir)Engine\Scene;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
