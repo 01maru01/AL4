@@ -9,6 +9,28 @@
 
 struct aiMesh;
 struct aiMaterial;
+struct aiNode;
+
+struct Node
+{
+	std::string name;
+	//	メッシュのインデックス
+	std::vector<int> meshIndex;
+	//	ローカル変換行列
+	Matrix transform;
+	//	ワールド変換行列
+	Matrix worldTransform;
+	//	親
+	Node* parent = nullptr;
+};
+
+struct Bone
+{
+	std::string name;
+
+	Matrix invInitialPose;
+
+};
 
 class Model
 {
@@ -17,6 +39,8 @@ private:
 
 	static MyDirectX* dx;
 public:
+	std::vector<Node> nodes;
+
 	std::vector<Mesh*> meshes;
 	std::unordered_map<std::string, Material*> materials;
 	Material* defaultMaterial = nullptr;
@@ -34,6 +58,7 @@ private:
 	void LoadModel(const std::string& modelname, bool smoothing);
 	void LoadFBXModel(const std::string& modelname);
 	void LoadFBXMesh(Mesh& dst, const aiMesh* src);
+	void LoadFBXNode(const aiNode* src, Node* parent = nullptr);
 	void LoadFBXTexture(const std::string& filename, Mesh& dst, const aiMaterial* src);
 	
 	void AddMaterial(Material* material) { materials.emplace(material->name, material); }

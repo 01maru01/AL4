@@ -270,6 +270,59 @@ void Model::LoadFBXMesh(Mesh& dst, const aiMesh* src)
 	}
 }
 
+void TransformMatToAiMat(Matrix& mat, const aiMatrix4x4 aiMat)
+{
+	mat.m[0][0] = aiMat.a1;
+	mat.m[0][1] = aiMat.a2;
+	mat.m[0][2] = aiMat.a3;
+	mat.m[0][3] = aiMat.a4;
+
+	mat.m[1][0] = aiMat.b1;
+	mat.m[1][1] = aiMat.b2;
+	mat.m[1][2] = aiMat.b3;
+	mat.m[1][3] = aiMat.b4;
+
+	mat.m[2][0] = aiMat.c1;
+	mat.m[2][1] = aiMat.c2;
+	mat.m[2][2] = aiMat.c3;
+	mat.m[2][3] = aiMat.c4;
+
+	mat.m[3][0] = aiMat.d1;
+	mat.m[3][1] = aiMat.d2;
+	mat.m[3][2] = aiMat.d3;
+	mat.m[3][3] = aiMat.d4;
+}
+
+void Model::LoadFBXNode(const aiNode* src, Node* parent)
+{
+	nodes.emplace_back();
+	Node& node = nodes.back();
+
+	//	情報取得
+	//	名前取得
+	node.name = std::string(src->mName.C_Str());
+	// メッシュの情報
+
+	for (UINT i = 0; i < src->mNumMeshes; ++i) {
+		node.meshIndex.push_back(src->mMeshes[i]);
+	}
+	//	変換行列
+	TransformMatToAiMat(node.transform, src->mTransformation);
+	node.worldTransform = node.transform;
+
+	//	もし親がいたら
+	if (parent) {
+		node.parent = parent;
+		node.worldTransform *= parent->worldTransform;
+	}
+
+	//	再帰
+	for (UINT i = 0; i < src->mNumChildren; ++i)
+	{
+		LoadFBXNode(src->mChildren[i], &node);
+	}
+}
+
 void Model::LoadFBXTexture(const std::string& filename, Mesh& dst, const aiMaterial* src)
 {
 	aiString path;
@@ -279,7 +332,6 @@ void Model::LoadFBXTexture(const std::string& filename, Mesh& dst, const aiMater
 		auto file = std::string(path.C_Str());
 		dst.SetTextureFilePath(dir + file);
 		dst.GetMaterial()->name = file;
-
 	}
 }
 
@@ -293,25 +345,26 @@ void Model::LoadFBXModel(const std::string& modelname)
 	Assimp::Importer importer;
 	int flag = 0;
 	flag |= aiProcess_Triangulate;					//	三角面化
-	flag |= aiProcess_PreTransformVertices;
-	flag |= aiProcess_CalcTangentSpace;
-	flag |= aiProcess_GenSmoothNormals;
-	flag |= aiProcess_GenUVCoords;
-	flag |= aiProcess_RemoveRedundantMaterials;
-	flag |= aiProcess_OptimizeMeshes;
+	//flag |= aiProcess_PreTransformVertices;
+	//flag |= aiProcess_CalcTangentSpace;
+	//flag |= aiProcess_GenSmoothNormals;
+	//flag |= aiProcess_GenUVCoords;
+	//flag |= aiProcess_RemoveRedundantMaterials;
+	//flag |= aiProcess_OptimizeMeshes;
 	
 	auto modelScene = importer.ReadFile(directoryPath + filename, flag);
 
-	if (modelScene == nullptr)
-	{
-		return;
-	}
+	//	読み込み失敗したら
+	if (modelScene == nullptr) { return; }
+
+	//	ノードの読み込み
+	LoadFBXNode(modelScene->mRootNode);
 
 	for (size_t i = 0; i < modelScene->mNumMeshes; ++i)
 	{
 		meshes.emplace_back(new Mesh);
 		Mesh* mesh = meshes.back();
-
+		modelScene->mMeshes[i]->HasBones();
 		const auto pMesh = modelScene->mMeshes[i];
 		LoadFBXMesh(*mesh, pMesh);
 		const auto pMaterial = modelScene->mMaterials[i];
@@ -384,7 +437,18 @@ Model::Model(const char* filename, bool isFBX, bool smoothing)
 
 void Model::Draw()
 {
-	for (auto& mesh : meshes) {
-		mesh->Draw();
+	if (nodes.size() != 0) {
+		//	ノードがあったら
+		for (auto& node : nodes) {
+			//	メッシュの数分for文回す
+			for (int i = 0; i < node.meshIndex.size(); i++) {
+				meshes[node.meshIndex[i]]->Draw();
+			}
+		}
+	}
+	else {
+		for (auto& mesh : meshes) {
+			mesh->Draw();
+		}
 	}
 }
