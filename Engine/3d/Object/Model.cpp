@@ -364,7 +364,6 @@ void Model::LoadFBXModel(const std::string& modelname)
 	{
 		meshes.emplace_back(new Mesh);
 		Mesh* mesh = meshes.back();
-		modelScene->mMeshes[i]->HasBones();
 		const auto pMesh = modelScene->mMeshes[i];
 		LoadFBXMesh(*mesh, pMesh);
 		const auto pMaterial = modelScene->mMaterials[i];
