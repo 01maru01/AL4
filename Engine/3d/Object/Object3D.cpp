@@ -1,6 +1,9 @@
 #include "Object3D.h"
 #include "BaseCollider.h"
 #include "CollisionManager.h"
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
 
 Light* Object3D::light = nullptr;
 GPipeline* Object3D::pipeline = nullptr;
@@ -95,7 +98,18 @@ void Object3D::Initialize()
 	assert(SUCCEEDED(result));
 
 	mat.Initialize();
-}
+
+
+	cbResourceDesc.Width = (sizeof(ConstBufferDataSkin) + 0xFF) & ~0xFF;
+	//	生成
+	result = dx->GetDev()->CreateCommittedResource(
+		&cbHeapProp,	//	ヒープ設定
+		D3D12_HEAP_FLAG_NONE,
+		&cbResourceDesc,	//	リソース設定
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
+		IID_PPV_ARGS(&constBuffSkin));
+	assert(SUCCEEDED(result));}
 
 void Object3D::ColliderUpdate()
 {
@@ -132,10 +146,28 @@ void Object3D::MatUpdate()
 	ConstBufferDataTransform* constMap = nullptr;
 	result = transform->Map(0, nullptr, (void**)&constMap);
 	constMap->matview = matViewProjection;
-	constMap->matworld = mat.matWorld;
+	if (model != nullptr) {
+		constMap->matworld = model->GetModelTransform();
+		constMap->matworld *= mat.matWorld;
+	}
+	else {
+		constMap->matworld = mat.matWorld;
+	}
 	constMap->cameraPos = cameraPos;
-	constMap->color = color;
+	//constMap->color = color;
 	transform->Unmap(0, nullptr);
+
+	ConstBufferDataSkin* constMapSkin = nullptr;
+	result = constBuffSkin->Map(0, nullptr, (void**)&constMapSkin);
+	for (int i = 0; i < model->GetBone().size(); i++)
+	{
+		Matrix matCurrentPose;
+		
+
+		constMapSkin->bones[i] = model->GetBone()[i].invInitialPose;
+		constMapSkin->bones[i] *= matCurrentPose;
+	}
+	constBuffSkin->Unmap(0, nullptr);
 }
 
 void Object3D::Draw()
@@ -144,7 +176,37 @@ void Object3D::Draw()
 	pipeline->Update(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	dx->GetCmdList()->SetGraphicsRootConstantBufferView(2, transform->GetGPUVirtualAddress());
+	dx->GetCmdList()->SetGraphicsRootConstantBufferView(4, constBuffSkin->GetGPUVirtualAddress());
 	light->Draw();
 
 	model->Draw();
 }
+
+//Matrix Object3D::BoneTransform(float TimeInSeconds, std::vector<Matrix>& Transforms)
+//{
+//	Matrix Identity;
+//	Identity.Identity();
+//
+//	float TicksPerSecond = model->modelScene->mAnimations[0]->mTicksPerSecond != 0 ?
+//		model->modelScene->mAnimations[0]->mTicksPerSecond : 25.0f;
+//	float TimeInTicks = TimeInSeconds * TicksPerSecond;
+//	float AnimationTime = fmod(TimeInTicks, model->modelScene->mAnimations[0]->mDuration);
+//	
+//	ReadNodeHeirarchy(AnimationTime, model->modelScene->mRootNode, Identity);
+//
+//	Transforms.resize(m_NumBones);
+//
+//	for (UINT i = 0; i < m_NumBones; i++) {
+//		Transforms[i] = m_BoneInfo[i].FinalTransformation;
+//	}
+//}
+//
+//void Object3D::PlayAnimation()
+//{
+//	float RunningTime = (float)((double)GetCurrentTimeMillis() - (double)m_startTime) / 1000.0f;
+//
+//	float TicksPerSecond = model->modelScene->mAnimations[0]->mTicksPerSecond != 0 ?
+//		model->modelScene->mAnimations[0]->mTicksPerSecond : 25.0f;
+//	float TimeInTicks = RunningTime * TicksPerSecond;
+//	float AnimationTime = fmod(TimeInTicks, model->modelScene->mAnimations[0]->mDuration);
+//}

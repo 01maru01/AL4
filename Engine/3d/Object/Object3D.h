@@ -22,11 +22,9 @@ private:
 		Matrix matview;
 		Matrix matworld;
 		Vector3D cameraPos;
-		float pad1;
-		Vector3D color;
+		//float pad1;
+		//Vector3D color;
 	};
-
-
 
 	ComPtr<ID3D12Resource> transform;
 	Object3D* parent = nullptr;
@@ -35,6 +33,13 @@ protected:
 	Vector3D color = { 1.0f,1.0f,1.0f };
 	BaseCollider* collider = nullptr;
 public:
+	static const int MAX_BONES = 32;
+	struct ConstBufferDataSkin
+	{
+		Matrix bones[MAX_BONES];
+	};
+	ComPtr<ID3D12Resource> constBuffSkin;
+
 	MyMath::ObjMatrix mat;
 	Object3D() = default;
 	virtual ~Object3D();
@@ -65,6 +70,8 @@ public:
 	virtual void ColliderUpdate();
 	void MatUpdate();
 	virtual void Draw();
+
+	void PlayAnimation();
 
 	inline Model* GetModel() { return model; }
 	const Matrix& GetMatWorld() { return mat.matWorld; }

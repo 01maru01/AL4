@@ -9,6 +9,30 @@ using namespace std;
 
 MyDirectX* Model::dx = MyDirectX::GetInstance();
 
+//	転置して変換
+void TransformMatToAiMat(Matrix& mat, const aiMatrix4x4 aiMat)
+{
+	mat.m[0][0] = aiMat.a1;
+	mat.m[1][0] = aiMat.a2;
+	mat.m[2][0] = aiMat.a3;
+	mat.m[3][0] = aiMat.a4;
+
+	mat.m[0][1] = aiMat.b1;
+	mat.m[1][1] = aiMat.b2;
+	mat.m[2][1] = aiMat.b3;
+	mat.m[3][1] = aiMat.b4;
+
+	mat.m[0][2] = aiMat.c1;
+	mat.m[1][2] = aiMat.c2;
+	mat.m[2][2] = aiMat.c3;
+	mat.m[3][2] = aiMat.c4;
+
+	mat.m[0][3] = aiMat.d1;
+	mat.m[1][3] = aiMat.d2;
+	mat.m[2][3] = aiMat.d3;
+	mat.m[3][3] = aiMat.d4;
+}
+
 void Model::LoadMaterial(const std::string& directoryPath, const std::string& filename)
 {
 	std::ifstream file;
@@ -182,7 +206,7 @@ void Model::LoadModel(const std::string& modelname, bool smoothing)
 				index_stream.seekg(1, ios_base::cur);
 				index_stream >> indexNormal;
 
-				Vertex vertex{};
+				FBXVertex vertex{};
 				vertex.pos = temp_poss[indexPos - 1];
 				vertex.normal = temp_normals[indexNormal - 1];
 				vertex.uv = temp_uvs[indexUV - 1];
@@ -239,7 +263,40 @@ void Model::LoadFBXMesh(Mesh& dst, const aiMesh* src)
 {
 	aiVector3D zero3D(0.0f, 0.0f, 0.0f);
 	aiColor4D zeroColor(0.0f, 0.0f, 0.0f, 0.0f);
-	
+
+	//
+	struct WeightSet
+	{
+		UINT index;
+		float weight;
+	};
+	std::vector<std::list<WeightSet>>weightLists(src->mNumVertices);
+
+	//	ボーンがあったら
+	if (src->HasBones()) {
+		//	ボーンの数
+		bones.reserve(src->mNumBones);
+
+		for (UINT i = 0; i < src->mNumBones; i++)
+		{
+			bones.emplace_back(Bone(src->mBones[i]->mName.C_Str()));
+
+			Bone& bone = bones.back();
+
+			//	型変換
+			Matrix initalPose;
+			TransformMatToAiMat(initalPose, src->mBones[i]->mOffsetMatrix);
+			//	逆行列
+			InverseMatrix(initalPose, bone.invInitialPose);
+
+			for (UINT j = 0; j < src->mBones[i]->mNumWeights; j++)
+			{
+				weightLists[src->mBones[i]->mWeights[j].mVertexId].emplace_back(WeightSet{ (UINT)i,src->mBones[i]->mWeights[j].mWeight });
+			}
+
+		}
+	}
+
 	for (auto i = 0u; i < src->mNumVertices; ++i)
 	{
 		auto position = &(src->mVertices[i]);
@@ -250,10 +307,34 @@ void Model::LoadFBXMesh(Mesh& dst, const aiMesh* src)
 
 		uv->y = 1 - uv->y;
 
-		Vertex vertex = {};
+		FBXVertex vertex = {};
 		vertex.pos = Vector3D(position->x, position->y, position->z);
 		vertex.normal = Vector3D(normal->x, normal->y, normal->z);
 		vertex.uv = Vector2D(uv->x, uv->y);
+
+		auto& weightList = weightLists[i];
+		weightList.sort([](auto const& lhs, auto const& rhs) {
+			return lhs.weight > rhs.weight;
+			});
+
+		int weightArrayIndex = 0;
+		for (auto& weightSet : weightList) {
+			vertex.boneIndex[weightArrayIndex] = weightSet.index;
+			vertex.boneWeight[weightArrayIndex] = weightSet.weight;
+
+			if (++weightArrayIndex >= MAX_BONE_INDICES) {
+				float weight = 0.0f;
+
+				for (int j = 0; j < MAX_BONE_INDICES; j++)
+				{
+					weight += vertex.boneWeight[j];
+				}
+
+				vertex.boneWeight[0] = 1.0f - weight;
+				break;
+			}
+		}
+
 		//vertex.Tangent = DirectX::XMFLOAT3(tangent->x, tangent->y, tangent->z);
 		//vertex.Color = DirectX::XMFLOAT4(color->r, color->g, color->b, color->a);
 
@@ -270,29 +351,6 @@ void Model::LoadFBXMesh(Mesh& dst, const aiMesh* src)
 	}
 }
 
-void TransformMatToAiMat(Matrix& mat, const aiMatrix4x4 aiMat)
-{
-	mat.m[0][0] = aiMat.a1;
-	mat.m[0][1] = aiMat.a2;
-	mat.m[0][2] = aiMat.a3;
-	mat.m[0][3] = aiMat.a4;
-
-	mat.m[1][0] = aiMat.b1;
-	mat.m[1][1] = aiMat.b2;
-	mat.m[1][2] = aiMat.b3;
-	mat.m[1][3] = aiMat.b4;
-
-	mat.m[2][0] = aiMat.c1;
-	mat.m[2][1] = aiMat.c2;
-	mat.m[2][2] = aiMat.c3;
-	mat.m[2][3] = aiMat.c4;
-
-	mat.m[3][0] = aiMat.d1;
-	mat.m[3][1] = aiMat.d2;
-	mat.m[3][2] = aiMat.d3;
-	mat.m[3][3] = aiMat.d4;
-}
-
 void Model::LoadFBXNode(const aiNode* src, Node* parent)
 {
 	nodes.emplace_back();
@@ -305,6 +363,7 @@ void Model::LoadFBXNode(const aiNode* src, Node* parent)
 
 	for (UINT i = 0; i < src->mNumMeshes; ++i) {
 		node.meshIndex.push_back(src->mMeshes[i]);
+		meshNode = &node;
 	}
 	//	変換行列
 	TransformMatToAiMat(node.transform, src->mTransformation);
@@ -320,6 +379,167 @@ void Model::LoadFBXNode(const aiNode* src, Node* parent)
 	for (UINT i = 0; i < src->mNumChildren; ++i)
 	{
 		LoadFBXNode(src->mChildren[i], &node);
+	}
+}
+
+const aiNodeAnim* FindNodeAnim(const aiAnimation* pAnimation, std::string name)
+{
+	for (UINT i = 0; i < pAnimation->mNumChannels; i++) {
+		const aiNodeAnim* pNodeAnim = pAnimation->mChannels[i];
+
+		if (string(pNodeAnim->mNodeName.data) == name) {
+			return pNodeAnim;
+		}
+	}
+
+	return NULL;
+}
+
+UINT FindRotation(float AnimationTime, const aiNodeAnim* pNodeAnim)
+{
+	assert(pNodeAnim->mNumRotationKeys > 0);
+
+	for (UINT i = 0; i < pNodeAnim->mNumRotationKeys - 1; i++) {
+		if (AnimationTime < (float)pNodeAnim->mRotationKeys[i + 1].mTime) {
+			return i;
+		}
+	}
+
+	assert(0);
+	return 0;
+}
+
+UINT FindScaling(float AnimationTime, const aiNodeAnim* pNodeAnim)
+{
+	assert(pNodeAnim->mNumScalingKeys > 0);
+
+	for (UINT i = 0; i < pNodeAnim->mNumScalingKeys - 1; i++) {
+		if (AnimationTime < (float)pNodeAnim->mScalingKeys[i + 1].mTime) {
+			return i;
+		}
+	}
+
+	assert(0);
+
+	return 0;
+}
+
+void CalcInterpolatedRotation(aiQuaternion& Out, float AnimationTime, const aiNodeAnim* pNodeAnim)
+{
+	// 補間には最低でも２つの値が必要…
+	if (pNodeAnim->mNumRotationKeys == 1) {
+		Out = pNodeAnim->mRotationKeys[0].mValue;
+		return;
+	}
+
+	UINT RotationIndex = FindRotation(AnimationTime, pNodeAnim);
+	UINT NextRotationIndex = (RotationIndex + 1);
+	assert(NextRotationIndex < pNodeAnim->mNumRotationKeys);
+	float DeltaTime = (float)(pNodeAnim->mRotationKeys[NextRotationIndex].mTime - pNodeAnim->mRotationKeys[RotationIndex].mTime);
+	float Factor = (AnimationTime - (float)pNodeAnim->mRotationKeys[RotationIndex].mTime) / DeltaTime;
+	assert(Factor >= 0.0f && Factor <= 1.0f);
+	const aiQuaternion& StartRotationQ = pNodeAnim->mRotationKeys[RotationIndex].mValue;
+	const aiQuaternion& EndRotationQ = pNodeAnim->mRotationKeys[NextRotationIndex].mValue;
+	aiQuaternion::Interpolate(Out, StartRotationQ, EndRotationQ, Factor);
+	Out = Out.Normalize();
+}
+
+void CalcInterpolatedScaling(aiVector3D& Out, float AnimationTime, const aiNodeAnim* pNodeAnim)
+{
+	if (pNodeAnim->mNumScalingKeys == 1) {
+		Out = pNodeAnim->mScalingKeys[0].mValue;
+		return;
+	}
+
+	UINT ScalingIndex = FindScaling(AnimationTime, pNodeAnim);
+	UINT NextScalingIndex = (ScalingIndex + 1);
+	assert(NextScalingIndex < pNodeAnim->mNumScalingKeys);
+	float DeltaTime = (float)(pNodeAnim->mScalingKeys[NextScalingIndex].mTime - pNodeAnim->mScalingKeys[ScalingIndex].mTime);
+	float Factor = (AnimationTime - (float)pNodeAnim->mScalingKeys[ScalingIndex].mTime) / DeltaTime;
+	assert(Factor >= 0.0f && Factor <= 1.0f);
+	const aiVector3D& Start = pNodeAnim->mScalingKeys[ScalingIndex].mValue;
+	const aiVector3D& End = pNodeAnim->mScalingKeys[NextScalingIndex].mValue;
+	aiVector3D Delta = End - Start;
+	Out = Start + Factor * Delta;
+}
+
+UINT FindPosition(float AnimationTime, const aiNodeAnim* pNodeAnim)
+{
+	for (UINT i = 0; i < pNodeAnim->mNumPositionKeys - 1; i++) {
+		if (AnimationTime < (float)pNodeAnim->mPositionKeys[i + 1].mTime) {
+			return i;
+		}
+	}
+
+	assert(0);
+
+	return 0;
+}
+
+void CalcInterpolatedPosition(aiVector3D& Out, float AnimationTime, const aiNodeAnim* pNodeAnim)
+{
+	if (pNodeAnim->mNumPositionKeys == 1) {
+		Out = pNodeAnim->mPositionKeys[0].mValue;
+		return;
+	}
+
+	UINT PositionIndex = FindPosition(AnimationTime, pNodeAnim);
+	UINT NextPositionIndex = (PositionIndex + 1);
+	assert(NextPositionIndex < pNodeAnim->mNumPositionKeys);
+	float DeltaTime = (float)(pNodeAnim->mPositionKeys[NextPositionIndex].mTime - pNodeAnim->mPositionKeys[PositionIndex].mTime);
+	float Factor = (AnimationTime - (float)pNodeAnim->mPositionKeys[PositionIndex].mTime) / DeltaTime;
+	assert(Factor >= 0.0f && Factor <= 1.0f);
+	const aiVector3D& Start = pNodeAnim->mPositionKeys[PositionIndex].mValue;
+	const aiVector3D& End = pNodeAnim->mPositionKeys[NextPositionIndex].mValue;
+	aiVector3D Delta = End - Start;
+	Out = Start + Factor * Delta;
+}
+
+void Model::ReadNodeHeirarchy(float AnimationTime, const aiNode* pNode, const Matrix& ParentTransform)
+{
+	string NodeName(pNode->mName.data);
+
+	const aiAnimation* pAnimation = modelScene->mAnimations[0];
+
+	Matrix NodeTransformation;
+	TransformMatToAiMat(NodeTransformation, pNode->mTransformation);
+
+	const aiNodeAnim* pNodeAnim = FindNodeAnim(pAnimation, NodeName);
+
+	if (pNodeAnim) {
+		// スケーリングを補間し、スケーリング変換行列を生成する
+		aiVector3D Scaling;
+		CalcInterpolatedScaling(Scaling, AnimationTime, pNodeAnim);
+		MyMath::ObjMatrix mat;
+		mat.scale = Vector3D(Scaling.x, Scaling.y, Scaling.z);
+
+		// 回転を補間し、回転変換行列を生成する
+		aiQuaternion RotationQ;
+		CalcInterpolatedRotation(RotationQ, AnimationTime, pNodeAnim);
+		aiMatrix4x4 rotQ = aiMatrix4x4(RotationQ.GetMatrix());
+		TransformMatToAiMat(mat.matRot, rotQ);
+
+		// 移動を補間し、移動変換行列を生成する
+		aiVector3D Translation;
+		CalcInterpolatedPosition(Translation, AnimationTime, pNodeAnim);
+		mat.trans = Vector3D(Translation.x, Translation.y, Translation.z);
+
+		// これら上記の変換を合成する
+		NodeTransformation = mat.matTrans;
+		NodeTransformation *= mat.matRot;
+		NodeTransformation *= mat.matScale;
+	}
+
+	Matrix GlobalTransformation = ParentTransform;
+	GlobalTransformation *= NodeTransformation;
+	//if (m_BoneMapping.find(NodeName) != m_BoneMapping.end()) {
+	//	UINT BoneIndex = m_BoneMapping[NodeName];
+	//	bones[BoneIndex]= m_GlobalInverseTransform * GlobalTransformation;
+	//}
+	meshNode->worldTransform *= GlobalTransformation;
+
+	for (UINT i = 0; i < pNode->mNumChildren; i++) {
+		ReadNodeHeirarchy(AnimationTime, pNode->mChildren[i], GlobalTransformation);
 	}
 }
 
@@ -352,12 +572,13 @@ void Model::LoadFBXModel(const std::string& modelname)
 	//flag |= aiProcess_RemoveRedundantMaterials;
 	//flag |= aiProcess_OptimizeMeshes;
 	
-	auto modelScene = importer.ReadFile(directoryPath + filename, flag);
-
+	modelScene = importer.ReadFile(directoryPath + filename, flag);
+	
 	//	読み込み失敗したら
 	if (modelScene == nullptr) { return; }
 
 	//	ノードの読み込み
+	nodes.reserve(24);
 	LoadFBXNode(modelScene->mRootNode);
 
 	for (size_t i = 0; i < modelScene->mNumMeshes; ++i)
@@ -375,8 +596,7 @@ void Model::LoadFBXModel(const std::string& modelname)
 			AddMaterial(mesh->GetMaterial());
 		}
 	}
-
-	modelScene = nullptr;
+	ReadNodeHeirarchy(0.2f, modelScene->mRootNode, Matrix());
 }
 
 Model::~Model()
