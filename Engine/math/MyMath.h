@@ -57,11 +57,10 @@ public:
 	Matrix matTrans;
 	Vector3D trans;
 
-private:
+public:
 	void SetMatScaling();
 	void SetMatRotation();
 	void SetMatTransform();
-public:
 	void Initialize();
 	void Update();
 };

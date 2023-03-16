@@ -159,12 +159,11 @@ void Object3D::MatUpdate()
 
 	ConstBufferDataSkin* constMapSkin = nullptr;
 	result = constBuffSkin->Map(0, nullptr, (void**)&constMapSkin);
-	for (int i = 0; i < model->GetBone().size(); i++)
+	for (UINT i = 0; i < model->GetNumBones(); i++)
 	{
 		Matrix matCurrentPose;
 		
-
-		constMapSkin->bones[i] = model->GetBone()[i].invInitialPose;
+		constMapSkin->bones[i] = model->GetBoneInfo()[i].boneOffset;
 		constMapSkin->bones[i] *= matCurrentPose;
 	}
 	constBuffSkin->Unmap(0, nullptr);
@@ -180,6 +179,26 @@ void Object3D::Draw()
 	light->Draw();
 
 	model->Draw();
+}
+
+void Object3D::PlayAnimation()
+{
+	std::vector<Matrix> Transforms;
+	float RunningTime = time;
+	//if (time++ >= 5.0f) time = 0.0f;
+	
+	model->BoneTransform(RunningTime, Transforms);
+
+	ConstBufferDataSkin* constMapSkin = nullptr;
+	constBuffSkin->Map(0, nullptr, (void**)&constMapSkin);
+	for (UINT i = 0; i < model->GetNumBones(); i++)
+	{
+		//Matrix matCurrentPose;
+
+		constMapSkin->bones[i] = Transforms[i];
+		//constMapSkin->bones[i] *= matCurrentPose;
+	}
+	constBuffSkin->Unmap(0, nullptr);
 }
 
 //Matrix Object3D::BoneTransform(float TimeInSeconds, std::vector<Matrix>& Transforms)

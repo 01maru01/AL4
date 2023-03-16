@@ -2,7 +2,6 @@
 #include <string>
 #include <sstream>
 #include <fstream>
-#include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 using namespace std;
@@ -16,17 +15,14 @@ void TransformMatToAiMat(Matrix& mat, const aiMatrix4x4 aiMat)
 	mat.m[1][0] = aiMat.a2;
 	mat.m[2][0] = aiMat.a3;
 	mat.m[3][0] = aiMat.a4;
-
 	mat.m[0][1] = aiMat.b1;
 	mat.m[1][1] = aiMat.b2;
 	mat.m[2][1] = aiMat.b3;
 	mat.m[3][1] = aiMat.b4;
-
 	mat.m[0][2] = aiMat.c1;
 	mat.m[1][2] = aiMat.c2;
 	mat.m[2][2] = aiMat.c3;
 	mat.m[3][2] = aiMat.c4;
-
 	mat.m[0][3] = aiMat.d1;
 	mat.m[1][3] = aiMat.d2;
 	mat.m[2][3] = aiMat.d3;
@@ -262,49 +258,48 @@ std::wstring ToWideString(const std::string& str)
 void Model::LoadFBXMesh(Mesh& dst, const aiMesh* src)
 {
 	aiVector3D zero3D(0.0f, 0.0f, 0.0f);
-	aiColor4D zeroColor(0.0f, 0.0f, 0.0f, 0.0f);
+	
+	//struct WeightSet
+	//{
+	//	UINT index;
+	//	float weight;
+	//};
+	//std::vector<std::list<WeightSet>>weightLists(src->mNumVertices);
 
-	//
-	struct WeightSet
-	{
-		UINT index;
-		float weight;
-	};
-	std::vector<std::list<WeightSet>>weightLists(src->mNumVertices);
+	////	ボーンがあったら
+	//if (src->HasBones()) {
+	//	//	ボーンの数
+	//	bones.reserve(src->mNumBones);
 
-	//	ボーンがあったら
-	if (src->HasBones()) {
-		//	ボーンの数
-		bones.reserve(src->mNumBones);
+	//	for (UINT i = 0; i < src->mNumBones; i++)
+	//	{
+	//		//	ボーン配列の末尾に生成
+	//		bones.emplace_back(Bone(src->mBones[i]->mName.C_Str()));
 
-		for (UINT i = 0; i < src->mNumBones; i++)
-		{
-			bones.emplace_back(Bone(src->mBones[i]->mName.C_Str()));
+	//		Bone& bone = bones.back();
 
-			Bone& bone = bones.back();
+	//		//	型変換
+	//		Matrix initalPose;
+	//		TransformMatToAiMat(initalPose, src->mBones[i]->mOffsetMatrix);
+	//		//	逆行列(boneにセット)
+	//		InverseMatrix(initalPose, bone.invInitialPose);
 
-			//	型変換
-			Matrix initalPose;
-			TransformMatToAiMat(initalPose, src->mBones[i]->mOffsetMatrix);
-			//	逆行列
-			InverseMatrix(initalPose, bone.invInitialPose);
+	//		//	weightList生成
+	//		for (UINT j = 0; j < src->mBones[i]->mNumWeights; j++)
+	//		{
+	//			weightLists[src->mBones[i]->mWeights[j].mVertexId].emplace_back(WeightSet{ (UINT)i,src->mBones[i]->mWeights[j].mWeight });
+	//		}
 
-			for (UINT j = 0; j < src->mBones[i]->mNumWeights; j++)
-			{
-				weightLists[src->mBones[i]->mWeights[j].mVertexId].emplace_back(WeightSet{ (UINT)i,src->mBones[i]->mWeights[j].mWeight });
-			}
+	//	}
+	//}
 
-		}
-	}
-
-	for (auto i = 0u; i < src->mNumVertices; ++i)
+	//	頂点生成
+	for (UINT i = 0; i < src->mNumVertices; i++)
 	{
 		auto position = &(src->mVertices[i]);
 		auto normal = &(src->mNormals[i]);
 		auto uv = (src->HasTextureCoords(0)) ? &(src->mTextureCoords[0][i]) : &zero3D;
-		//auto tangent = (src->HasTangentsAndBitangents()) ? &(src->mTangents[i]) : &zero3D;
-		//auto color = (src->HasVertexColors(0)) ? &(src->mColors[0][i]) : &zeroColor;
-
+		//	uv反転
 		uv->y = 1 - uv->y;
 
 		FBXVertex vertex = {};
@@ -312,36 +307,34 @@ void Model::LoadFBXMesh(Mesh& dst, const aiMesh* src)
 		vertex.normal = Vector3D(normal->x, normal->y, normal->z);
 		vertex.uv = Vector2D(uv->x, uv->y);
 
-		auto& weightList = weightLists[i];
-		weightList.sort([](auto const& lhs, auto const& rhs) {
-			return lhs.weight > rhs.weight;
-			});
+		//auto& weightList = weightLists[i];
+		//weightList.sort([](auto const& lhs, auto const& rhs) {
+		//	return lhs.weight > rhs.weight;
+		//	});
 
-		int weightArrayIndex = 0;
-		for (auto& weightSet : weightList) {
-			vertex.boneIndex[weightArrayIndex] = weightSet.index;
-			vertex.boneWeight[weightArrayIndex] = weightSet.weight;
+		//int weightArrayIndex = 0;
+		//for (auto& weightSet : weightList) {
+		//	vertex.boneIndex[weightArrayIndex] = weightSet.index;
+		//	vertex.boneWeight[weightArrayIndex] = weightSet.weight;
 
-			if (++weightArrayIndex >= MAX_BONE_INDICES) {
-				float weight = 0.0f;
+		//	if (++weightArrayIndex >= MAX_BONE_INDICES) {
+		//		float weight = 0.0f;
 
-				for (int j = 0; j < MAX_BONE_INDICES; j++)
-				{
-					weight += vertex.boneWeight[j];
-				}
+		//		for (int j = 0; j < MAX_BONE_INDICES; j++)
+		//		{
+		//			weight += vertex.boneWeight[j];
+		//		}
 
-				vertex.boneWeight[0] = 1.0f - weight;
-				break;
-			}
-		}
-
-		//vertex.Tangent = DirectX::XMFLOAT3(tangent->x, tangent->y, tangent->z);
-		//vertex.Color = DirectX::XMFLOAT4(color->r, color->g, color->b, color->a);
+		//		vertex.boneWeight[0] = 1.0f - weight;
+		//		break;
+		//	}
+		//}
 
 		dst.AddVertex(vertex);
 	}
 
-	for (auto i = 0u; i < src->mNumFaces; ++i)
+	//	index設定
+	for (UINT i = 0; i < src->mNumFaces; i++)
 	{
 		const auto& face = src->mFaces[i];
 
@@ -351,36 +344,64 @@ void Model::LoadFBXMesh(Mesh& dst, const aiMesh* src)
 	}
 }
 
-void Model::LoadFBXNode(const aiNode* src, Node* parent)
+void Model::LoadFBXBone(UINT meshIndex, const aiMesh* src)
 {
-	nodes.emplace_back();
-	Node& node = nodes.back();
+	//	bone情報設定
+	for (UINT i = 0; i < src->mNumBones; i++) {
+		UINT BoneIndex = 0;
+		string BoneName(src->mBones[i]->mName.data);
 
-	//	情報取得
-	//	名前取得
-	node.name = std::string(src->mName.C_Str());
-	// メッシュの情報
+		if (boneMapping.find(BoneName) == boneMapping.end()) {
+			BoneIndex = numBones;
+			numBones++;
+			BoneInfo bi;
+			boneInfo.push_back(bi);
+			//	型変換
+			TransformMatToAiMat(boneInfo[BoneIndex].boneOffset, src->mBones[i]->mOffsetMatrix);
+			boneMapping[BoneName] = BoneIndex;
+		}
+		else {
+			BoneIndex = boneMapping[BoneName];
+		}
 
-	for (UINT i = 0; i < src->mNumMeshes; ++i) {
-		node.meshIndex.push_back(src->mMeshes[i]);
-		meshNode = &node;
-	}
-	//	変換行列
-	TransformMatToAiMat(node.transform, src->mTransformation);
-	node.worldTransform = node.transform;
-
-	//	もし親がいたら
-	if (parent) {
-		node.parent = parent;
-		node.worldTransform *= parent->worldTransform;
-	}
-
-	//	再帰
-	for (UINT i = 0; i < src->mNumChildren; ++i)
-	{
-		LoadFBXNode(src->mChildren[i], &node);
+		for (UINT j = 0; j < src->mBones[i]->mNumWeights; j++) {
+			UINT VertexID = src->mBones[i]->mWeights[j].mVertexId;
+			float Weight = src->mBones[i]->mWeights[j].mWeight;
+			meshes[meshIndex]->SetBone(VertexID, BoneIndex, Weight);
+		}
 	}
 }
+
+//void Model::LoadFBXNode(const aiNode* src, Node* parent)
+//{
+//	nodes.emplace_back();
+//	Node& node = nodes.back();
+//
+//	//	情報取得
+//	//	名前取得
+//	node.name = std::string(src->mName.C_Str());
+//	// メッシュの情報
+//
+//	for (UINT i = 0; i < src->mNumMeshes; ++i) {
+//		node.meshIndex.push_back(src->mMeshes[i]);
+//		meshNode = &node;
+//	}
+//	//	変換行列
+//	TransformMatToAiMat(node.transform, src->mTransformation);
+//	node.worldTransform = node.transform;
+//
+//	//	もし親がいたら
+//	if (parent) {
+//		node.parent = parent;
+//		node.worldTransform *= parent->worldTransform;
+//	}
+//
+//	//	再帰
+//	for (UINT i = 0; i < src->mNumChildren; ++i)
+//	{
+//		LoadFBXNode(src->mChildren[i], &node);
+//	}
+//}
 
 const aiNodeAnim* FindNodeAnim(const aiAnimation* pAnimation, std::string name)
 {
@@ -499,6 +520,7 @@ void Model::ReadNodeHeirarchy(float AnimationTime, const aiNode* pNode, const Ma
 {
 	string NodeName(pNode->mName.data);
 
+	//	複数アニメーションあるならここで変更
 	const aiAnimation* pAnimation = modelScene->mAnimations[0];
 
 	Matrix NodeTransformation;
@@ -512,6 +534,7 @@ void Model::ReadNodeHeirarchy(float AnimationTime, const aiNode* pNode, const Ma
 		CalcInterpolatedScaling(Scaling, AnimationTime, pNodeAnim);
 		MyMath::ObjMatrix mat;
 		mat.scale = Vector3D(Scaling.x, Scaling.y, Scaling.z);
+		mat.SetMatScaling();
 
 		// 回転を補間し、回転変換行列を生成する
 		aiQuaternion RotationQ;
@@ -523,6 +546,7 @@ void Model::ReadNodeHeirarchy(float AnimationTime, const aiNode* pNode, const Ma
 		aiVector3D Translation;
 		CalcInterpolatedPosition(Translation, AnimationTime, pNodeAnim);
 		mat.trans = Vector3D(Translation.x, Translation.y, Translation.z);
+		mat.SetMatTransform();
 
 		// これら上記の変換を合成する
 		NodeTransformation = mat.matTrans;
@@ -532,11 +556,13 @@ void Model::ReadNodeHeirarchy(float AnimationTime, const aiNode* pNode, const Ma
 
 	Matrix GlobalTransformation = ParentTransform;
 	GlobalTransformation *= NodeTransformation;
-	//if (m_BoneMapping.find(NodeName) != m_BoneMapping.end()) {
-	//	UINT BoneIndex = m_BoneMapping[NodeName];
-	//	bones[BoneIndex]= m_GlobalInverseTransform * GlobalTransformation;
-	//}
-	meshNode->worldTransform *= GlobalTransformation;
+
+	if (boneMapping.find(NodeName) != boneMapping.end()) {
+		UINT BoneIndex = boneMapping[NodeName];
+		boneInfo[BoneIndex].finalTransformation = m_GlobalInverseTransform;
+		boneInfo[BoneIndex].finalTransformation *= GlobalTransformation;
+		boneInfo[BoneIndex].finalTransformation *= boneInfo[BoneIndex].boneOffset;
+	}
 
 	for (UINT i = 0; i < pNode->mNumChildren; i++) {
 		ReadNodeHeirarchy(AnimationTime, pNode->mChildren[i], GlobalTransformation);
@@ -562,31 +588,29 @@ void Model::LoadFBXModel(const std::string& modelname)
 	const string directoryPath = "Resources/Model/" + modelname + "/";
 
 	//	シーンのロード
-	Assimp::Importer importer;
-	int flag = 0;
-	flag |= aiProcess_Triangulate;					//	三角面化
-	//flag |= aiProcess_PreTransformVertices;
-	//flag |= aiProcess_CalcTangentSpace;
-	//flag |= aiProcess_GenSmoothNormals;
-	//flag |= aiProcess_GenUVCoords;
-	//flag |= aiProcess_RemoveRedundantMaterials;
-	//flag |= aiProcess_OptimizeMeshes;
-	
-	modelScene = importer.ReadFile(directoryPath + filename, flag);
+	modelScene = importer.ReadFile(directoryPath + filename, aiProcess_Triangulate);	//	三角面化
 	
 	//	読み込み失敗したら
 	if (modelScene == nullptr) { return; }
 
-	//	ノードの読み込み
-	nodes.reserve(24);
-	LoadFBXNode(modelScene->mRootNode);
+	//	GlobalInverseTransform設定
+	TransformMatToAiMat(m_GlobalInverseTransform, modelScene->mRootNode->mTransformation);
 
-	for (size_t i = 0; i < modelScene->mNumMeshes; ++i)
+	//	mesh情報設定
+	meshes.reserve(modelScene->mNumMeshes);
+	for (UINT i = 0; i < modelScene->mNumMeshes; i++)
 	{
+		//	aiMesh型の情報取得
+		const auto pMesh = modelScene->mMeshes[i];
+
+		//	型変換
 		meshes.emplace_back(new Mesh);
 		Mesh* mesh = meshes.back();
-		const auto pMesh = modelScene->mMeshes[i];
 		LoadFBXMesh(*mesh, pMesh);
+		//	ボーン取得
+		LoadFBXBone(i, pMesh);
+
+		//	material取得
 		const auto pMaterial = modelScene->mMaterials[i];
 		mesh->SetMaterial(Material::Create());
 		LoadFBXTexture(directoryPath + filename, *mesh, pMaterial);
@@ -596,7 +620,31 @@ void Model::LoadFBXModel(const std::string& modelname)
 			AddMaterial(mesh->GetMaterial());
 		}
 	}
-	ReadNodeHeirarchy(0.2f, modelScene->mRootNode, Matrix());
+
+
+
+
+
+
+	////	ノードの読み込み
+	//nodes.reserve(24);
+	//LoadFBXNode(modelScene->mRootNode);
+
+	//for (UINT i = 0; i < modelScene->mNumMeshes; ++i)
+	//{
+	//	meshes.emplace_back(new Mesh);
+	//	Mesh* mesh = meshes.back();
+	//	const auto pMesh = modelScene->mMeshes[i];
+	//	LoadFBXMesh(*mesh, pMesh);
+	//	const auto pMaterial = modelScene->mMaterials[i];
+	//	mesh->SetMaterial(Material::Create());
+	//	LoadFBXTexture(directoryPath + filename, *mesh, pMaterial);
+	//	mesh->GetMaterial()->name += to_string(i);
+	//	if (mesh->GetMaterial()) {
+	//		// マテリアルを登録
+	//		AddMaterial(mesh->GetMaterial());
+	//	}
+	//}
 }
 
 Model::~Model()
@@ -649,6 +697,23 @@ void Model::Initialize(const char* filename, bool isFBX, bool smoothing)
 	}
 }
 
+void Model::BoneTransform(float TimeInSeconds, std::vector<Matrix>& transforms)
+{
+	Matrix Identity;
+
+	double TicksPerSecond = modelScene->mAnimations[0]->mTicksPerSecond != 0 ? modelScene->mAnimations[0]->mTicksPerSecond : 25.0f;
+	float TimeInTicks = TimeInSeconds * (float)TicksPerSecond;
+	float AnimationTime = (float)fmod(TimeInTicks, modelScene->mAnimations[0]->mDuration);
+
+	ReadNodeHeirarchy(AnimationTime, modelScene->mRootNode, Identity);
+
+	transforms.resize(numBones);
+
+	for (UINT i = 0; i < numBones; i++) {
+		transforms[i] = boneInfo[i].finalTransformation;
+	}
+}
+
 Model::Model(const char* filename, bool isFBX, bool smoothing)
 {
 	Initialize(filename, isFBX, smoothing);
@@ -656,18 +721,18 @@ Model::Model(const char* filename, bool isFBX, bool smoothing)
 
 void Model::Draw()
 {
-	if (nodes.size() != 0) {
-		//	ノードがあったら
-		for (auto& node : nodes) {
-			//	メッシュの数分for文回す
-			for (int i = 0; i < node.meshIndex.size(); i++) {
-				meshes[node.meshIndex[i]]->Draw();
-			}
-		}
-	}
-	else {
-		for (auto& mesh : meshes) {
-			mesh->Draw();
-		}
+	//if (nodes.size() != 0) {
+	//	//	ノードがあったら
+	//	for (auto& node : nodes) {
+	//		//	メッシュの数分for文回す
+	//		for (int i = 0; i < node.meshIndex.size(); i++) {
+	//			meshes[node.meshIndex[i]]->Draw();
+	//		}
+	//	}
+	//}
+	//else {
+	//}
+	for (auto& mesh : meshes) {
+		mesh->Draw();
 	}
 }

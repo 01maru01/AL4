@@ -30,6 +30,7 @@ public:
 
     void AddIndex(unsigned short index) { indices.emplace_back(index); }
     void AddVertex(const FBXVertex& vertex) { vertices.emplace_back(vertex); }
+    void SetBone(int vertexID, UINT boneIndex, float weight);
     void AddSmoothData(unsigned short indexPosition, unsigned short indexVertex) { smoothData[indexPosition].emplace_back(indexVertex); }
     void SetTextureFilePath(const std::string& filePath);
 private:

@@ -6,37 +6,45 @@
 #include "Material.h"
 #include "Light.h"
 #include "Mesh.h"
+#include <assimp/Importer.hpp>
+#include <map>
 
 struct aiMesh;
 struct aiMaterial;
 struct aiNode;
 struct aiScene;
 
-struct Node
+//struct Node
+//{
+//	std::string name;
+//	//	メッシュのインデックス
+//	std::vector<int> meshIndex;
+//	//	ローカル変換行列
+//	Matrix transform;
+//	//	ワールド変換行列
+//	Matrix worldTransform;
+//	//	親
+//	Node* parent = nullptr;
+//};
+//
+//struct Bone
+//{
+//	std::string name;
+//
+//	Matrix invInitialPose;
+//
+//	//	FBX Bone Inf
+//
+//
+//	Bone(const std::string& name) {
+//		this->name = name;
+//	}
+//};
+
+struct BoneInfo
 {
-	std::string name;
-	//	メッシュのインデックス
-	std::vector<int> meshIndex;
-	//	ローカル変換行列
-	Matrix transform;
-	//	ワールド変換行列
-	Matrix worldTransform;
-	//	親
-	Node* parent = nullptr;
-};
-
-struct Bone
-{
-	std::string name;
-
-	Matrix invInitialPose;
-
-	//	FBX Bone Inf
-
-
-	Bone(const std::string& name) {
-		this->name = name;
-	}
+	Matrix boneOffset;
+	Matrix finalTransformation;
 };
 
 class Model
@@ -45,20 +53,29 @@ private:
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 	static MyDirectX* dx;
+
+	const aiScene* modelScene;
+	Assimp::Importer importer;
 public:
 	static const int MAX_BONE_INDICES = 4;
 
-	const aiScene* modelScene;
 
-	std::vector<Node> nodes;
+	//std::vector<Node> nodes;
 
-	std::vector<Bone> bones;
+	//std::vector<Bone> bones;
 
 	std::vector<Mesh*> meshes;
 	std::unordered_map<std::string, Material*> materials;
 	Material* defaultMaterial = nullptr;
 
-	Node* meshNode = nullptr;
+	//Node* meshNode = nullptr;
+
+
+	//	3/15
+	Matrix m_GlobalInverseTransform;
+	std::map<std::string, UINT> boneMapping;
+	UINT numBones = 0;
+	std::vector<BoneInfo> boneInfo;
 
 	float time = 0.0f;
 public:
@@ -66,17 +83,21 @@ public:
 	~Model();
 
 	void Initialize(const char* filename, bool isFBX, bool smoothing);
+	void BoneTransform(float TImeInSeconds, std::vector<Matrix>& transforms);
 	void Draw();
 
 	inline const std::vector<Mesh*>& GetMeshes() { return meshes; }
-	const Matrix& GetModelTransform() { return meshNode->worldTransform; }
-	std::vector<Bone>& GetBone() { return bones; }
+	const Matrix& GetModelTransform() { return m_GlobalInverseTransform; }
+	//std::vector<Bone>& GetBone() { return bones; }
+	UINT GetNumBones() { return numBones; }
+	std::vector<BoneInfo> GetBoneInfo() { return boneInfo; }
 private:
 	void LoadMaterial(const std::string& directoryPath, const std::string& filename);
 	void LoadModel(const std::string& modelname, bool smoothing);
 	void LoadFBXModel(const std::string& modelname);
 	void LoadFBXMesh(Mesh& dst, const aiMesh* src);
-	void LoadFBXNode(const aiNode* src, Node* parent = nullptr);
+	void LoadFBXBone(UINT meshIndex, const aiMesh* src);
+	//void LoadFBXNode(const aiNode* src, Node* parent = nullptr);
 	void ReadNodeHeirarchy(float AnimationTime, const aiNode* pNode, const Matrix& ParentTransform);
 	void LoadFBXTexture(const std::string& filename, Mesh& dst, const aiMaterial* src);
 	

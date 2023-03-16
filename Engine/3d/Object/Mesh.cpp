@@ -40,6 +40,18 @@ void Mesh::CalcSmoothedNormals()
 	}
 }
 
+void Mesh::SetBone(int vertexID, UINT boneIndex, float weight)
+{
+	for (UINT i = 0; i < 4; i++) {
+		//	ƒ{[ƒ“‚Ìweight‚ª0‚¾‚Á‚½‚ç’l‘ã“ü
+		if (vertices[vertexID].boneWeight[i] == 0.0f) {
+			vertices[vertexID].boneIndex[i] = boneIndex;
+			vertices[vertexID].boneWeight[i] = weight;
+			return;
+		}
+	}
+}
+
 void Mesh::SetTextureFilePath(const std::string& filePath)
 {
 	MultiByteToWideChar(CP_ACP, 0, filePath.c_str(), -1, mtl->wfilepath, _countof(mtl->wfilepath));

@@ -340,6 +340,8 @@ void GameScene::Update()
 	//sphere2->ColliderUpdate();
 
 	sprite->Update();
+
+	//tree->PlayAnimation();
 #pragma endregion
 	MatUpdate();
 
