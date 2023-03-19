@@ -77,3 +77,9 @@ struct VSOutput
 	float3 normal :	NORMAL;
 	float2 uv :TEXCOORD;
 };
+
+struct SkinOutput
+{
+	float4 pos;
+	float3 normal;
+};

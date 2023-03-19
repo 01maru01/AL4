@@ -71,7 +71,7 @@ public:
 	void MatUpdate();
 	virtual void Draw();
 
-	float time = 10.0f;
+	float time = 0.0f;
 	void PlayAnimation();
 
 	inline Model* GetModel() { return model; }

@@ -4,6 +4,7 @@
 #include <fstream>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
+#include "Quaternion.h"
 using namespace std;
 
 MyDirectX* Model::dx = MyDirectX::GetInstance();
@@ -539,8 +540,10 @@ void Model::ReadNodeHeirarchy(float AnimationTime, const aiNode* pNode, const Ma
 		// 回転を補間し、回転変換行列を生成する
 		aiQuaternion RotationQ;
 		CalcInterpolatedRotation(RotationQ, AnimationTime, pNodeAnim);
-		aiMatrix4x4 rotQ = aiMatrix4x4(RotationQ.GetMatrix());
-		TransformMatToAiMat(mat.matRot, rotQ);
+		Quaternion rotQ(RotationQ.w, RotationQ.x, RotationQ.y, RotationQ.z);
+		mat.matRot = rotQ.GetRotMatrix();
+		//aiMatrix4x4 rotQ = aiMatrix4x4(RotationQ.GetMatrix());
+		//TransformMatToAiMat(mat.matRot, rotQ);
 
 		// 移動を補間し、移動変換行列を生成する
 		aiVector3D Translation;
@@ -549,19 +552,19 @@ void Model::ReadNodeHeirarchy(float AnimationTime, const aiNode* pNode, const Ma
 		mat.SetMatTransform();
 
 		// これら上記の変換を合成する
-		NodeTransformation = mat.matTrans;
+		NodeTransformation = mat.matScale;
 		NodeTransformation *= mat.matRot;
-		NodeTransformation *= mat.matScale;
+		NodeTransformation *= mat.matTrans;
 	}
 
-	Matrix GlobalTransformation = ParentTransform;
-	GlobalTransformation *= NodeTransformation;
+	Matrix GlobalTransformation = NodeTransformation;
+	GlobalTransformation *= ParentTransform;
 
 	if (boneMapping.find(NodeName) != boneMapping.end()) {
 		UINT BoneIndex = boneMapping[NodeName];
 		boneInfo[BoneIndex].finalTransformation = m_GlobalInverseTransform;
-		boneInfo[BoneIndex].finalTransformation *= GlobalTransformation;
 		boneInfo[BoneIndex].finalTransformation *= boneInfo[BoneIndex].boneOffset;
+		boneInfo[BoneIndex].finalTransformation *= GlobalTransformation;
 	}
 
 	for (UINT i = 0; i < pNode->mNumChildren; i++) {

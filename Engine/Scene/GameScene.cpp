@@ -246,7 +246,7 @@ void GameScene::LoadResources()
 	modelGround = std::make_unique<Model>("ground");
 	//	‹u
 	modelHill = std::make_unique<Model>("ground1");
-	modelTree = std::make_unique<Model>("boneTest", true);
+	modelTree = std::make_unique<Model>("human", true);
 	modelTree2 = std::make_unique<Model>("tree2");
 	modelSmoothSphere = std::make_unique<Model>("sphere", false, true);
 #pragma endregion
@@ -261,6 +261,9 @@ void GameScene::LoadResources()
 	//hill->SetPosition(Vector3D(0.0f, 0.0f, 10.0f));
 
 	tree.reset(Object3D::Create(modelTree.get()));
+	float size = 0.05f;
+	tree->SetScale({ size,size,size });
+	tree->SetRotation({ 0.0f,MyMath::PI,0.0f });
 	//tree2.push_back(Object3D::Create(modelTree2.get()));
 	//tree2.push_back(Object3D::Create(modelTree2.get()));
 	//tree2.push_back(Object3D::Create(modelTree2.get()));
@@ -341,10 +344,10 @@ void GameScene::Update()
 
 	sprite->Update();
 
-	//tree->PlayAnimation();
 #pragma endregion
 	MatUpdate();
 
+	tree->PlayAnimation();
 	CollisionUpdate();
 
 	if (input->GetTrigger(DIK_1)) {
