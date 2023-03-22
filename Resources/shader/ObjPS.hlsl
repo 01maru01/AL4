@@ -10,7 +10,7 @@ float4 main(VSOutput input) : SV_TARGET
 	const float shininess = 4.0f;
 	float4 shadercolor;
 	shadercolor.a = m_alpha;
-
+	//	方向ライト
 	for (int i = 0; i < DIRLIGHT_NUM; i++) {
 		if (dirLights[i].active) {
 			float3 dolightnormal = dot(dirLights[i].lightv, input.normal);
@@ -23,7 +23,7 @@ float4 main(VSOutput input) : SV_TARGET
 			shadercolor.rgb += (ambient + diffuse + specular) * dirLights[i].lightcolor;
 		}
 	}
-
+	//	点光源
 	for (i = 0; i < POINTLIGHT_NUM; i++) {
 		if (pointLights[i].active) {
 			float3 lightv = pointLights[i].lightpos - input.worldpos.xyz;
@@ -39,7 +39,7 @@ float4 main(VSOutput input) : SV_TARGET
 			shadercolor.rgb += atten * (diffuse + specular) * pointLights[i].lightcolor;
 		}
 	}
-
+	//	スポットライト
 	for (i = 0; i < SPOTLIGHT_NUM; i++) {
 		if (spotLights[i].active) {
 			float3 lightv = spotLights[i].lightpos - input.worldpos.xyz;
@@ -59,7 +59,7 @@ float4 main(VSOutput input) : SV_TARGET
 			shadercolor.rgb += atten * (diffuse + specular) * spotLights[i].lightcolor;
 		}
 	}
-
+	//	丸影
 	for (i = 0; i < CIRCLESHADOW_NUM; i++) {
 		if (circleShadows[i].active) {
 			float3 casterv = circleShadows[i].casterPos - input.worldpos.xyz;
@@ -115,11 +115,4 @@ float4 main(VSOutput input) : SV_TARGET
 
 	float4 texcolor = float4(tex.Sample(smp,input.uv));
 	return lerp(fogColor, shadercolor * texcolor, fogFactor);
-
-	//float3 light = normalize(float3(1, -1, 1));
-	//float diffuse = saturate(dot(-light, input.normal));
-	//float brightness = diffuse * 0.3f;
-	//float4 shadercolor = float4(brightness, brightness, brightness, 1.0f);
-	//float4 texcolor = tex.Sample(smp,input.uv);
-	//return shadercolor* texcolor;
 }
