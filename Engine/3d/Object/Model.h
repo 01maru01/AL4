@@ -14,33 +14,6 @@ struct aiMaterial;
 struct aiNode;
 struct aiScene;
 
-//struct Node
-//{
-//	std::string name;
-//	//	メッシュのインデックス
-//	std::vector<int> meshIndex;
-//	//	ローカル変換行列
-//	Matrix transform;
-//	//	ワールド変換行列
-//	Matrix worldTransform;
-//	//	親
-//	Node* parent = nullptr;
-//};
-//
-//struct Bone
-//{
-//	std::string name;
-//
-//	Matrix invInitialPose;
-//
-//	//	FBX Bone Inf
-//
-//
-//	Bone(const std::string& name) {
-//		this->name = name;
-//	}
-//};
-
 struct BoneInfo
 {
 	Matrix boneOffset;
@@ -52,32 +25,20 @@ class Model
 private:
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
+	static const int MAX_BONE_INDICES = 4;
 	static MyDirectX* dx;
-
+	//	fbxの情報取得用変数
 	const aiScene* modelScene;
 	Assimp::Importer importer;
-public:
-	static const int MAX_BONE_INDICES = 4;
-
-
-	//std::vector<Node> nodes;
-
-	//std::vector<Bone> bones;
 
 	std::vector<Mesh*> meshes;
 	std::unordered_map<std::string, Material*> materials;
 	Material* defaultMaterial = nullptr;
 
-	//Node* meshNode = nullptr;
-
-
-	//	3/15
-	Matrix m_GlobalInverseTransform;
+	Matrix globalInverseTransform;
 	std::map<std::string, UINT> boneMapping;
 	UINT numBones = 0;
 	std::vector<BoneInfo> boneInfo;
-
-	float time = 0.0f;
 public:
 	Model(const char* filename, bool isFBX = false, bool smoothing = false);
 	~Model();
@@ -87,8 +48,7 @@ public:
 	void Draw();
 
 	inline const std::vector<Mesh*>& GetMeshes() { return meshes; }
-	const Matrix& GetModelTransform() { return m_GlobalInverseTransform; }
-	//std::vector<Bone>& GetBone() { return bones; }
+	const Matrix& GetModelTransform() { return globalInverseTransform; }
 	UINT GetNumBones() { return numBones; }
 	std::vector<BoneInfo> GetBoneInfo() { return boneInfo; }
 private:
@@ -99,9 +59,9 @@ private:
 	void LoadFBXModel(const std::string& modelname);
 	void LoadFBXMesh(Mesh& dst, const aiMesh* src);
 	void LoadFBXBone(UINT meshIndex, const aiMesh* src);
-	//void LoadFBXNode(const aiNode* src, Node* parent = nullptr);
-	void ReadNodeHeirarchy(float AnimationTime, const aiNode* pNode, const Matrix& ParentTransform);
 	void LoadFBXTexture(const std::string& filename, Mesh& dst, const aiMaterial* src);
+
+	void ReadNodeHeirarchy(float AnimationTime, const aiNode* pNode, const Matrix& ParentTransform);
 	
 	void AddMaterial(Material* material) { materials.emplace(material->name, material); }
 };

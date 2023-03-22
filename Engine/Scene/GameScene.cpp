@@ -346,8 +346,6 @@ void GameScene::Update()
 
 #pragma endregion
 	MatUpdate();
-
-	player->PlayAnimation();
 	CollisionUpdate();
 
 	if (input->GetTrigger(DIK_1)) {

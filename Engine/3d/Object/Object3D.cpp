@@ -166,13 +166,10 @@ void Object3D::MatUpdate()
 	//constMap->color = color;
 	transform->Unmap(0, nullptr);
 
-	//ConstBufferDataSkin* constMapSkin = nullptr;
-	//result = constBuffSkin->Map(0, nullptr, (void**)&constMapSkin);
-	//for (UINT i = 0; i < model->GetNumBones(); i++)
-	//{		
-	//	constMapSkin->bones[i] = model->GetBoneInfo()[i].boneOffset;
-	//}
-	//constBuffSkin->Unmap(0, nullptr);
+	//	アニメーション
+	if (model->GetNumBones() > 0) {
+		PlayAnimation();
+	}
 }
 
 void Object3D::Draw()
@@ -199,10 +196,7 @@ void Object3D::PlayAnimation()
 	constBuffSkin->Map(0, nullptr, (void**)&constMapSkin);
 	for (UINT i = 0; i < model->GetNumBones(); i++)
 	{
-		//Matrix matCurrentPose;
-
 		constMapSkin->bones[i] = Transforms[i];
-		//constMapSkin->bones[i] *= matCurrentPose;
 	}
 	constBuffSkin->Unmap(0, nullptr);
 }

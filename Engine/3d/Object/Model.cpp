@@ -472,7 +472,7 @@ void Model::ReadNodeHeirarchy(float AnimationTime, const aiNode* pNode, const Ma
 
 	if (boneMapping.find(NodeName) != boneMapping.end()) {
 		UINT BoneIndex = boneMapping[NodeName];
-		boneInfo[BoneIndex].finalTransformation = m_GlobalInverseTransform;
+		boneInfo[BoneIndex].finalTransformation = globalInverseTransform;
 		boneInfo[BoneIndex].finalTransformation *= boneInfo[BoneIndex].boneOffset;
 		boneInfo[BoneIndex].finalTransformation *= GlobalTransformation;
 	}
@@ -540,7 +540,7 @@ void Model::LoadFBXModel(const std::string& modelname)
 	if (modelScene == nullptr) { return; }
 
 	//	GlobalInverseTransformİ’è
-	TransformMatToAiMat(m_GlobalInverseTransform, modelScene->mRootNode->mTransformation);
+	TransformMatToAiMat(globalInverseTransform, modelScene->mRootNode->mTransformation);
 
 	//	meshî•ñİ’è
 	meshes.reserve(modelScene->mNumMeshes);
