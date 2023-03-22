@@ -207,7 +207,7 @@ void Model::LoadModel(const std::string& modelname, bool smoothing)
 				vertex.pos = temp_poss[indexPos - 1];
 				vertex.normal = temp_normals[indexNormal - 1];
 				vertex.uv = temp_uvs[indexUV - 1];
-
+				vertex.boneWeight[0] = 1.0f;			//	fbxVertex—p
 				mesh->AddVertex(vertex);
 
 				if (smoothing) {

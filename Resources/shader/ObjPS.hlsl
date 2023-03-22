@@ -6,10 +6,6 @@ SamplerState smp : register(s0);
 
 float4 main(VSOutput input) : SV_TARGET
 {
-	//float3 light = normalize(float3(1,-1,1));
-	//float diffuse = saturate(dot(-light, input.normal));
-	//float3 shader_color = m_ambient;
-	//shader_color += m_diffuse * diffuse;
 	float3 eyedir = normalize(cameraPos - input.worldpos.xyz);
 	const float shininess = 4.0f;
 	float4 shadercolor;

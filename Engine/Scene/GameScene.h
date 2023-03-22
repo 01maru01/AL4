@@ -35,7 +35,6 @@ private:
 	std::unique_ptr<Model> modelSword;
 	std::unique_ptr<Model> modelTree;
 	std::unique_ptr<Model> modelTree2;
-	std::unique_ptr<Model> modelSmoothSphere;
 #pragma endregion
 
 #pragma region Sprite
@@ -48,14 +47,13 @@ private:
 	int reimuG = -1;
 	int grassG = -1;
 #pragma endregion
-	//std::unique_ptr<Object3D> skydome;
-	//std::unique_ptr<TouchableObject> ground;
-	//std::unique_ptr<Object3D> hill;
+	std::unique_ptr<Object3D> skydome;
+	std::unique_ptr<TouchableObject> ground;
+	std::unique_ptr<Object3D> hill;
 	std::unique_ptr<Object3D> tree;
-	//std::vector<Object3D*> tree2;
-	//std::unique_ptr<Object3D> sphere2;
-	//std::unique_ptr<Player> player;
-	//std::vector<VolumeLightObj> testVolLight;
+	std::vector<Object3D*> tree2;
+	std::unique_ptr<Player> player;
+	std::vector<VolumeLightObj> testVolLight;
 
 	int mord = 0;
 

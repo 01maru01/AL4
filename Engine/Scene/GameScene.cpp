@@ -17,27 +17,27 @@ void GameScene::CollisionUpdate()
 
 void GameScene::MatUpdate()
 {
-	//ground->MatUpdate();
-	//hill->MatUpdate();
+	ground->MatUpdate();
+	hill->MatUpdate();
+	skydome->MatUpdate();
 
-	//skydome->MatUpdate();
 	//player->MatUpdate();
 	tree->MatUpdate();
-	//for (int i = 0; i < tree2.size(); i++)
-	//{
-	//	tree2[i]->MatUpdate();
-	//}
+	for (int i = 0; i < tree2.size(); i++)
+	{
+		tree2[i]->MatUpdate();
+	}
 	//sphere2->MatUpdate();
 
-	//for (int i = 0; i < grass.size(); i++)
-	//{
-	//	grass[i].MatUpdate();
-	//}
+	for (int i = 0; i < grass.size(); i++)
+	{
+		grass[i].MatUpdate();
+	}
 
-	//for (int i = 0; i < testVolLight.size(); i++)
-	//{
-	//	testVolLight[i].MatUpdate();
-	//}
+	for (int i = 0; i < testVolLight.size(); i++)
+	{
+		testVolLight[i].MatUpdate();
+	}
 }
 
 GameScene::GameScene()
@@ -47,10 +47,10 @@ GameScene::GameScene()
 GameScene::~GameScene()
 {
 	delete camera;
-	//for (int i = 0; i < tree2.size(); i++)
-	//{
-	//	delete tree2[i];
-	//}
+	for (int i = 0; i < tree2.size(); i++)
+	{
+		delete tree2[i];
+	}
 }
 
 void GameScene::Initialize()
@@ -92,10 +92,13 @@ void GameScene::Initialize()
 	//sphere2->SetCollider(new SphereCollider());
 	//sphere2->SetAttribute(COLLISION_ATTR_LANDSHAPE);
 	//sphere2->SetPosition(Vector3D(-3.0f, 1.0f, 0.0f));
-	//
-	//Player::SetCamera(camera);
-	//player = std::make_unique<Player>();
-	//player->PlayerInitialize(modelSword.get());
+	
+	Player::SetCamera(camera);
+	player = std::make_unique<Player>();
+	player->PlayerInitialize(modelSword.get());
+	float size = 0.05f;
+	player->SetScale({ size,size,size });
+	player->SetRotation({ 0.0f,MyMath::PI,0.0f });
 
 	Particle::SetCamera(camera);
 	grass.push_back(Particle());
@@ -225,10 +228,10 @@ void GameScene::Initialize()
 	grass.push_back(Particle(Vector3D(MyMath::GetRand(-0.0f, dis) - dis, 0.0f, -3.0f-2.0f)));
 	grass.push_back(Particle(Vector3D(MyMath::GetRand(-0.0f, dis) - dis, 0.0f, -3.0f-2.0f)));
 
-	//testVolLight.push_back(VolumeLightObj(Vector2D(5.0f, 25.0f), Vector3D(0.0f, 0.0f, -2.0f), 30.0f));
-	/*testVolLight.push_back(VolumeLightObj(Vector2D(5.0f, 40.0f), Vector3D(5.0f, -15.0f, 2.0f), 30.0f));
+	testVolLight.push_back(VolumeLightObj(Vector2D(5.0f, 25.0f), Vector3D(0.0f, 0.0f, -2.0f), 30.0f));
+	testVolLight.push_back(VolumeLightObj(Vector2D(5.0f, 40.0f), Vector3D(5.0f, -15.0f, 2.0f), 30.0f));
 	testVolLight.push_back(VolumeLightObj(Vector2D(5.0f, 35.0f), Vector3D(8.0f, -10.0f, -2.0f), 30.0f));
-	testVolLight.push_back(VolumeLightObj(Vector2D(5.0f, 25.0f), Vector3D(10.0f, 0.0f, 2.0f), 30.0f));*/
+	testVolLight.push_back(VolumeLightObj(Vector2D(5.0f, 25.0f), Vector3D(10.0f, 0.0f, 2.0f), 30.0f));
 
 	mord = Phong;
 }
@@ -241,46 +244,42 @@ void GameScene::Finalize()
 void GameScene::LoadResources()
 {
 #pragma region Model
-	modelSword = std::make_unique<Model>("chr_sword");
+	modelSword = std::make_unique<Model>("human",true);
+
 	modelSkydome = std::make_unique<Model>("skydome");
+	modelHill = std::make_unique<Model>("ground1");
 	modelGround = std::make_unique<Model>("ground");
 	//	丘
-	modelHill = std::make_unique<Model>("ground1");
-	modelTree = std::make_unique<Model>("human", true);
+	modelTree = std::make_unique<Model>("tree");
 	modelTree2 = std::make_unique<Model>("tree2");
-	modelSmoothSphere = std::make_unique<Model>("sphere", false, true);
 #pragma endregion
-	////	天球
-	//skydome.reset(Object3D::Create(modelSkydome.get()));
-	////	地面
-	//ground.reset(TouchableObject::Create(modelGround.get()));
-	//ground->SetScale(Vector3D(1.0f, 1.0f, 0.1f));
-	//hill.reset(Object3D::Create(modelHill.get()));
-	//float groundscale = 10.0f;
-	//hill->SetScale(Vector3D(groundscale, 1.0f, 1.0f));
-	//hill->SetPosition(Vector3D(0.0f, 0.0f, 10.0f));
+	//	天球
+	skydome.reset(Object3D::Create(modelSkydome.get()));
+	//	地面
+	ground.reset(TouchableObject::Create(modelGround.get()));
+	ground->SetScale(Vector3D(1.0f, 1.0f, 0.1f));
+	hill.reset(Object3D::Create(modelHill.get()));
+	float groundscale = 10.0f;
+	hill->SetScale(Vector3D(groundscale, 1.0f, 1.0f));
+	hill->SetPosition(Vector3D(0.0f, 0.0f, 10.0f));
 
 	tree.reset(Object3D::Create(modelTree.get()));
-	float size = 0.05f;
-	tree->SetScale({ size,size,size });
-	tree->SetRotation({ 0.0f,MyMath::PI,0.0f });
-	//tree2.push_back(Object3D::Create(modelTree2.get()));
-	//tree2.push_back(Object3D::Create(modelTree2.get()));
-	//tree2.push_back(Object3D::Create(modelTree2.get()));
-	//tree2.push_back(Object3D::Create(modelTree2.get()));
-	//tree2.push_back(Object3D::Create(modelTree2.get()));
-	//tree2.push_back(Object3D::Create(modelTree2.get()));
-	//tree2.push_back(Object3D::Create(modelTree2.get()));
-	//tree2.push_back(Object3D::Create(modelTree2.get()));
-	//tree2.push_back(Object3D::Create(modelTree2.get()));
-	//tree2.push_back(Object3D::Create(modelTree2.get()));
-	//tree2.push_back(Object3D::Create(modelTree2.get()));
-	//tree2.push_back(Object3D::Create(modelTree2.get()));
-	//for (int i = 0; i < tree2.size(); i++)
-	//{
-	//	tree2[i]->SetPosition(Vector3D(-12.0f + 2.0f * i, 0.0f, 5.0f+MyMath::GetRand(0.0f,6.0f)));
-	//}
-	//sphere2.reset(Object3D::Create(modelSmoothSphere.get()));
+	tree2.push_back(Object3D::Create(modelTree2.get()));
+	tree2.push_back(Object3D::Create(modelTree2.get()));
+	tree2.push_back(Object3D::Create(modelTree2.get()));
+	tree2.push_back(Object3D::Create(modelTree2.get()));
+	tree2.push_back(Object3D::Create(modelTree2.get()));
+	tree2.push_back(Object3D::Create(modelTree2.get()));
+	tree2.push_back(Object3D::Create(modelTree2.get()));
+	tree2.push_back(Object3D::Create(modelTree2.get()));
+	tree2.push_back(Object3D::Create(modelTree2.get()));
+	tree2.push_back(Object3D::Create(modelTree2.get()));
+	tree2.push_back(Object3D::Create(modelTree2.get()));
+	tree2.push_back(Object3D::Create(modelTree2.get()));
+	for (int i = 0; i < tree2.size(); i++)
+	{
+		tree2[i]->SetPosition(Vector3D(-12.0f + 2.0f * i, 0.0f, 5.0f+MyMath::GetRand(0.0f,6.0f)));
+	}
 #pragma region Texture
 	VolumeLightObj::SetLightGraph(dx->LoadTextureGraph(L"Resources/lightTex.jpg"));
 	reimuG = dx->LoadTextureGraph(L"Resources/reimu.png");
@@ -332,11 +331,12 @@ void GameScene::Update()
 	//player->Update();
 	//ground->ColliderUpdate();
 
-	float left = (float)input->GetKey(DIK_RIGHT) - input->GetKey(DIK_LEFT);
-	float front = (float)input->GetKey(DIK_N) - input->GetKey(DIK_M);
-	float up = (float)input->GetKey(DIK_DOWN) - input->GetKey(DIK_UP);
-	if (left == 0 && front == 0 && up == 0) left = 1.0f;
+	//float left = (float)input->GetKey(DIK_W) - input->GetKey(DIK_S);
+	//float front = (float)input->GetKey(DIK_Q) - input->GetKey(DIK_E);
+	//float up = (float)input->GetKey(DIK_D) - input->GetKey(DIK_A);
+	//if (left == 0 && front == 0 && up == 0) left = 1.0f;
 	//Light::GetInstance()->SetDirLightDir(0, { left, up, front });
+	
 	//sphere->mat.rotAngle.y += 0.02f;
 	tree->ColliderUpdate();
 	//sphere2->mat.rotAngle.y += 0.02f;
@@ -347,7 +347,7 @@ void GameScene::Update()
 #pragma endregion
 	MatUpdate();
 
-	tree->PlayAnimation();
+	player->PlayAnimation();
 	CollisionUpdate();
 
 	if (input->GetTrigger(DIK_1)) {
@@ -403,26 +403,29 @@ void GameScene::Update()
 
 void GameScene::Draw()
 {
-	////	地面
-	//ground->Draw();
-	//hill->Draw();
-	////	天球
-	//skydome->Draw();
+	//	地面
+	ground->Draw();
+	hill->Draw();
+	//	天球
+	skydome->Draw();
 	//	木
 	tree->Draw();
-	//for (int i = 0; i < tree2.size(); i++)
-	//{
-	//	tree2[i]->Draw();
-	//}
-	//
-	//for (int i = 0; i < grass.size(); i++)
-	//{
-	//	grass[i].Draw(grassG);
-	//}
-	//for (int i = 0; i < testVolLight.size(); i++)
-	//{
-	//	testVolLight[i].Draw();
-	//}
+
+	player->Draw();
+
+	for (int i = 0; i < tree2.size(); i++)
+	{
+		tree2[i]->Draw();
+	}
+	
+	for (int i = 0; i < grass.size(); i++)
+	{
+		grass[i].Draw(grassG);
+	}
+	for (int i = 0; i < testVolLight.size(); i++)
+	{
+		testVolLight[i].Draw();
+	}
 
 	//sprite->Draw();
 }
