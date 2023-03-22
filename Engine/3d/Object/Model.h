@@ -94,6 +94,8 @@ public:
 private:
 	void LoadMaterial(const std::string& directoryPath, const std::string& filename);
 	void LoadModel(const std::string& modelname, bool smoothing);
+
+	void LoadFBXMaterial(Mesh* dst, const aiMaterial* src, int index);
 	void LoadFBXModel(const std::string& modelname);
 	void LoadFBXMesh(Mesh& dst, const aiMesh* src);
 	void LoadFBXBone(UINT meshIndex, const aiMesh* src);

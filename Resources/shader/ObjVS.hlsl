@@ -38,28 +38,13 @@ SkinOutput ComputeSkin(float4 pos : POSITION, float3 normal : NORMAL, uint4 bone
 
 VSOutput main(float4 pos : POSITION, float3 normal : NORMAL, float2 uv : TEXCOORD, uint4 boneIndices : BONEINDICES, float4 boneWeights : BONEWEIGHTS)
 {
-	
-	//float3 lightdir = float3(1, -1, 1);
-	//lightdir = normalize(lightdir);
-	//float3 lightcolor = float3(1, 1, 1);
-	//float4 wpos = mul(matworld, pos);
-	//float3 ambient = m_ambient;
-	//float3 diffuse = dot(lightv, wnormal.xyz) * m_diffuse;
-	////const float3 eye = float3(0, 0, -20);
-	//const float shininess = 4.0f;
-	//float3 eyedir = normalize(cameraPos - wpos.xyz);
-	//float3 reflect = normalize(-lightv + 2 * dot(lightv, wnormal.xyz) * wnormal.xyz);
-	//float3 specular = pow(saturate(dot(reflect, eyedir)), shininess) * m_specular;
-	//output.worldpos = wpos;
-	//output.normal = wnormal.xyz;
-	//output.worldpos = mul(matworld, pos_);
-
 	SkinOutput skinned = ComputeSkin(pos, normal, boneIndices, boneWeights);
 
 	float4 wnormal = normalize(mul(matworld, float4(skinned.normal, 0)));
 	VSOutput output;
 
 	output.svpos = mul(mul(matview, matworld), skinned.pos);
+	output.worldpos = mul(matworld, skinned.pos);
 	output.normal = wnormal;
 	output.uv = uv;
 

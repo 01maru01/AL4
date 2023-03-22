@@ -99,7 +99,6 @@ void Object3D::Initialize()
 
 	mat.Initialize();
 
-
 	cbResourceDesc.Width = (sizeof(ConstBufferDataSkin) + 0xFF) & ~0xFF;
 	//	¶¬
 	result = dx->GetDev()->CreateCommittedResource(
@@ -109,7 +108,17 @@ void Object3D::Initialize()
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&constBuffSkin));
-	assert(SUCCEEDED(result));}
+	assert(SUCCEEDED(result));
+	
+	//	ƒ{[ƒ“‚Ì‰Šú‰»
+	ConstBufferDataSkin* constMapSkin = nullptr;
+	constBuffSkin->Map(0, nullptr, (void**)&constMapSkin);
+	for (UINT i = 0; i < MAX_BONES; i++)
+	{
+		constMapSkin->bones[i] = Matrix();
+	}
+	constBuffSkin->Unmap(0, nullptr);
+}
 
 void Object3D::ColliderUpdate()
 {
@@ -200,32 +209,3 @@ void Object3D::PlayAnimation()
 	}
 	constBuffSkin->Unmap(0, nullptr);
 }
-
-//Matrix Object3D::BoneTransform(float TimeInSeconds, std::vector<Matrix>& Transforms)
-//{
-//	Matrix Identity;
-//	Identity.Identity();
-//
-//	float TicksPerSecond = model->modelScene->mAnimations[0]->mTicksPerSecond != 0 ?
-//		model->modelScene->mAnimations[0]->mTicksPerSecond : 25.0f;
-//	float TimeInTicks = TimeInSeconds * TicksPerSecond;
-//	float AnimationTime = fmod(TimeInTicks, model->modelScene->mAnimations[0]->mDuration);
-//	
-//	ReadNodeHeirarchy(AnimationTime, model->modelScene->mRootNode, Identity);
-//
-//	Transforms.resize(m_NumBones);
-//
-//	for (UINT i = 0; i < m_NumBones; i++) {
-//		Transforms[i] = m_BoneInfo[i].FinalTransformation;
-//	}
-//}
-//
-//void Object3D::PlayAnimation()
-//{
-//	float RunningTime = (float)((double)GetCurrentTimeMillis() - (double)m_startTime) / 1000.0f;
-//
-//	float TicksPerSecond = model->modelScene->mAnimations[0]->mTicksPerSecond != 0 ?
-//		model->modelScene->mAnimations[0]->mTicksPerSecond : 25.0f;
-//	float TimeInTicks = RunningTime * TicksPerSecond;
-//	float AnimationTime = fmod(TimeInTicks, model->modelScene->mAnimations[0]->mDuration);
-//}

@@ -259,40 +259,6 @@ std::wstring ToWideString(const std::string& str)
 void Model::LoadFBXMesh(Mesh& dst, const aiMesh* src)
 {
 	aiVector3D zero3D(0.0f, 0.0f, 0.0f);
-	
-	//struct WeightSet
-	//{
-	//	UINT index;
-	//	float weight;
-	//};
-	//std::vector<std::list<WeightSet>>weightLists(src->mNumVertices);
-
-	////	ボーンがあったら
-	//if (src->HasBones()) {
-	//	//	ボーンの数
-	//	bones.reserve(src->mNumBones);
-
-	//	for (UINT i = 0; i < src->mNumBones; i++)
-	//	{
-	//		//	ボーン配列の末尾に生成
-	//		bones.emplace_back(Bone(src->mBones[i]->mName.C_Str()));
-
-	//		Bone& bone = bones.back();
-
-	//		//	型変換
-	//		Matrix initalPose;
-	//		TransformMatToAiMat(initalPose, src->mBones[i]->mOffsetMatrix);
-	//		//	逆行列(boneにセット)
-	//		InverseMatrix(initalPose, bone.invInitialPose);
-
-	//		//	weightList生成
-	//		for (UINT j = 0; j < src->mBones[i]->mNumWeights; j++)
-	//		{
-	//			weightLists[src->mBones[i]->mWeights[j].mVertexId].emplace_back(WeightSet{ (UINT)i,src->mBones[i]->mWeights[j].mWeight });
-	//		}
-
-	//	}
-	//}
 
 	//	頂点生成
 	for (UINT i = 0; i < src->mNumVertices; i++)
@@ -307,29 +273,6 @@ void Model::LoadFBXMesh(Mesh& dst, const aiMesh* src)
 		vertex.pos = Vector3D(position->x, position->y, position->z);
 		vertex.normal = Vector3D(normal->x, normal->y, normal->z);
 		vertex.uv = Vector2D(uv->x, uv->y);
-
-		//auto& weightList = weightLists[i];
-		//weightList.sort([](auto const& lhs, auto const& rhs) {
-		//	return lhs.weight > rhs.weight;
-		//	});
-
-		//int weightArrayIndex = 0;
-		//for (auto& weightSet : weightList) {
-		//	vertex.boneIndex[weightArrayIndex] = weightSet.index;
-		//	vertex.boneWeight[weightArrayIndex] = weightSet.weight;
-
-		//	if (++weightArrayIndex >= MAX_BONE_INDICES) {
-		//		float weight = 0.0f;
-
-		//		for (int j = 0; j < MAX_BONE_INDICES; j++)
-		//		{
-		//			weight += vertex.boneWeight[j];
-		//		}
-
-		//		vertex.boneWeight[0] = 1.0f - weight;
-		//		break;
-		//	}
-		//}
 
 		dst.AddVertex(vertex);
 	}
@@ -372,37 +315,6 @@ void Model::LoadFBXBone(UINT meshIndex, const aiMesh* src)
 		}
 	}
 }
-
-//void Model::LoadFBXNode(const aiNode* src, Node* parent)
-//{
-//	nodes.emplace_back();
-//	Node& node = nodes.back();
-//
-//	//	情報取得
-//	//	名前取得
-//	node.name = std::string(src->mName.C_Str());
-//	// メッシュの情報
-//
-//	for (UINT i = 0; i < src->mNumMeshes; ++i) {
-//		node.meshIndex.push_back(src->mMeshes[i]);
-//		meshNode = &node;
-//	}
-//	//	変換行列
-//	TransformMatToAiMat(node.transform, src->mTransformation);
-//	node.worldTransform = node.transform;
-//
-//	//	もし親がいたら
-//	if (parent) {
-//		node.parent = parent;
-//		node.worldTransform *= parent->worldTransform;
-//	}
-//
-//	//	再帰
-//	for (UINT i = 0; i < src->mNumChildren; ++i)
-//	{
-//		LoadFBXNode(src->mChildren[i], &node);
-//	}
-//}
 
 const aiNodeAnim* FindNodeAnim(const aiAnimation* pAnimation, std::string name)
 {
@@ -542,8 +454,6 @@ void Model::ReadNodeHeirarchy(float AnimationTime, const aiNode* pNode, const Ma
 		CalcInterpolatedRotation(RotationQ, AnimationTime, pNodeAnim);
 		Quaternion rotQ(RotationQ.w, RotationQ.x, RotationQ.y, RotationQ.z);
 		mat.matRot = rotQ.GetRotMatrix();
-		//aiMatrix4x4 rotQ = aiMatrix4x4(RotationQ.GetMatrix());
-		//TransformMatToAiMat(mat.matRot, rotQ);
 
 		// 移動を補間し、移動変換行列を生成する
 		aiVector3D Translation;
@@ -584,6 +494,39 @@ void Model::LoadFBXTexture(const std::string& filename, Mesh& dst, const aiMater
 	}
 }
 
+void Model::LoadFBXMaterial(Mesh* dst, const aiMaterial* src, int index)
+{
+	Material* material = Material::Create();
+
+	material->name += to_string(index);
+	
+	//	Diffuse
+	aiColor3D difcolor(0.f, 0.f, 0.f);
+	src->Get(AI_MATKEY_COLOR_DIFFUSE, difcolor);
+	material->diffuse.x = difcolor.r;
+	material->diffuse.y = difcolor.g;
+	material->diffuse.z = difcolor.b;
+	//	AMBIENT
+	aiColor3D amcolor(0.f, 0.f, 0.f);
+	src->Get(AI_MATKEY_COLOR_AMBIENT, amcolor);
+	material->ambient.x = amcolor.r;
+	material->ambient.y = amcolor.g;
+	material->ambient.z = amcolor.b;
+	//	SPECULAR
+	aiColor3D specolor(0.f, 0.f, 0.f);
+	src->Get(AI_MATKEY_COLOR_SPECULAR, specolor);
+	material->specular.x = specolor.r;
+	material->specular.y = specolor.g;
+	material->specular.z = specolor.b;
+
+	if (material) {
+		// マテリアルを登録
+		AddMaterial(material);
+	}
+
+	dst->SetMaterial(material);
+}
+
 void Model::LoadFBXModel(const std::string& modelname)
 {
 	//	パスの設定
@@ -614,40 +557,12 @@ void Model::LoadFBXModel(const std::string& modelname)
 		LoadFBXBone(i, pMesh);
 
 		//	material取得
-		const auto pMaterial = modelScene->mMaterials[i];
-		mesh->SetMaterial(Material::Create());
+		aiMaterial* pMaterial = modelScene->mMaterials[i];
+
+		LoadFBXMaterial(mesh, pMaterial, i);
+
 		LoadFBXTexture(directoryPath + filename, *mesh, pMaterial);
-		mesh->GetMaterial()->name += to_string(i);
-		if (mesh->GetMaterial()) {
-			// マテリアルを登録
-			AddMaterial(mesh->GetMaterial());
-		}
 	}
-
-
-
-
-
-
-	////	ノードの読み込み
-	//nodes.reserve(24);
-	//LoadFBXNode(modelScene->mRootNode);
-
-	//for (UINT i = 0; i < modelScene->mNumMeshes; ++i)
-	//{
-	//	meshes.emplace_back(new Mesh);
-	//	Mesh* mesh = meshes.back();
-	//	const auto pMesh = modelScene->mMeshes[i];
-	//	LoadFBXMesh(*mesh, pMesh);
-	//	const auto pMaterial = modelScene->mMaterials[i];
-	//	mesh->SetMaterial(Material::Create());
-	//	LoadFBXTexture(directoryPath + filename, *mesh, pMaterial);
-	//	mesh->GetMaterial()->name += to_string(i);
-	//	if (mesh->GetMaterial()) {
-	//		// マテリアルを登録
-	//		AddMaterial(mesh->GetMaterial());
-	//	}
-	//}
 }
 
 Model::~Model()
@@ -724,17 +639,6 @@ Model::Model(const char* filename, bool isFBX, bool smoothing)
 
 void Model::Draw()
 {
-	//if (nodes.size() != 0) {
-	//	//	ノードがあったら
-	//	for (auto& node : nodes) {
-	//		//	メッシュの数分for文回す
-	//		for (int i = 0; i < node.meshIndex.size(); i++) {
-	//			meshes[node.meshIndex[i]]->Draw();
-	//		}
-	//	}
-	//}
-	//else {
-	//}
 	for (auto& mesh : meshes) {
 		mesh->Draw();
 	}

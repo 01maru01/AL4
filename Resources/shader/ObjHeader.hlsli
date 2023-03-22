@@ -5,11 +5,6 @@ static const int CIRCLESHADOW_NUM = 1;
 
 static const int MAX_BONES = 32;
 
-cbuffer skinning:register(b3)
-{
-	matrix matSkinning[MAX_BONES];
-}
-
 struct PointLight
 {
 	float3 lightpos;
@@ -68,6 +63,11 @@ cbuffer ConstBufferLightData:register(b2)
 	SpotLight spotLights[SPOTLIGHT_NUM];
 	CircleShadow circleShadows[CIRCLESHADOW_NUM];
 };
+
+cbuffer skinning:register(b3)
+{
+	matrix matSkinning[MAX_BONES];
+}
 
 struct VSOutput
 {
