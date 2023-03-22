@@ -348,6 +348,8 @@ void GameScene::Update()
 	MatUpdate();
 	CollisionUpdate();
 
+	Light::GetInstance()->SetFogActive(input->GetKey(DIK_SPACE));
+
 	if (input->GetTrigger(DIK_1)) {
 		mord = Phong;
 

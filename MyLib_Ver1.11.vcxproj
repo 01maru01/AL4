@@ -42,6 +42,7 @@
     <ClCompile Include="Engine\base\GPipeline.cpp" />
     <ClCompile Include="Engine\base\input\Input.cpp" />
     <ClCompile Include="Engine\base\input\InputJoypad.cpp" />
+    <ClCompile Include="Engine\3d\Light\DistanceFog.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\math\Matrix.cpp" />
     <ClCompile Include="Engine\base\MyGame.cpp" />
@@ -138,6 +139,7 @@
     <ClInclude Include="Engine\3d\camera\NormalCamera.h" />
     <ClInclude Include="Engine\Scene\TitleScene.h" />
     <ClInclude Include="Engine\3d\Light\VolumeLight.h" />
+    <ClInclude Include="Engine\3d\Light\DistanceFog.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="External\DirectXTex\DirectXTex_Desktop_2022_Win10.vcxproj">

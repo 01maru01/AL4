@@ -102,17 +102,16 @@ float4 main(VSOutput input) : SV_TARGET
 	//f = clamp(f, 0.0f, 1.0f);
 	////オブジェクトのランバート拡散照明の計算結果とフォグカラーを線形合成する
 
-	float fogStart = 0.1f;
-	float fogEnd = 5.0f;
-	float4 fogColor = float4(1.0f, 1.0f, 1.0f, 1.0f);                  //フォグカラー
+	float4 texcolor = float4(tex.Sample(smp, input.uv));
 
-	const float near = 0.1;
-	const float far = 30.0;
-	const float linerDepth = 1.0 / (far - near);
+	if (distanceFog.active) {
+		float4 fogColor = float4(distanceFog.fogColor, 1.0f);		//フォグカラー
+		const float linerDepth = 1.0 / (distanceFog.fogFar - distanceFog.fogNear);
+		float linerPos = length(cameraPos - input.worldpos) * linerDepth;
+		float fogFactor = saturate((distanceFog.fogEnd - linerPos) / (distanceFog.fogEnd - distanceFog.fogStart));
 
-	float linerPos = length(cameraPos - input.worldpos) * linerDepth;
-	float fogFactor = saturate((fogEnd - linerPos) / (fogEnd - fogStart));
+		return lerp(fogColor, shadercolor * texcolor, fogFactor);
+	}
 
-	float4 texcolor = float4(tex.Sample(smp,input.uv));
-	return lerp(fogColor, shadercolor * texcolor, fogFactor);
+	return shadercolor * texcolor;
 }

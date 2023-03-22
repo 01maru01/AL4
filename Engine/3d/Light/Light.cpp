@@ -75,6 +75,18 @@ void Light::TransferConstBuffer()
 			}
 		}
 
+		if (distanceFog.IsActive()) {
+			constMap->distanceFog.active = 1;
+			constMap->distanceFog.color = distanceFog.GetColor();
+			constMap->distanceFog.start = distanceFog.GetStart();
+			constMap->distanceFog.end = distanceFog.GetEnd();
+			constMap->distanceFog.fogFar = distanceFog.GetFar();
+			constMap->distanceFog.fogNear = distanceFog.GetNear();
+		}
+		else {
+			constMap->distanceFog.active = 0;
+		}
+
 		constBuff->Unmap(0, nullptr);
 	}
 }

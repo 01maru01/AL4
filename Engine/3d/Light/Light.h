@@ -6,6 +6,7 @@
 #include "DirLight.h"
 #include "SpotLight.h"
 #include "CircleShadow.h"
+#include "DistanceFog.h"
 
 class Light
 {
@@ -24,6 +25,7 @@ private:
 	DirLight dirLights[DirLightNum];
 	SpotLight spotLights[SpotLightNum];
 	CircleShadow circleShadows[CircleShadowNum];
+	DistanceFog distanceFog;
 	bool dirty = false;
 public:
 	struct ConstBufferLightData
@@ -34,6 +36,7 @@ public:
 		PointLight::ConstBuffData pointLights[PointLightNum];
 		SpotLight::ConstBuffData spotLights[SpotLightNum];
 		CircleShadow::ConstBuffData circleShadows[CircleShadowNum];
+		DistanceFog::ConstBuffData distanceFog;
 	};
 private:
 	Light() {};
@@ -71,5 +74,11 @@ public:
 	void SetCircleShadowDistanceCasterLight(int index, float distanceCasterLight);
 	void SetCircleShadowAtten(int index, const Vector3D& atten);
 	void SetCircleShadowFactorAngle(int index, const Vector2D& factorAngle);
+
+	void SetFogActive(bool active) { distanceFog.SetActive(active); }
+	void SetFogStart(float start) { distanceFog.SetStart(start); }
+	void SetFogEnd(float end) { distanceFog.SetEnd(end); }
+	void SetFogNear(float fogNear) { distanceFog.SetNear(fogNear); }
+	void SetFogFar(float fogFar) { distanceFog.SetFar(fogFar); }
 };
 

@@ -40,6 +40,16 @@ struct CircleShadow
 	uint active;
 };
 
+struct DistanceFog
+{
+	float3 fogColor;
+	uint active;
+	float fogStart;
+	float fogEnd;
+	float fogNear;
+	float fogFar;
+};
+
 cbuffer ConstBufferDataMaterial:register(b0)
 {
 	float3 m_ambient : packoffset(c0);
@@ -62,6 +72,7 @@ cbuffer ConstBufferLightData:register(b2)
 	PointLight pointLights[POINTLIGHT_NUM];
 	SpotLight spotLights[SPOTLIGHT_NUM];
 	CircleShadow circleShadows[CIRCLESHADOW_NUM];
+	DistanceFog distanceFog;
 };
 
 cbuffer skinning:register(b3)
