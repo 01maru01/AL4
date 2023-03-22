@@ -187,9 +187,9 @@ void Object3D::Draw()
 void Object3D::PlayAnimation()
 {
 	std::vector<Matrix> Transforms;
-	float RunningTime = time;
+	float RunningTime = animationTImer;
 
-	time += 0.1f;
+	animationTImer += 0.1f;
 	model->BoneTransform(RunningTime, Transforms);
 
 	ConstBufferDataSkin* constMapSkin = nullptr;
