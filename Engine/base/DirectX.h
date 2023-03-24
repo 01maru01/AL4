@@ -65,6 +65,7 @@ private:
 
 	int textureNum;
 	std::vector<ComPtr<ID3D12Resource>> texBuff;
+	std::vector<ComPtr<ID3D12Resource>> uploadBuff;
 	UINT incrementSize;
 
 	std::chrono::steady_clock::time_point reference_;
