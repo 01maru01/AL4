@@ -1,4 +1,5 @@
 #include "Object2D.h"
+#include "TextureManager.h"
 
 MyDirectX* Object2D::dx = MyDirectX::GetInstance();
 GPipeline* Object2D::pipeline = nullptr;
@@ -138,7 +139,7 @@ void Object2D::Draw(int handle)
 
 	BuffUpdate(cmdList);
 	//	テクスチャ
-	cmdList->SetGraphicsRootDescriptorTable(0, dx->GetTextureHandle(handle));
+	cmdList->SetGraphicsRootDescriptorTable(0, TextureManager::GetInstance()->GetTextureHandle(handle));
 	cmdList->SetGraphicsRootConstantBufferView(1, material->GetGPUVirtualAddress());
 	cmdList->SetGraphicsRootConstantBufferView(2, transform->GetGPUVirtualAddress());
 

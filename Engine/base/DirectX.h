@@ -16,9 +16,6 @@
 
 class MyDirectX
 {
-public:
-	static int whiteTexHandle;
-
 private:
 	Window* win = nullptr;
 
@@ -56,24 +53,24 @@ private:
 	ComPtr<ID3D12Resource> screenResource;
 	D3D12_RESOURCE_BARRIER screenBarrierDesc;
 	ComPtr<ID3D12DescriptorHeap> screenRTVHeap;
-	std::vector<ComPtr<ID3D12DescriptorHeap>> screenSRVHeap;
+	std::vector<ComPtr<ID3D12DescriptorHeap>> srvHeap;
 	
 	//	ビューポート
 	ViewPort viewPort;
 	// シザー矩形
 	ScissorRect scissorRect;
 
-	int textureNum;
-	std::vector<ComPtr<ID3D12Resource>> texBuff;
-	std::vector<ComPtr<ID3D12Resource>> uploadBuff;
-	UINT incrementSize;
+	//int textureNum;
+	//std::vector<ComPtr<ID3D12Resource>> texBuff;
+	//std::vector<ComPtr<ID3D12Resource>> uploadBuff;
+	//UINT incrementSize;
 
 	std::chrono::steady_clock::time_point reference_;
 
 private:
 	void DebugLayer();
 
-	void LoadWhiteTex();
+	//void LoadWhiteTex();
 
 	void InitializeFPS();
 	void UpdateFPS();
@@ -94,14 +91,16 @@ public:
 	void PrevDraw(FLOAT* clearColor_ = nullptr);
 	void PostDraw();
 
-	int LoadTextureGraph(const wchar_t* textureName);
+	//int LoadTextureGraph(const wchar_t* textureName);
 
 	//	Getter
-	ID3D12Resource* GetTextureBuffer(uint32_t index) const { return texBuff[index - 1].Get(); }
-	D3D12_GPU_DESCRIPTOR_HANDLE GetTextureHandle(int handle);
+	const D3D12_CPU_DESCRIPTOR_HANDLE GetCPUSRVHeapForHeapStart() { return srvHeap[0]->GetCPUDescriptorHandleForHeapStart(); }
+	const D3D12_GPU_DESCRIPTOR_HANDLE GetGPUSRVHeapForHeapStart() { return srvHeap[0]->GetGPUDescriptorHandleForHeapStart(); }
+
+	//ID3D12Resource* GetTextureBuffer(uint32_t index) const { return texBuff[index - 1].Get(); }
+	//D3D12_GPU_DESCRIPTOR_HANDLE GetTextureHandle(int handle);
 	ID3D12Device* GetDev() { return device.Get(); }
 	ID3D12GraphicsCommandList* GetCmdList() { return cmdList.Get(); }
 	Matrix GetViewportMat() { return viewPort.Mat(); }
-	UINT GetIncrementSize() { return incrementSize; }
 };
 

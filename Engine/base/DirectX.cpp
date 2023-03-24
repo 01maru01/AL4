@@ -4,7 +4,6 @@
 #include <DirectXTex.h>
 using namespace DirectX;
 
-int MyDirectX::whiteTexHandle = 2;
 
 // 対応レベルの配列
 D3D_FEATURE_LEVEL levels[] = {
@@ -28,137 +27,6 @@ void MyDirectX::DebugLayer()
 		debugController->EnableDebugLayer();
 		debugController->SetEnableGPUBasedValidation(TRUE);
 	}
-}
-
-void MyDirectX::LoadWhiteTex()
-{
-//	textureNum++;
-//
-//	const size_t textureWidth = 256;
-//	const size_t textureHeight = 256;
-//	const size_t imageDataCount = textureWidth * textureHeight;
-//	XMFLOAT4* imageData = new XMFLOAT4[imageDataCount];
-//
-//	//	画像の色設定
-//	for (size_t i = 0; i < imageDataCount; i++) {
-//		imageData[i].x = 1.0f;
-//		imageData[i].y = 1.0f;
-//		imageData[i].z = 1.0f;
-//		imageData[i].w = 1.0f;
-//	}
-//
-//	//	ヒープ設定
-//	D3D12_HEAP_PROPERTIES textureHeapProp{};
-//	textureHeapProp.Type = D3D12_HEAP_TYPE_DEFAULT;
-//	//	リソース設定
-//	D3D12_RESOURCE_DESC tectureResourceDesc{};
-//	tectureResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
-//	tectureResourceDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-//	tectureResourceDesc.Width = textureWidth;
-//	tectureResourceDesc.Height = textureHeight;
-//	tectureResourceDesc.DepthOrArraySize = 1;
-//	tectureResourceDesc.MipLevels = 1;
-//	tectureResourceDesc.SampleDesc.Count = 1;
-//	//	テクスチャバッファ生成
-//	int buffIndex = textureNum - 1;
-//	HRESULT result = device->CreateCommittedResource(
-//		&textureHeapProp,
-//		D3D12_HEAP_FLAG_NONE,
-//		&tectureResourceDesc,
-//		D3D12_RESOURCE_STATE_COPY_DEST,
-//		nullptr,
-//		IID_PPV_ARGS(&texBuff[buffIndex]));
-//
-//	//	FootPrint取得
-//	D3D12_PLACED_SUBRESOURCE_FOOTPRINT footprint;
-//	UINT64 total_bytes = 0;
-//	device->GetCopyableFootprints(&tectureResourceDesc, 0, 1, 0, &footprint, nullptr, nullptr, &total_bytes);
-//
-//#pragma region Upload
-//	D3D12_RESOURCE_DESC uploadDesc{};
-//	uploadDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-//	//uploadDesc.Width = MyMath::AlignmentSize(img->rowPitch, D3D12_TEXTURE_DATA_PITCH_ALIGNMENT) * img->height;
-//	uploadDesc.Width = total_bytes;
-//	uploadDesc.Height = 1;
-//	uploadDesc.DepthOrArraySize = 1;
-//	uploadDesc.MipLevels = 1;
-//	uploadDesc.SampleDesc.Count = 1;
-//	uploadDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
-//
-//	D3D12_HEAP_PROPERTIES uploadHeap{};
-//	uploadHeap.Type = D3D12_HEAP_TYPE_UPLOAD;
-//
-//	device->CreateCommittedResource(&uploadHeap, D3D12_HEAP_FLAG_NONE, &uploadDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(&uploadBuff[buffIndex]));
-//#pragma endregion
-//
-//	//	転送
-//	XMFLOAT4* mapforImg = nullptr;
-//	result = uploadBuff[buffIndex]->Map(0, nullptr, (void**)&mapforImg);	//	map
-//
-//	XMFLOAT4* uploadStart = mapforImg + footprint.Offset;
-//	XMFLOAT4* sourceStart = imageData;
-//	size_t sourcePitch = ((size_t)textureWidth * sizeof(size_t));
-//
-//	//	画像の高さ(ピクセル)分コピーする
-//	for (uint32_t i = 0; i < footprint.Footprint.Height; i++)
-//	{
-//		memcpy(
-//			uploadStart + i * footprint.Footprint.RowPitch,
-//			sourceStart + i * sourcePitch,
-//			sourcePitch
-//		);
-//	}
-//	uploadBuff[buffIndex]->Unmap(0, nullptr);	//	unmap
-//
-//#pragma region CopyCommand
-//	//	グラフィックボード上のコピー先アドレス
-//	D3D12_TEXTURE_COPY_LOCATION texCopyDest{};
-//	texCopyDest.pResource = texBuff[buffIndex].Get();
-//	texCopyDest.Type = D3D12_TEXTURE_COPY_TYPE_SUBRESOURCE_INDEX;
-//	texCopyDest.SubresourceIndex = 0;
-//	//	グラフィックボード上のコピー元アドレス
-//	D3D12_TEXTURE_COPY_LOCATION src{};
-//	src.pResource = uploadBuff[buffIndex].Get();
-//	src.Type = D3D12_TEXTURE_COPY_TYPE_PLACED_FOOTPRINT;
-//	src.PlacedFootprint = footprint;
-//
-//	//	作成
-//	cmdList->CopyTextureRegion(&texCopyDest, 0, 0, 0, &src, nullptr);
-//
-//	//	resourceBarrier挿入
-//	D3D12_RESOURCE_BARRIER copyBarrier{};
-//	copyBarrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
-//	copyBarrier.Transition.pResource = texBuff[buffIndex].Get();
-//	copyBarrier.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
-//	copyBarrier.Transition.StateBefore = D3D12_RESOURCE_STATE_COPY_DEST;
-//	copyBarrier.Transition.StateAfter = D3D12_RESOURCE_STATE_GENERIC_READ;
-//
-//	cmdList->ResourceBarrier(1, &copyBarrier);
-//
-//	////	テクスチャバッファ転送
-//	//result = texBuff[buffIndex]->WriteToSubresource(
-//	//	0, nullptr, imageData, sizeof(XMFLOAT4) * textureWidth, sizeof(XMFLOAT4) * imageDataCount
-//	//);
-//
-//	//delete[] imageData;
-//
-//#pragma region SetSRV
-//	incrementSize = device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-//	D3D12_CPU_DESCRIPTOR_HANDLE srvHandle = screenSRVHeap[0]->GetCPUDescriptorHandleForHeapStart();
-//	srvHandle.ptr += incrementSize * textureNum;
-//
-//	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};
-//	srvDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-//	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-//	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
-//	srvDesc.Texture2D.MipLevels = 1;
-//
-//	device->CreateShaderResourceView(texBuff[buffIndex].Get(), &srvDesc, srvHandle);
-//
-//	whiteTexHandle = textureNum;
-//#pragma endregion
-
-	whiteTexHandle = LoadTextureGraph(L"white1x1.png");
 }
 
 void MyDirectX::InitializeFPS()
@@ -396,7 +264,7 @@ void MyDirectX::Initialize()
 		screenRTVHeap.Get()->GetCPUDescriptorHandleForHeapStart());
 #pragma endregion
 #pragma region SRV
-	textureNum = 0;			//	画像ロード失敗用の白色画像
+	//textureNum = 0;			//	画像ロード失敗用の白色画像
 	const size_t kMaxSRVCount = 2056;
 
 	//	heapSETTING
@@ -405,13 +273,13 @@ void MyDirectX::Initialize()
 	heapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 
 	//	vector::resize
-	screenSRVHeap.resize(heapDesc.NumDescriptors);
-	texBuff.resize(heapDesc.NumDescriptors);
-	uploadBuff.resize(heapDesc.NumDescriptors);
+	srvHeap.resize(heapDesc.NumDescriptors);
+	//texBuff.resize(heapDesc.NumDescriptors);
+	//uploadBuff.resize(heapDesc.NumDescriptors);
 
 	result = device->CreateDescriptorHeap(
 		&heapDesc,
-		IID_PPV_ARGS(screenSRVHeap[0].ReleaseAndGetAddressOf()));
+		IID_PPV_ARGS(srvHeap[0].ReleaseAndGetAddressOf()));
 	assert(SUCCEEDED(result));
 
 	D3D12_SHADER_RESOURCE_VIEW_DESC _srvDesc = {};
@@ -424,7 +292,7 @@ void MyDirectX::Initialize()
 	device->CreateShaderResourceView(
 		screenResource.Get(),
 		&_srvDesc,
-		screenSRVHeap[0]->GetCPUDescriptorHandleForHeapStart());
+		srvHeap[0]->GetCPUDescriptorHandleForHeapStart());
 #pragma endregion
 #pragma endregion
 
@@ -476,9 +344,6 @@ void MyDirectX::Initialize()
 	viewPort.Init(Window::window_width, Window::window_height, 0, 0);
 	// シザー矩形
 	scissorRect.Init(0, Window::window_width, 0, Window::window_height);
-
-	//	白色画像ロード
-	LoadWhiteTex();
 }
 
 void MyDirectX::SetResourceBarrier(D3D12_RESOURCE_BARRIER& desc, D3D12_RESOURCE_STATES StateBefore, D3D12_RESOURCE_STATES StateAfter, ID3D12Resource* pResource)
@@ -590,157 +455,12 @@ void MyDirectX::PrevDrawScreen()
 
 	scissorRect.Update(cmdList.Get());
 
-	cmdList->SetDescriptorHeaps(1, screenSRVHeap[0].GetAddressOf());
+	cmdList->SetDescriptorHeaps(1, srvHeap[0].GetAddressOf());
 }
 
 void MyDirectX::PostDrawScreen()
 {
 	SetResourceBarrier(screenBarrierDesc, D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
-}
-
-int MyDirectX::LoadTextureGraph(const wchar_t* textureName)
-{
-	TexMetadata metadata{};
-	ScratchImage scratchImg{};
-
-	HRESULT result;
-	result = LoadFromWICFile(
-		textureName,
-		WIC_FLAGS_NONE,
-		&metadata, scratchImg);
-
-	if (!SUCCEEDED(result)) {
-		//	読み込みに失敗したら白色画像
-		return whiteTexHandle;
-	}
-	textureNum++;
-	
-	//	ミニマップ生成
-	ScratchImage mipChain{};
-	result = GenerateMipMaps(
-		scratchImg.GetImages(), scratchImg.GetImageCount(), scratchImg.GetMetadata(),
-		TEX_FILTER_DEFAULT, 0, mipChain);
-
-	if (SUCCEEDED(result)) {
-		scratchImg = std::move(mipChain);
-		metadata = scratchImg.GetMetadata();
-	}
-
-	const Image* img = scratchImg.GetImage(0, 0, 0);			//	生データ
-	
-	metadata.format = MakeSRGB(metadata.format);
-
-	D3D12_RESOURCE_DESC tectureResourceDesc{};
-	tectureResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
-	tectureResourceDesc.Format = metadata.format;
-	tectureResourceDesc.Width = metadata.width;
-	tectureResourceDesc.Height = (UINT)metadata.height;
-	tectureResourceDesc.DepthOrArraySize = (UINT16)metadata.arraySize;
-	tectureResourceDesc.MipLevels = (UINT16)metadata.mipLevels;
-	tectureResourceDesc.SampleDesc.Count = 1;
-
-	//	ヒープ設定
-	D3D12_HEAP_PROPERTIES textureHeapProp{};
-	textureHeapProp.Type = D3D12_HEAP_TYPE_DEFAULT;
-
-	int buffIndex = textureNum - 1;
-	//	テクスチャバッファ生成
-	result = device->CreateCommittedResource(
-		&textureHeapProp,
-		D3D12_HEAP_FLAG_NONE,
-		&tectureResourceDesc,
-		D3D12_RESOURCE_STATE_COPY_DEST,
-		nullptr,
-		IID_PPV_ARGS(&texBuff[buffIndex]));
-
-	//	FootPrint取得
-	D3D12_PLACED_SUBRESOURCE_FOOTPRINT footprint;
-	UINT64 total_bytes = 0;
-	device->GetCopyableFootprints(&tectureResourceDesc, 0, 1, 0, &footprint, nullptr, nullptr, &total_bytes);
-
-#pragma region Upload
-	D3D12_RESOURCE_DESC uploadDesc{};
-	uploadDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	//uploadDesc.Width = MyMath::AlignmentSize(img->rowPitch, D3D12_TEXTURE_DATA_PITCH_ALIGNMENT) * img->height;
-	uploadDesc.Width = total_bytes;
-	uploadDesc.Height = 1;
-	uploadDesc.DepthOrArraySize = 1;
-	uploadDesc.MipLevels = 1;
-	uploadDesc.SampleDesc.Count = 1;
-	uploadDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
-
-	D3D12_HEAP_PROPERTIES uploadHeap{};
-	uploadHeap.Type = D3D12_HEAP_TYPE_UPLOAD;
-
-	device->CreateCommittedResource(&uploadHeap, D3D12_HEAP_FLAG_NONE, &uploadDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(&uploadBuff[buffIndex]));
-#pragma endregion
-
-	//	転送
-	uint8_t* mapforImg = nullptr;
-	result = uploadBuff[buffIndex]->Map(0, nullptr, (void**)&mapforImg);	//	map
-
-	uint8_t* uploadStart = mapforImg + footprint.Offset;
-	uint8_t* sourceStart = img->pixels;
-	uint32_t sourcePitch = ((uint32_t)img->width * sizeof(uint32_t));
-
-	//	画像の高さ(ピクセル)分コピーする
-	for (uint32_t i = 0; i < footprint.Footprint.Height; i++)
-	{
-		memcpy(
-			uploadStart + i * footprint.Footprint.RowPitch,
-			sourceStart + i * sourcePitch,
-			sourcePitch
-		);
-	}
-	uploadBuff[buffIndex]->Unmap(0, nullptr);	//	unmap
-
-#pragma region CopyCommand
-	//	グラフィックボード上のコピー先アドレス
-	D3D12_TEXTURE_COPY_LOCATION texCopyDest{};
-	texCopyDest.pResource = texBuff[buffIndex].Get();
-	texCopyDest.Type = D3D12_TEXTURE_COPY_TYPE_SUBRESOURCE_INDEX;
-	texCopyDest.SubresourceIndex = 0;
-	//	グラフィックボード上のコピー元アドレス
-	D3D12_TEXTURE_COPY_LOCATION src{};
-	src.pResource = uploadBuff[buffIndex].Get();
-	src.Type = D3D12_TEXTURE_COPY_TYPE_PLACED_FOOTPRINT;
-	src.PlacedFootprint = footprint;
-
-	//	作成
-	cmdList->CopyTextureRegion(&texCopyDest, 0, 0, 0, &src, nullptr);
-
-	//	resourceBarrier挿入
-	D3D12_RESOURCE_BARRIER copyBarrier{};
-	copyBarrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
-	copyBarrier.Transition.pResource = texBuff[buffIndex].Get();
-	copyBarrier.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
-	copyBarrier.Transition.StateBefore = D3D12_RESOURCE_STATE_COPY_DEST;
-	copyBarrier.Transition.StateAfter = D3D12_RESOURCE_STATE_GENERIC_READ;
-
-	cmdList->ResourceBarrier(1, &copyBarrier);
-
-#pragma region SetSRV
-	incrementSize = device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-	D3D12_CPU_DESCRIPTOR_HANDLE srvHandle = screenSRVHeap[0]->GetCPUDescriptorHandleForHeapStart();
-	srvHandle.ptr += incrementSize * textureNum;
-
-	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};
-	srvDesc.Format = DXGI_FORMAT_UNKNOWN;
-	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
-	srvDesc.Texture2D.MipLevels = 1;
-
-	device->CreateShaderResourceView(texBuff[buffIndex].Get(), &srvDesc, srvHandle);
-#pragma endregion
-
-	return textureNum;
-}
-
-D3D12_GPU_DESCRIPTOR_HANDLE MyDirectX::GetTextureHandle(int handle)
-{
-	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = screenSRVHeap[0]->GetGPUDescriptorHandleForHeapStart();
-	srvGpuHandle.ptr += incrementSize * handle;
-	return srvGpuHandle;
 }
 
 void MyDirectX::ScreenClear(FLOAT* clearColor_, D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle_)

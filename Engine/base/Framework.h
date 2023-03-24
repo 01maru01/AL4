@@ -6,6 +6,7 @@
 #include "SpriteCommon.h"
 #include "Object3D.h"
 #include "ParticleCommon.h"
+#include "TextureManager.h"
 
 class Framework
 {
@@ -15,6 +16,7 @@ protected:
 	Window* win = nullptr;
 	MyDirectX* dx = nullptr;
 	ParticleCommon* particleCommon = nullptr;
+	TextureManager* textureMan = nullptr;
 
 	bool isEndRoopFlag = false;
 public:

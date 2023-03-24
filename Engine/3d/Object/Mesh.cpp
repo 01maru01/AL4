@@ -1,4 +1,5 @@
 #include "Mesh.h"
+#include "TextureManager.h"
 
 MyDirectX* Mesh::dx = MyDirectX::GetInstance();
 
@@ -13,7 +14,7 @@ void Mesh::Draw()
 {
 	ID3D12GraphicsCommandList* cmdList = dx->GetCmdList();
 	BuffUpdate(cmdList);
-	cmdList->SetGraphicsRootDescriptorTable(0, dx->GetTextureHandle(mtl->GetTextureHandle()));
+	cmdList->SetGraphicsRootDescriptorTable(0, TextureManager::GetInstance()->GetTextureHandle(mtl->GetTextureHandle()));
 
 	ID3D12Resource* constBuff = mtl->GetMaterialConstBuff();
 	cmdList->SetGraphicsRootConstantBufferView(1, constBuff->GetGPUVirtualAddress());

@@ -1,4 +1,5 @@
 #include "Material.h"
+#include "TextureManager.h"
 
 MyDirectX* Material::dx = MyDirectX::GetInstance();
 
@@ -65,5 +66,5 @@ std::wstring ReplaceExtension(const std::wstring& origin, const wchar_t* ext)
 
 void Material::LoadTexture()
 {
-	textureHandle = dx->LoadTextureGraph(wfilepath);
+	textureHandle = TextureManager::GetInstance()->LoadTextureGraph(wfilepath);
 }

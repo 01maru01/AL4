@@ -3,6 +3,7 @@
 #include "InputJoypad.h"
 #include "SceneManager.h"
 #include "NormalCamera.h"
+#include "TextureManager.h"
 
 MyXAudio* TitleScene::xAudio = nullptr;
 
@@ -46,7 +47,7 @@ void TitleScene::LoadResources()
 #pragma endregion
 
 #pragma region Texture
-	pressG = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/press.png");
+	pressG = TextureManager::GetInstance()->LoadTextureGraph(L"Resources/Sprite/press.png");
 #pragma endregion
 }
 

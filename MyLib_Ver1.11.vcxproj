@@ -63,7 +63,7 @@
     <ClCompile Include="Engine\2d\Sprite.cpp" />
     <ClCompile Include="Engine\2d\SpriteCommon.cpp" />
     <ClCompile Include="Engine\2d\Particle.cpp" />
-    <ClCompile Include="Engine\2d\TextureData.cpp" />
+    <ClCompile Include="Engine\2d\TextureManager.cpp" />
     <ClCompile Include="Engine\math\Vector2D.cpp" />
     <ClCompile Include="Engine\math\Vector3D.cpp" />
     <ClCompile Include="Engine\math\Vector4D.cpp" />
@@ -127,7 +127,7 @@
     <ClInclude Include="Engine\2d\Sprite.h" />
     <ClInclude Include="Engine\2d\SpriteCommon.h" />
     <ClInclude Include="Engine\2d\Particle.h" />
-    <ClInclude Include="Engine\2d\TextureData.h" />
+    <ClInclude Include="Engine\2d\TextureManager.h" />
     <ClInclude Include="Engine\math\Vector2D.h" />
     <ClInclude Include="Engine\math\Vector3D.h" />
     <ClInclude Include="Engine\math\Vector4D.h" />

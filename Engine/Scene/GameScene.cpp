@@ -8,6 +8,7 @@
 #include "SceneManager.h"
 #include "MyXAudio.h"
 #include "NormalCamera.h"
+#include "TextureManager.h"
 
 void GameScene::CollisionUpdate()
 {
@@ -284,9 +285,9 @@ void GameScene::LoadResources()
 		tree2[i]->SetPosition(Vector3D(-12.0f + 2.0f * i, 0.0f, 5.0f+MyMath::GetRand(0.0f,6.0f)));
 	}
 #pragma region Texture
-	VolumeLightObj::SetLightGraph(dx->LoadTextureGraph(L"Resources/lightTex.jpg"));
-	reimuG = dx->LoadTextureGraph(L"Resources/reimu.png");
-	grassG = dx->LoadTextureGraph(L"Resources/grass.png");
+	VolumeLightObj::SetLightGraph(TextureManager::GetInstance()->LoadTextureGraph(L"Resources/Sprite/lightTex.jpg"));
+	reimuG = TextureManager::GetInstance()->LoadTextureGraph(L"Resources/Sprite/reimu.png");
+	grassG = TextureManager::GetInstance()->LoadTextureGraph(L"Resources/Sprite/grass.png");
 #pragma endregion
 
 #pragma region Sprite

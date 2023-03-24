@@ -1,4 +1,5 @@
 #include "Particle.h"
+#include "TextureManager.h"
 
 MyDirectX* Particle::dx = MyDirectX::GetInstance();
 ICamera* Particle::camera = nullptr;
@@ -119,7 +120,7 @@ void Particle::Draw(int handle)
 
 	BuffUpdate(cmdList);
 	//	テクスチャ
-	cmdList->SetGraphicsRootDescriptorTable(0, dx->GetTextureHandle(handle));
+	cmdList->SetGraphicsRootDescriptorTable(0, TextureManager::GetInstance()->GetTextureHandle(handle));
 	cmdList->SetGraphicsRootConstantBufferView(1, material->GetGPUVirtualAddress());
 	cmdList->SetGraphicsRootConstantBufferView(2, transform->GetGPUVirtualAddress());
 	cmdList->SetGraphicsRootConstantBufferView(3, windRes->GetGPUVirtualAddress());

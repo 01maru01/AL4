@@ -237,7 +237,7 @@
     <ClCompile Include="Engine\Audio\MyXAudio.cpp">
       <Filter>ソース ファイル\lib\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\2d\TextureData.cpp">
+    <ClCompile Include="Engine\2d\TextureManager.cpp">
       <Filter>ソース ファイル\lib\Engine</Filter>
     </ClCompile>
     <ClCompile Include="Engine\base\Shader.cpp">
@@ -428,7 +428,7 @@
     <ClInclude Include="Engine\base\Shader.h">
       <Filter>ヘッダー ファイル\lib\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\2d\TextureData.h">
+    <ClInclude Include="Engine\2d\TextureManager.h">
       <Filter>ヘッダー ファイル\lib\Engine</Filter>
     </ClInclude>
     <ClInclude Include="Engine\base\Window.h">

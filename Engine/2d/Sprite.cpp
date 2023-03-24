@@ -1,5 +1,6 @@
 #include "Sprite.h"
 #include "DirectX.h"
+#include "TextureManager.h"
 
 void Sprite::Initialize(uint32_t handle_)
 {
@@ -96,7 +97,7 @@ void Sprite::Initialize(uint32_t handle_)
 
 void Sprite::Update()
 {
-	ID3D12Resource* texBuff = MyDirectX::GetInstance()->GetTextureBuffer(handle);
+	ID3D12Resource* texBuff = TextureManager::GetInstance()->GetTextureBuffer(handle);
 
 	if (texBuff) {
 		D3D12_RESOURCE_DESC resDesc_ = texBuff->GetDesc();
@@ -149,7 +150,7 @@ void Sprite::Draw()
 	common->Draw();
 	BuffUpdate(MyDirectX::GetInstance()->GetCmdList());
 	//	テクスチャ
-	MyDirectX::GetInstance()->GetCmdList()->SetGraphicsRootDescriptorTable(0, MyDirectX::GetInstance()->GetTextureHandle(handle));
+	MyDirectX::GetInstance()->GetCmdList()->SetGraphicsRootDescriptorTable(0, TextureManager::GetInstance()->GetTextureHandle(handle));
 	MyDirectX::GetInstance()->GetCmdList()->SetGraphicsRootConstantBufferView(1, material->GetGPUVirtualAddress());
 	MyDirectX::GetInstance()->GetCmdList()->SetGraphicsRootConstantBufferView(2, transform->GetGPUVirtualAddress());
 
@@ -229,7 +230,7 @@ void Sprite::SetMatTransform()
 
 void Sprite::AdjustTextureSize()
 {
-	ID3D12Resource* texBuff = MyDirectX::GetInstance()->GetTextureBuffer(handle);
+	ID3D12Resource* texBuff = TextureManager::GetInstance()->GetTextureBuffer(handle);
 	assert(texBuff);
 
 	D3D12_RESOURCE_DESC resDesc_ = texBuff->GetDesc();

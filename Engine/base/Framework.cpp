@@ -20,8 +20,13 @@ void Framework::Initialize()
 	win = Window::GetInstance();
 	win->Initialize();
 
+	textureMan = TextureManager::GetInstance();
+	textureMan->Initialize();
+
 	dx = MyDirectX::GetInstance();
 	dx->Initialize();
+
+	textureMan->SetWhiteTexHandle();
 
 	joypad = InputJoypad::GetInstance();
 	input = Input::GetInstance();

@@ -1,5 +1,6 @@
 #include "ScreenPolygon.h"
 #include "DirectX.h"
+#include "TextureManager.h"
 
 ScreenPolygon::ScreenPolygon()
 {
@@ -66,7 +67,7 @@ void ScreenPolygon::Draw()
 	pipeline.Update(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	BuffUpdate(cmdList);
 	//	テクスチャ
-	cmdList->SetGraphicsRootDescriptorTable(0, MyDirectX::GetInstance()->GetTextureHandle(0));
+	cmdList->SetGraphicsRootDescriptorTable(0, TextureManager::GetInstance()->GetTextureHandle(0));
 	cmdList->SetGraphicsRootConstantBufferView(1, material->GetGPUVirtualAddress());
 
 	cmdList->DrawIndexedInstanced(indexSize, 1, 0, 0, 0);
