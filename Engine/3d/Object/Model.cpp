@@ -354,7 +354,6 @@ UINT FindScaling(float AnimationTime, const aiNodeAnim* pNodeAnim)
 	}
 
 	assert(0);
-
 	return 0;
 }
 
@@ -611,7 +610,7 @@ void Model::Initialize(const char* filename, bool isFBX, bool smoothing)
 	}
 
 	for (auto& m : materials) {
-		m.second->LoadTexture(isFBX);
+		m.second->LoadTexture();
 	}
 }
 

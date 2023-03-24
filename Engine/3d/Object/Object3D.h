@@ -37,13 +37,12 @@ private:
 
 	Object3D* parent = nullptr;
 	Model* model = nullptr;
-	float animationTImer = 0.0f;
+	float animationTimer = 0.0f;
 protected:
 	MyMath::ObjMatrix mat;
 	Vector3D color = { 1.0f,1.0f,1.0f };
 	BaseCollider* collider = nullptr;
 	
-	void PlayAnimation();
 public:
 	Object3D() = default;
 	virtual ~Object3D();
@@ -53,6 +52,7 @@ public:
 	virtual void Initialize();
 	virtual void ColliderUpdate();
 	void MatUpdate();
+	void PlayAnimation();
 	virtual void Draw();
 
 	static void SetLight(Light* light_);
@@ -66,8 +66,8 @@ public:
 	void SetColor(const Vector3D& color_) { color = color_; }
 	const Vector3D& GetColor() { return color; }
 
-	void SetAnimatonTimer(float timer) { animationTImer = timer; }
-	const float GetAnimationTimer() { return animationTImer; }
+	void SetAnimatonTimer(float timer) { animationTimer = timer; }
+	const float GetAnimationTimer() { return animationTimer; }
 
 	void SetPosition(const Vector3D& pos_) { mat.trans = pos_; }
 	const Vector3D& GetPosition() { return mat.trans; }

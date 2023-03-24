@@ -530,27 +530,19 @@ void MyDirectX::PostDrawScreen()
 	SetResourceBarrier(screenBarrierDesc, D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
 }
 
-int MyDirectX::LoadTextureGraph(const wchar_t* textureName, bool tga)
+int MyDirectX::LoadTextureGraph(const wchar_t* textureName)
 {
-
 	TexMetadata metadata{};
 	ScratchImage scratchImg{};
 
 	HRESULT result;
-	if (tga) {
-		result = LoadFromTGAFile(
-			textureName,
-			&metadata, scratchImg);
-	}
-	else {
-		result = LoadFromWICFile(
-			textureName,
-			WIC_FLAGS_NONE,
-			&metadata, scratchImg);
-	}
+	result = LoadFromWICFile(
+		textureName,
+		WIC_FLAGS_NONE,
+		&metadata, scratchImg);
 
 	if (!SUCCEEDED(result)) {
-		//	ì«Ç›çûÇ›Ç…é∏îsÇµÇΩÇÁ
+		//	ì«Ç›çûÇ›Ç…é∏îsÇµÇΩÇÁîíêFâÊëú
 		return whiteTexHandle;
 	}
 	textureNum++;

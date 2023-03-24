@@ -165,11 +165,6 @@ void Object3D::MatUpdate()
 	constMap->cameraPos = cameraPos;
 	//constMap->color = color;
 	transform->Unmap(0, nullptr);
-
-	//	アニメーション
-	if (model->GetNumBones() > 0) {
-		PlayAnimation();
-	}
 }
 
 void Object3D::Draw()
@@ -187,10 +182,9 @@ void Object3D::Draw()
 void Object3D::PlayAnimation()
 {
 	std::vector<Matrix> Transforms;
-	float RunningTime = animationTImer;
 
-	animationTImer += 0.1f;
-	model->BoneTransform(RunningTime, Transforms);
+	animationTimer += 0.1f;
+	model->BoneTransform(animationTimer, Transforms);
 
 	ConstBufferDataSkin* constMapSkin = nullptr;
 	constBuffSkin->Map(0, nullptr, (void**)&constMapSkin);

@@ -63,15 +63,7 @@ std::wstring ReplaceExtension(const std::wstring& origin, const wchar_t* ext)
 	return ret;
 }
 
-void Material::LoadTexture(bool tga)
+void Material::LoadTexture()
 {
-	if (tga) {
-		auto texPath = ReplaceExtension(wfilepath, L"tga");
-		const wchar_t* wc = texPath.data();
-
-		textureHandle = dx->LoadTextureGraph(wc, tga);
-	}
-	else {
-		textureHandle = dx->LoadTextureGraph(wfilepath, tga);
-	}
+	textureHandle = dx->LoadTextureGraph(wfilepath);
 }

@@ -35,7 +35,7 @@ public:
 
 	void Initialize();
 	void Update();
-	void LoadTexture(bool tga = false);
+	void LoadTexture();
 
 	const int GetTextureHandle() { return textureHandle; }
 	ID3D12Resource* GetMaterialConstBuff() { return material.Get(); }

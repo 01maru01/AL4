@@ -93,7 +93,7 @@ public:
 	void PrevDraw(FLOAT* clearColor_ = nullptr);
 	void PostDraw();
 
-	int LoadTextureGraph(const wchar_t* textureName, bool tga = false);
+	int LoadTextureGraph(const wchar_t* textureName);
 
 	//	Getter
 	ID3D12Resource* GetTextureBuffer(uint32_t index) const { return texBuff[index - 1].Get(); }

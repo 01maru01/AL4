@@ -21,8 +21,9 @@ void GameScene::MatUpdate()
 	hill->MatUpdate();
 	skydome->MatUpdate();
 
-	//player->MatUpdate();
+	player->MatUpdate();
 	tree->MatUpdate();
+	tree->PlayAnimation();
 	for (int i = 0; i < tree2.size(); i++)
 	{
 		tree2[i]->MatUpdate();
@@ -250,7 +251,7 @@ void GameScene::LoadResources()
 	modelHill = std::make_unique<Model>("ground1");
 	modelGround = std::make_unique<Model>("ground");
 	//	‹u
-	modelTree = std::make_unique<Model>("tree");
+	modelTree = std::make_unique<Model>("moveCube", true);
 	modelTree2 = std::make_unique<Model>("tree2");
 #pragma endregion
 	//	“V‹…
@@ -264,6 +265,8 @@ void GameScene::LoadResources()
 	hill->SetPosition(Vector3D(0.0f, 0.0f, 10.0f));
 
 	tree.reset(Object3D::Create(modelTree.get()));
+	float size = 0.05f;
+	tree->SetScale({ size,size,size });
 	tree2.push_back(Object3D::Create(modelTree2.get()));
 	tree2.push_back(Object3D::Create(modelTree2.get()));
 	tree2.push_back(Object3D::Create(modelTree2.get()));
@@ -411,7 +414,7 @@ void GameScene::Draw()
 	//	–Ø
 	tree->Draw();
 
-	player->Draw();
+	//player->Draw();
 
 	for (int i = 0; i < tree2.size(); i++)
 	{
