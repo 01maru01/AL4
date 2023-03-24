@@ -51,5 +51,6 @@ void Framework::Finalize()
 	Input::DeleteInstance();
 	MyXAudio::DeleteInstance();
 	MyDirectX::DeleteInstance();
+	TextureManager::DeleteInstance();
 	Window::DeleteInstance();
 }
