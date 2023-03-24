@@ -29,7 +29,7 @@ void SceneManager::Initialize()
 	scene->Initialize();
 	endLoading = true;
 
-	loadTex = TextureManager::GetInstance()->LoadTextureGraph(L"Resources/loading.png");
+	loadTex = TextureManager::GetInstance()->LoadTextureGraph(L"Resources/Sprite/loading.png");
 	loadSprite = std::make_unique<Sprite>(loadTex);
 	loadSprite->SetPosition(Vector2D{ Window::window_width - 96,Window::window_height - 98 });
 	loadSprite->SetAnchorPoint(Vector2D{ 0.5,0.5 });
