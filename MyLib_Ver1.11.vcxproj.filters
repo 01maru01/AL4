@@ -159,9 +159,6 @@
     <ClCompile Include="Engine\math\Easing.cpp">
       <Filter>ソース ファイル\lib\Math</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Scene\IScene.cpp">
       <Filter>ソース ファイル\lib\Scene</Filter>
     </ClCompile>
@@ -329,6 +326,9 @@
     </ClCompile>
     <ClCompile Include="Engine\3d\Object\Wind.cpp">
       <Filter>ソース ファイル\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

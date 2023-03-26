@@ -43,7 +43,6 @@
     <ClCompile Include="Engine\base\input\Input.cpp" />
     <ClCompile Include="Engine\base\input\InputJoypad.cpp" />
     <ClCompile Include="Engine\3d\Light\DistanceFog.cpp" />
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\math\Matrix.cpp" />
     <ClCompile Include="Engine\base\MyGame.cpp" />
     <ClCompile Include="Engine\math\MyMath.cpp" />
@@ -74,6 +73,7 @@
     <ClCompile Include="Engine\3d\camera\NormalCamera.cpp" />
     <ClCompile Include="Engine\Scene\TitleScene.cpp" />
     <ClCompile Include="Engine\3d\Light\VolumeLight.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\3d\Object\Material.h" />
@@ -242,15 +242,15 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(ProjectDir)lib\assimp\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)External\DirectXTex;$(SolutionDir)External\imgui</IncludePath>
-    <LibraryPath>$(ProjectDir)lib\assimp\lib;$(LibraryPath);</LibraryPath>
+    <IncludePath>$(ProjectDir)External\assimp\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)External\DirectXTex;$(SolutionDir)External\imgui</IncludePath>
+    <LibraryPath>$(ProjectDir)External\assimp\lib;$(LibraryPath);</LibraryPath>
     <OutDir>$(SolutionDir)..\Generated\Outputs\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)..\Generated\Obj\$(ProjectName)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(ProjectDir)lib\assimp\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)External\DirectXTex;$(SolutionDir)External\imgui</IncludePath>
-    <LibraryPath>$(ProjectDir)lib\assimp\lib;$(LibraryPath);</LibraryPath>
+    <IncludePath>$(ProjectDir)External\assimp\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)External\DirectXTex;$(SolutionDir)External\imgui</IncludePath>
+    <LibraryPath>$(ProjectDir)External\assimp\lib;$(LibraryPath);</LibraryPath>
     <OutDir>$(SolutionDir)..\Generated\Outputs\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)..\Generated\Obj\$(ProjectName)\$(Configuration)\</IntDir>
   </PropertyGroup>
@@ -262,7 +262,7 @@
       <ConformanceMode>false</ConformanceMode>
       <LanguageStandard>Default</LanguageStandard>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d\camera;$(ProjectDir)Engine\3d\Light;$(ProjectDir)Engine\3d\Object;$(ProjectDir)Engine\Audio;$(ProjectDir)Engine\base;$(ProjectDir)Engine\base\input;$(ProjectDir)Engine\Collider;$(ProjectDir)Engine\game;$(ProjectDir)Engine\math;$(ProjectDir)Engine\Scene;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d\camera;$(ProjectDir)Engine\3d\Light;$(ProjectDir)Engine\3d\Object;$(ProjectDir)Engine\Audio;$(ProjectDir)Engine\base;$(ProjectDir)Engine\base\input;$(ProjectDir)Engine\Collider;$(ProjectDir)Engine\game;$(ProjectDir)Engine\math;$(ProjectDir)Engine\Scene;$(ProjectDir)Engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -282,7 +282,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>Default</LanguageStandard>
       <Optimization>MinSpace</Optimization>
-      <AdditionalIncludeDirectories>$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d\camera;$(ProjectDir)Engine\3d\Light;$(ProjectDir)Engine\3d\Object;$(ProjectDir)Engine\Audio;$(ProjectDir)Engine\base;$(ProjectDir)Engine\base\input;$(ProjectDir)Engine\Collider;$(ProjectDir)Engine\game;$(ProjectDir)Engine\math;$(ProjectDir)Engine\Scene;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d\camera;$(ProjectDir)Engine\3d\Light;$(ProjectDir)Engine\3d\Object;$(ProjectDir)Engine\Audio;$(ProjectDir)Engine\base;$(ProjectDir)Engine\base\input;$(ProjectDir)Engine\Collider;$(ProjectDir)Engine\game;$(ProjectDir)Engine\math;$(ProjectDir)Engine\Scene;$(ProjectDir)Engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
